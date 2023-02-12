@@ -1,5 +1,11 @@
 var express = require("express")
+var bodyParser = require('body-parser')
+
 var app = express()
+
+app.use(bodyParser.urlencoded({
+	  extended: true
+}));
 
 const { MongoClient } = require("mongodb") //setup MongoDB
 const uri = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2"
@@ -20,19 +26,20 @@ app.post("/signup", (req, res) => {
 			"username": req.body.username,
 			"password": req.body.password,
 			"de1socID": req.body.de1socID,
-			"visitHistory": {}
+			"visitHistory": null
 		}
 	)
 })
 
-app.get("/gethistory", (req, res) => {
-	console.log(req.query)
+app.get("/gethistory/:username", (req, res) => {
 	client.db("sdmsDB").collection("user").findOne(
 		{
-			"username": req.query.username,
+			"username": req.params.username,
 		}
 	).then((result) => {
-		res.send(result.visitHistory)
+		res.send(result.visitHistory == null ? "No visit history" : result.visitHistory)
+	}).catch((err) => {
+		res.send("Error with username. Are you sure you typed it correctly?")
 	})
 })
 
