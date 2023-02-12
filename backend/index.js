@@ -12,3 +12,21 @@ app.get("/", (req, res) => {
 	res.send("Hello World! Total accesses since last server restart: " + totalAccesses)
 	totalAccesses += 1
 })
+
+async function run() {
+	    try {
+		            await client.connect() //connect to client (db), we are app
+		            console.log("Successfully connected to the database")
+		            var server = app.listen(3000, (req, res) => { //init server after connecting to db
+				                var host = server.address().address
+				                var port = server.address().port
+				                console.log("Example server successfully running at http://%s:%s", host, port)
+				            })
+		        }
+	    catch(err) {
+		            console.log(err)
+		            await client.close()
+		        }
+}
+
+run()
