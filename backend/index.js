@@ -26,7 +26,7 @@ app.post("/signup", (req, res) => {
 			"username": req.body.username,
 			"password": req.body.password,
 			"de1socID": req.body.de1socID,
-			"visitHistory": null
+			"visitHistory": []
 		}
 	)
 })
@@ -45,19 +45,24 @@ app.get("/getvisits/:username", (req, res) => {
 
 app.post("/visit", (req, res) => {
 	console.log(req.body)
-	client.db("sdmsDB").collection("user").findOne(
+
+	client.db("sdmsDB").collection("user").updateOne(
 		{
 			"username": req.body.username,
+		}, 
+		{
+			$push: {
+				"visitHistory": {
+					"visitor": req.body.visitor,
+					"date": req.body.date,
+					"message": req.body.message,
+					"image": req.body.image
+				}
+			}
 		}
-	).then((result) => {
-		//add visit to user's visit history object
-		result.visitHistory.push({
-			"visitor": req.body.visitor,
-			"date": req.body.date,
-			"message": req.body.message
-		})		
-	}).catch((err) => {
-		res.send("Error with username or history.")
+	).catch((err) => {
+		res.send("Error")
+		console.log(err)
 	})
 })
 
