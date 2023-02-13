@@ -31,7 +31,7 @@ app.post("/signup", (req, res) => {
 	)
 })
 
-app.get("/gethistory/:username", (req, res) => {
+app.get("/getvisits/:username", (req, res) => {
 	client.db("sdmsDB").collection("user").findOne(
 		{
 			"username": req.params.username,
@@ -50,20 +50,19 @@ app.post("/visit", (req, res) => {
 			"username": req.body.username,
 		}
 	).then((result) => {
-		//add visit to user's visit history
-		var visitHistory = result.visitHistory
-		visitHistory[req.body.visitID] = {
-			"date": req.body.date,
-			"time": req.body.time,
-			"intent": req.body.intent,
+		//add visit to user's visit history object
+		result.visitHistory.push({
 			"visitor": req.body.visitor,
+			"date": req.body.date,
 			"message": req.body.message
-		}
+		})		
+	}).catch((err) => {
+		res.send("Error with username or history.")
 	})
 })
 
 /*
- * Realtime notification from homeowner to visitor (needs DE1-SoC endpoint to be integrated)
+ * Realtime notification from homeowner to visitor (needs DE1-SoC endpoint to be integrated to work)
 */
 app.post("/messagevisitor", (req, res) => {
 	client.db("sdmsDB").collection("user").findOne(
