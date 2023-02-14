@@ -26,7 +26,9 @@ app.post("/signup", (req, res) => {
 			"username": req.body.username,
 			"password": req.body.password,
 			"de1socID": req.body.de1socID,
-			"visitHistory": []
+			"visitHistory": [],
+			"outgoingMessages": [],
+			"incomingMessages": []
 		}
 	)
 })
