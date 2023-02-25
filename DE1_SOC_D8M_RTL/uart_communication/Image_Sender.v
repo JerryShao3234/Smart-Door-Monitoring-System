@@ -97,9 +97,9 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
             end
             /* this state is temporary for testing only*/
             WAIT_CONVERT: begin
-                Red <= sdram_rd2_data + 1;
-                Green <= sdram_rd2_data + 2;
-                Blue <= sdram_rd2_data + 3;
+                Red <= sdram_rd2_data;
+                Green <= sdram_rd2_data + 1;
+                Blue <= sdram_rd2_data + 2;
             end
             /* color will be assigned by RAW2RGB_J */
             WAIT_SEND: begin
