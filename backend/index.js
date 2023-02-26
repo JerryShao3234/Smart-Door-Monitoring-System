@@ -47,16 +47,18 @@ app.post("/login", async (req, res) => {
 	}
 	if (user.password === password) {
 		console.log("login successful")
-		user.token = crypto.randomBytes(64).toString('hex')
-		user.save((err) => {
-			if (err) {
-				console.log(err)
-				res.send("Error")
-			} else {
-				res.send(user.token)
+		//add token to user object
+		user_id = user._id
+		await client.db("sdmsDB").collection("user").updateOne(
+			{
+				"_id": user_id
+			},
+			{
+				$set: {
+					"token": crypto.randomBytes(64).toString('hex')
+				}
 			}
-		})
-
+		)
 		res.send({
 			"token": user.token,
 			"username": user.username
@@ -80,14 +82,17 @@ app.post("/logout", async (req, res) => {
 
 	if(user.token === req.body.token) {
 		user.token = null
-		user.save((err) => {
-			if (err) {
-				console.log(err)
-				res.send("Error")
-			} else {
-				res.send("Logout successful")
+		user_id = user._id
+		await client.db("sdmsDB").collection("user").updateOne(
+			{
+				"_id": user_id
+			},
+			{
+				$set: {
+					"token": null
+				}
 			}
-		})
+		)
 	}
 })
 
