@@ -117,22 +117,10 @@ module Image_Sender_tb();
 
             repeat(2)@(negedge clk); // drive clock to get back to WAIT_SEND
 
-            /* check tx_data === Red */
+            /* check tx_data === Green */
             assert(tx_data === dut.Green) $display("[PASS] correctly send green");
             else $error("[FAIL] send incorrect value %h, green is %h", tx_data, dut.Green);
 
-            repeat(2)@(negedge clk);
-
-            /* check tx_data === Blue */
-            assert(tx_data === dut.Blue) $display("[PASS] correctly send blue");
-            else $error("[FAIL] send incorrect value %h, blue is %h", tx_data, dut.Blue);
-
-            repeat(2)@(negedge clk);
-
-            /* check tx_data === H_cont */
-            assert(tx_data === dut.H_cont) $display("[PASS] correctly send H_cont");
-            else $error("[FAIL] send incorrect value %h, H_cont is %h", tx_data, dut.H_cont);
-            
             tx_empty = 0; // simulate when uart send takes more than 1 cycle (which will very likely happen)
 
             repeat(10)@(negedge clk);
@@ -143,10 +131,11 @@ module Image_Sender_tb();
             
             tx_empty = 1; // uart send complete
 
-            /* check tx_data === V_cont */
             repeat(2)@(negedge clk);
-            assert(tx_data === dut.V_cont) $display("[PASS] correctly send V_cont");
-            else $error("[FAIL] send incorrect value %h, V_cont is %h", tx_data, dut.V_cont);
+
+            /* check tx_data === Blue */
+            assert(tx_data === dut.Blue) $display("[PASS] correctly send blue");
+            else $error("[FAIL] send incorrect value %h, blue is %h", tx_data, dut.Blue);
 
             repeat(2)@(negedge clk); // WAIT_SEND -> SEND -> READ
         end

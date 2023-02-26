@@ -71,7 +71,7 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
                 WAIT_READ: next_state <= CONVERT;
                 CONVERT: next_state <= WAIT_CONVERT;
                 WAIT_CONVERT: next_state <= SEND;
-                SEND: next_state <= send_count === 3'h5 ? READ : WAIT_SEND;
+                SEND: next_state <= send_count === 3'h3 ? READ : WAIT_SEND;
                 WAIT_SEND: next_state <= tx_empty ? SEND : WAIT_SEND;
                 DONE: next_state <= en ? DONE : RDY;
                 default: next_state <= RDY;
@@ -195,8 +195,6 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
                     3'h0: tx_data = Red;
                     3'h1: tx_data = Green;
                     3'h2: tx_data = Blue;
-                    3'h3: tx_data = H_cont;
-                    3'h4: tx_data = V_cont;
                     default: tx_data = 0;
                 endcase
             end
