@@ -16,7 +16,7 @@ totalAccesses = 0
 app.use(express.json())
 
 app.get("/", (req, res) => {
-	res.send("Server is currently up! Total accesses since last server restart: " + totalAccesses)
+	res.status(200).send("Server is currently up! Total accesses since last server restart: " + totalAccesses)
 	totalAccesses += 1
 })
 
@@ -33,6 +33,7 @@ app.post("/signup", (req, res) => {
 			"incomingMessages": []
 		}
 	)
+	res.status(200).send("User created")
 })
 
 app.post("/login", async (req, res) => {
@@ -42,31 +43,32 @@ app.post("/login", async (req, res) => {
 	const user = await client.db("sdmsDB").collection("user").findOne({ "username": username })
 	if (user == null || user === undefined) {
 		console.log("user not found")
-		res.send("User not found")
+		res.status(404).send("User not found")
 		return
 	}
 	if (user.password === password) {
 		console.log("login successful")
 		//add token to user object
 		user_id = user._id
+		token = crypto.randomBytes(64).toString('hex')
 		await client.db("sdmsDB").collection("user").updateOne(
 			{
 				"_id": user_id
 			},
 			{
 				$set: {
-					"token": crypto.randomBytes(64).toString('hex')
+					"token": token
 				}
 			}
 		)
-		res.send({
-			"token": user.token,
+		res.status(200).send({
+			"token": token,
 			"username": user.username
 		})
 
 	} else {
 		console.log("incorrect password")
-		res.send("Incorrect password")
+		res.status(404).send("Incorrect password")
 	}
 })
 
@@ -76,7 +78,7 @@ app.post("/logout", async (req, res) => {
 	const user = await client.db("sdmsDB").collection("user").findOne({"username": username})
 	if (user == null || user === undefined) {
 		console.log("user not found")
-		res.send("User not found")
+		res.status(404).send("User not found")
 		return
 	}
 
@@ -84,44 +86,41 @@ app.post("/logout", async (req, res) => {
 		user.token = null
 		user_id = user._id
 		await client.db("sdmsDB").collection("user").updateOne(
-			{
-				"_id": user_id
-			},
-			{
-				$set: {
-					"token": null
-				}
-			}
+			{"_id": user_id}, {$set: {"token": null}}
 		)
+		res.status(200).send("Logout successful")
 	}
 })
 
 app.post("/getvisits", async (req, res) => {
 	var username = req.body.username
 	var token = req.body.token
-	var user = await client.db("sdmsDB").collection("user").findOne({"username": req.body.username})
+	var user = await client.db("sdmsDB").collection("user").findOne({"username": username})
 	if (user == null || user === undefined) {
 		console.log("user not found")
-		res.send("User not found")
+		res.status(404).send("User not found")
 		return
 	}
 
 	if(user.token === token) {
-		res.send(user.visitHistory)
+		res.status(200).send(user.visitHistory)
 	} else {
-		res.send("Invalid token")
+		res.status(404).send("Invalid token")
 	}
 })
 
 /*
  * Used by DE1-SoC to update visit history and send notification to visitor (pending)
+ * DE1-SoC does not have a token, so we use the de1socID
+ * The conventional token does not need to be checked because the DE1-SoC is trusted and this operation
+ * does not expose any sensitive information
 */
 app.post("/visit", (req, res) => {
 	console.log(req.body)
 
 	client.db("sdmsDB").collection("user").updateOne(
 		{
-			"username": req.body.username,
+			"de1socID": req.body.de1socID,
 		}, 
 		{
 			$push: {
