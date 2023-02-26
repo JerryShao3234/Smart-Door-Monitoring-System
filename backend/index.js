@@ -1,7 +1,8 @@
 var express = require("express")
 var bodyParser = require('body-parser')
-
+const oneDay = 1000 * 60 * 60 * 24;
 var app = express()
+const crypto = require('crypto')
 
 app.use(bodyParser.urlencoded({
 	  extended: true
@@ -26,6 +27,7 @@ app.post("/signup", (req, res) => {
 			"username": req.body.username,
 			"password": req.body.password,
 			"de1socID": req.body.de1socID,
+			"token": null,
 			"visitHistory": [],
 			"outgoingMessages": [],
 			"incomingMessages": []
@@ -33,18 +35,82 @@ app.post("/signup", (req, res) => {
 	)
 })
 
-app.get("/getvisits/:username", (req, res) => {
-	client.db("sdmsDB").collection("user").findOne(
-		{
-			"username": req.params.username,
-		}
-	).then((result) => {
-		res.send(result.visitHistory == null ? "No visit history" : result.visitHistory)
-	}).catch((err) => {
-		res.send("Error with username. Are you sure you typed it correctly?")
-	})
+app.post("/login", async (req, res) => {
+	console.log(req.body)
+	var username = req.body.username
+	var password = req.body.password
+	const user = await client.db("sdmsDB").collection("user").findOne({ "username": username })
+	if (user == null || user === undefined) {
+		console.log("user not found")
+		res.send("User not found")
+		return
+	}
+	if (user.password === password) {
+		console.log("login successful")
+		user.token = crypto.randomBytes(64).toString('hex')
+		user.save((err) => {
+			if (err) {
+				console.log(err)
+				res.send("Error")
+			} else {
+				res.send(user.token)
+			}
+		})
+
+		res.send({
+			"token": user.token,
+			"username": user.username
+		})
+
+	} else {
+		console.log("incorrect password")
+		res.send("Incorrect password")
+	}
 })
 
+app.post("/logout", async (req, res) => {
+	console.log(req.body)
+	var username = req.body.username
+	const user = await client.db("sdmsDB").collection("user").findOne({"username": username})
+	if (user == null || user === undefined) {
+		console.log("user not found")
+		res.send("User not found")
+		return
+	}
+
+	if(user.token === req.body.token) {
+		user.token = null
+		user.save((err) => {
+			if (err) {
+				console.log(err)
+				res.send("Error")
+			} else {
+				res.send("Logout successful")
+			}
+		})
+	}
+})
+
+app.post("/getvisits", async (req, res) => {
+	var username = req.body.username
+	var token = req.body.token
+	var user = await client.db("sdmsDB").collection("user").findOne({"username": req.body.username})
+	if (user == null || user === undefined) {
+		console.log("user not found")
+		res.send("User not found")
+		return
+	}
+
+	if(user.token === token) {
+		res.send(user.visitHistory)
+	} else {
+		res.send("Invalid token")
+	}
+})
+
+/*
+ * Used by DE1-SoC to update visit history and send notification to visitor (pending)
+*/
 app.post("/visit", (req, res) => {
 	console.log(req.body)
 
