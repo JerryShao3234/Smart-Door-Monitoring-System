@@ -7,15 +7,14 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
     sdram_rd2_load,
 
     // rdy-enable protocol
-    rdy, 
     en,
 
     // uart 
     tx_data,
-    tx_enable,
-    tx_clk,
-    ld_tx_data,
-    tx_empty,
+    txEn,
+    txStart,
+    txDone,
+    txBusy,
 
     // mipi to RGB
     READ_Request,
@@ -30,16 +29,15 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
     input READ_Request;
 
     // rdy-enable 
-    output reg rdy;
     input en;
     
     // uart 
     output reg[7:0] tx_data;
-    output reg tx_enable, tx_clk, ld_tx_data;
-    input tx_empty;
+    output reg txEn, txStart;
+    input txDone, txBusy;
 
     // mipi to RGB
-    input READ_Request, VGA_HS, VGA_VS;
+    input VGA_HS, VGA_VS;
 
     // internal signals
     reg[7:0] H_cont, V_cont; // set to a byte for uart   
@@ -66,14 +64,41 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
             next_state <= RDY;
         else begin
             case (present_state)
-                RDY:  next_state <= en ? READ : RDY;
-                READ: next_state <= num_pixels_left == 0 ? DONE: WAIT_READ;
+                RDY: begin
+                    if(en & 1)
+                        next_state <= READ;
+                    else
+                        next_state <= RDY;
+                end
+                READ: begin
+                    if(num_pixels_left == 0)
+                        next_state <= DONE;
+                    else
+                        next_state <= WAIT_READ;
+                end
                 WAIT_READ: next_state <= CONVERT;
                 CONVERT: next_state <= WAIT_CONVERT;
                 WAIT_CONVERT: next_state <= SEND;
-                SEND: next_state <= send_count === 3'h3 ? READ : WAIT_SEND;
-                WAIT_SEND: next_state <= tx_empty ? SEND : WAIT_SEND;
-                DONE: next_state <= en ? DONE : RDY;
+                SEND: begin
+                    if(send_count === 3'h3)
+                        next_state <= READ;
+                    else if(txBusy & 1)
+                        next_state <= WAIT_SEND;
+                    else
+                        next_state <= SEND;
+                end
+                WAIT_SEND: begin
+                    if(txBusy & 1)
+                        next_state <= WAIT_SEND;
+                    else 
+                        next_state <= SEND;
+                end
+                DONE: begin
+                    if(en & 1)
+                        next_state <= DONE;
+                    else 
+                        next_state <= RDY;
+                end
                 default: next_state <= RDY;
             endcase
         end
@@ -102,8 +127,9 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
                 Blue <= sdram_rd2_data + 2;
             end
             /* color will be assigned by RAW2RGB_J */
-            WAIT_SEND: begin
-                send_count <= send_count + tx_empty;
+            SEND: begin
+                if(send_count != 3'h3 && txBusy & 1)
+                    send_count <= send_count + 1;
             end
             default: begin
                 H_cont <= H_cont;
@@ -117,80 +143,57 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
     always @(*) begin
         case (present_state)
             RDY: begin
-                rdy = 1;
-
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
 
-                tx_clk = 0;
-                tx_enable = 0;
-                ld_tx_data = 0;
+                txStart = 0;
+                txEn = 0;
+                
                 tx_data = 0;
             end
             READ: begin
-                rdy = 0;
-
                 sdram_rd2_clk = 1;
                 sdram_rd2_load = 1;
 
-                tx_clk = 0;
-                tx_enable = 0;
-                ld_tx_data = 0;
+                txStart = 0;
+                txEn = 0;
+                
                 tx_data = 0;
             end
             WAIT_READ: begin
-                rdy = 0;
-
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
 
-                tx_clk = 0;
-                tx_enable = 0;
-                ld_tx_data = 0;
+                txStart = 0;
+                txEn = 0;
+                
                 tx_data = 0;
             end
             CONVERT: begin
-                rdy = 0;
-
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
 
-                tx_clk = 0;
-                tx_enable = 0;
-                ld_tx_data = 0;
+                txStart = 0;
+                txEn = 0;
+                
                 tx_data = 0;
             end
             WAIT_CONVERT: begin
-                rdy = 0;
-
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
 
-                tx_clk = 0;
-                tx_enable = 0;
-                ld_tx_data = 0;
+                txStart = 0;
+                txEn = 0;
+                
                 tx_data = 0;
             end
             SEND: begin
-                rdy = 0;
-
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
 
-                tx_clk = 1;
-                tx_enable = 1;
-                ld_tx_data = 1;
-                tx_data = 0;
-            end
-            WAIT_SEND: begin
-                rdy = 0;
-
-                sdram_rd2_clk = 0;
-                sdram_rd2_load = 0;
-
-                tx_clk = 0;
-                tx_enable = 0;
-                ld_tx_data = 0;
+                txStart= 1;
+                txEn = 1;
+                
                 case(send_count)
                     3'h0: tx_data = Red;
                     3'h1: tx_data = Green;
@@ -198,42 +201,33 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
                     default: tx_data = 0;
                 endcase
             end
-            DONE: begin
-                rdy = 0;
-
+            WAIT_SEND: begin
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
 
-                tx_clk = 0;
-                tx_enable = 0;
-                ld_tx_data = 0;
+                txStart = 0;
+                txEn = 0;
+                
+                tx_data = 0;
+            end
+            DONE: begin
+                sdram_rd2_clk = 0;
+                sdram_rd2_load = 0;
+
+                txStart = 0;
+                txEn = 0;
+                
                 tx_data = 0;
             end
             default: begin
-                rdy = 0;
-
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
 
-                tx_clk = 0;
-                tx_enable = 0;
-                ld_tx_data = 0;
+                txStart = 0;
+                txEn = 0;
+                
                 tx_data = 0;
             end
         endcase
-    end
-    // RAW2RGB_J				u5	(	
-	// 						.RST          ( VGA_VS ),
-	// 						.iDATA        ( sdram_rd2_data ),
-	// 						//-----------------------------------
-	// 						.VGA_CLK      ( clk ),
-	// 						.READ_Request ( READ_Request ),
-	// 						.VGA_VS       ( VGA_VS ),	
-	// 						.VGA_HS       ( VGA_HS ) , 
-	                  			
-	// 						.oRed         ( Red ),
-	// 						.oGreen       ( Green ),
-	// 						.oBlue        ( Blue )
-
-	// 						);		 
+    end	 
 endmodule
