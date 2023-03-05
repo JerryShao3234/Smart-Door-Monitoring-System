@@ -2,10 +2,22 @@ var express = require("express")
 var bodyParser = require('body-parser')
 
 var app = express()
+const http = require('http');
+const server = http.createServer(app);
+var io = require('socket.io')(server);
 
 app.use(bodyParser.urlencoded({
 	  extended: true
 }));
+app.use(cors());
+
+io.on('connection', (socket) => {
+	console.log('connected');
+	socket.on('message', (msg) => {
+		console.log(msg);
+		socket.broadcast.emit('message', msg);
+	});
+});
 
 const { MongoClient } = require("mongodb") //setup MongoDB
 const uri = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2"
@@ -99,3 +111,4 @@ async function run() {
 }
 
 run()
+server.listen(3001);
