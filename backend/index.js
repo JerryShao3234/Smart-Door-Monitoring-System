@@ -9,7 +9,6 @@ var io = require('socket.io')(server);
 app.use(bodyParser.urlencoded({
 	  extended: true
 }));
-app.use(cors());
 
 io.on('connection', (socket) => {
 	console.log('connected');
@@ -27,7 +26,7 @@ totalAccesses = 0
 app.use(express.json())
 
 app.get("/", (req, res) => {
-	res.send("Server is currently up! Total accesses since last server restart: " + totalAccesses)
+	res.send("Server is currently up!! Total accesses since last server restart: " + totalAccesses)
 	totalAccesses += 1
 })
 
