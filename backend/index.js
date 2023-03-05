@@ -1,8 +1,8 @@
 var express = require("express")
 var bodyParser = require('body-parser')
+const http = require('http');
 
 var app = express()
-const http = require('http');
 const server = http.createServer(app);
 var io = require('socket.io')(server);
 
@@ -97,10 +97,8 @@ async function run() {
 	try {
 		await client.connect() //connect to client (db), we are app
 		console.log("Successfully connected to the database")
-		var server = app.listen(3000, (req, res) => { //init server after connecting to db
-			var host = server.address().address
-			var port = server.address().port
-			console.log("Example server successfully running at http://%s:%s", host, port)
+		server.listen(3000, () => {
+			console.log("Server is up on port 3000")
 		})
 	}
 	catch (err) {
@@ -110,4 +108,3 @@ async function run() {
 }
 
 run()
-server.listen(3001);
