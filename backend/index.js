@@ -36,7 +36,8 @@ app.post("/signup", (req, res) => {
 	console.log(req.body)
 	client.db("sdmsDB").collection("user").insertOne(
 		{
-			"username": req.body.username,
+			"name": req.body.name,
+			"email": req.body.email,
 			"password": req.body.password,
 			"de1socID": req.body.de1socID,
 			"token": null,
@@ -50,9 +51,9 @@ app.post("/signup", (req, res) => {
 
 app.post("/login", async (req, res) => {
 	console.log(req.body)
-	var username = req.body.username
+	var email = req.body.email
 	var password = req.body.password
-	const user = await client.db("sdmsDB").collection("user").findOne({ "username": username })
+	const user = await client.db("sdmsDB").collection("user").findOne({ "email": email })
 	if (user == null || user === undefined) {
 		console.log("user not found")
 		res.status(404).send("User not found")
@@ -86,39 +87,31 @@ app.post("/login", async (req, res) => {
 
 app.post("/logout", async (req, res) => {
 	console.log(req.body)
-	var username = req.body.username
-	const user = await client.db("sdmsDB").collection("user").findOne({"username": username})
+	var token = req.body.token
+	const user = await client.db("sdmsDB").collection("user").findOne({ "token": token })
 	if (user == null || user === undefined) {
 		console.log("user not found")
 		res.status(404).send("User not found")
 		return
 	}
 
-	if(user.token === req.body.token) {
-		user.token = null
-		user_id = user._id
-		await client.db("sdmsDB").collection("user").updateOne(
-			{"_id": user_id}, {$set: {"token": null}}
-		)
-		res.status(200).send("Logout successful")
-	}
+	user_id = user._id
+	await client.db("sdmsDB").collection("user").updateOne(
+		{ "_id": user_id }, { $set: { "token": null } }
+	)
+	res.status(200).send("Logout successful")
 })
 
 app.post("/getvisits", async (req, res) => {
-	var username = req.body.username
 	var token = req.body.token
-	var user = await client.db("sdmsDB").collection("user").findOne({"username": username})
+	var user = await client.db("sdmsDB").collection("user").findOne({"token": token})
 	if (user == null || user === undefined) {
 		console.log("user not found")
 		res.status(404).send("User not found")
 		return
 	}
 
-	if(user.token === token) {
-		res.status(200).send(user.visitHistory)
-	} else {
-		res.status(404).send("Invalid token")
-	}
+	res.status(200).send(user.visitHistory)
 })
 
 /*
