@@ -5,6 +5,9 @@ const http = require('http');
 var app = express()
 const server = http.createServer(app);
 var io = require('socket.io')(server);
+const oneDay = 1000 * 60 * 60 * 24;
+var app = express()
+const crypto = require('crypto')
 
 app.use(bodyParser.urlencoded({
 	  extended: true
@@ -26,7 +29,7 @@ totalAccesses = 0
 app.use(express.json())
 
 app.get("/", (req, res) => {
-	res.send("Server is currently up!! Total accesses since last server restart: " + totalAccesses)
+	res.status(200).send("Server is currently up! Total accesses since last server restart: " + totalAccesses)
 	totalAccesses += 1
 })
 
@@ -37,31 +40,100 @@ app.post("/signup", (req, res) => {
 			"username": req.body.username,
 			"password": req.body.password,
 			"de1socID": req.body.de1socID,
+			"token": null,
 			"visitHistory": [],
 			"outgoingMessages": [],
 			"incomingMessages": []
 		}
 	)
+	res.status(200).send("User created")
 })
 
-app.get("/getvisits/:username", (req, res) => {
-	client.db("sdmsDB").collection("user").findOne(
-		{
-			"username": req.params.username,
-		}
-	).then((result) => {
-		res.send(result.visitHistory == null ? "No visit history" : result.visitHistory)
-	}).catch((err) => {
-		res.send("Error with username. Are you sure you typed it correctly?")
-	})
+app.post("/login", async (req, res) => {
+	console.log(req.body)
+	var username = req.body.username
+	var password = req.body.password
+	const user = await client.db("sdmsDB").collection("user").findOne({ "username": username })
+	if (user == null || user === undefined) {
+		console.log("user not found")
+		res.status(404).send("User not found")
+		return
+	}
+	if (user.password === password) {
+		console.log("login successful")
+		//add token to user object
+		user_id = user._id
+		token = crypto.randomBytes(64).toString('hex')
+		await client.db("sdmsDB").collection("user").updateOne(
+			{
+				"_id": user_id
+			},
+			{
+				$set: {
+					"token": token
+				}
+			}
+		)
+		res.status(200).send({
+			"token": token,
+			"username": user.username
+		})
+
+	} else {
+		console.log("incorrect password")
+		res.status(404).send("Incorrect password")
+	}
 })
 
+app.post("/logout", async (req, res) => {
+	console.log(req.body)
+	var username = req.body.username
+	const user = await client.db("sdmsDB").collection("user").findOne({"username": username})
+	if (user == null || user === undefined) {
+		console.log("user not found")
+		res.status(404).send("User not found")
+		return
+	}
+
+	if(user.token === req.body.token) {
+		user.token = null
+		user_id = user._id
+		await client.db("sdmsDB").collection("user").updateOne(
+			{"_id": user_id}, {$set: {"token": null}}
+		)
+		res.status(200).send("Logout successful")
+	}
+})
+
+app.post("/getvisits", async (req, res) => {
+	var username = req.body.username
+	var token = req.body.token
+	var user = await client.db("sdmsDB").collection("user").findOne({"username": username})
+	if (user == null || user === undefined) {
+		console.log("user not found")
+		res.status(404).send("User not found")
+		return
+	}
+
+	if(user.token === token) {
+		res.status(200).send(user.visitHistory)
+	} else {
+		res.status(404).send("Invalid token")
+	}
+})
+
+/*
+ * Used by DE1-SoC to update visit history and send notification to visitor (pending)
+ * DE1-SoC does not have a token, so we use the de1socID
+ * The conventional token does not need to be checked because the DE1-SoC is trusted and this operation
+ * does not expose any sensitive information
+*/
 app.post("/visit", (req, res) => {
 	console.log(req.body)
 
 	client.db("sdmsDB").collection("user").updateOne(
 		{
-			"username": req.body.username,
+			"de1socID": req.body.de1socID,
 		}, 
 		{
 			$push: {
