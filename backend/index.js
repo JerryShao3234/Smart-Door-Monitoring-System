@@ -6,7 +6,6 @@ var app = express()
 const server = http.createServer(app);
 var io = require('socket.io')(server);
 const oneDay = 1000 * 60 * 60 * 24;
-var app = express()
 const crypto = require('crypto')
 
 app.use(bodyParser.urlencoded({
@@ -17,7 +16,7 @@ io.on('connection', (socket) => {
 	console.log('connected');
 	socket.on('message', (msg) => {
 		console.log(msg);
-		socket.broadcast.emit('message', msg);
+		io.sockets.emit('message', msg)
 	});
 });
 
