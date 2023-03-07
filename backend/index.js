@@ -1,12 +1,24 @@
 var express = require("express")
 var bodyParser = require('body-parser')
-const oneDay = 1000 * 60 * 60 * 24;
+const http = require('http');
+
 var app = express()
+const server = http.createServer(app);
+var io = require('socket.io')(server);
+const oneDay = 1000 * 60 * 60 * 24;
 const crypto = require('crypto')
 
 app.use(bodyParser.urlencoded({
 	  extended: true
 }));
+
+io.on('connection', (socket) => {
+	console.log('connected');
+	socket.on('message', (msg) => {
+		console.log(msg);
+		io.sockets.emit('message', msg)
+	});
+});
 
 const { MongoClient } = require("mongodb") //setup MongoDB
 const uri = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2"
@@ -156,10 +168,8 @@ async function run() {
 	try {
 		await client.connect() //connect to client (db), we are app
 		console.log("Successfully connected to the database")
-		var server = app.listen(3000, (req, res) => { //init server after connecting to db
-			var host = server.address().address
-			var port = server.address().port
-			console.log("Example server successfully running at http://%s:%s", host, port)
+		server.listen(3000, () => {
+			console.log("Server is up on port 3000")
 		})
 	}
 	catch (err) {
