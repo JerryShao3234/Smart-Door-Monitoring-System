@@ -88,10 +88,10 @@ module uart_sender(
 	assign GPIO[0] = GPIO[34];
 	assign rx = GPIO[0];
 
-    assign LEDR = sdram_rddata;
+    assign LEDR = SW;
 	
-    seven_seg_hex h0(tx_data[3:0], HEX0);
-    seven_seg_hex h1(tx_data[7:4], HEX1);
+    seven_seg_hex h0(SW[3:0], HEX0);
+    seven_seg_hex h1(SW[7:4], HEX1);
     seven_seg_hex h2(out[3:0], HEX2);
     seven_seg_hex h3(out[7:4], HEX3);
 	seven_seg_hex h4({1'b0, is_state}, HEX4);

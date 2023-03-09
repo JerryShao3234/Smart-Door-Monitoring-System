@@ -30,7 +30,8 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
     
     // SDRAM Read Side FIFO 2
     input[9:0] sdram_rd2_data;
-    output reg sdram_rd2_clk, sdram_rd2_load;
+    output reg sdram_rd2_load;
+    output sdram_rd2_clk;
     input READ_Request;
 
     // rdy-enable 
@@ -51,12 +52,13 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
 
     // internal signals
     reg[7:0] H_cont, V_cont; // set to a byte for uart   
-    reg [7:0] Red, Green, Blue;
+    wire [7:0] Red, Green, Blue;
     reg[18:0] num_pixels_left = WIDTH * HEIGHT;
     reg[2:0] send_count;
     reg[2:0] next_state;
     wire[2:0] present_state;
     wire not_rx_busy;
+    reg clk_high;
 
     // state declarations
     localparam  RDY = 3'h0,
@@ -133,21 +135,22 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
                 else 
                     H_cont <= H_cont + 1;
             end
-            /* this state is temporary for testing only*/
-            WAIT_CONVERT: begin
-                Red <= sdram_rd2_data;
-                Green <= sdram_rd2_data + 1;
-                Blue <= sdram_rd2_data + 2;
-            end
-            /* color will be assigned by RAW2RGB_J */
+            // /* this state is temporary for testing only*/
+            // WAIT_CONVERT: begin
+            //     Red <= sdram_rd2_data;
+            //     Green <= sdram_rd2_data + 1;
+            //     Blue <= sdram_rd2_data + 2;
+            // end
+            // /* color will be assigned by RAW2RGB_J */
             SEND: begin
                 txStart <= 0;
                 txEn <= 0;
-                case(send_count)
-                    3'h0: tx_data <= Red;
-                    3'h1: tx_data <= Green;
-                    3'h2: tx_data <= Blue;
-                endcase
+                // case(send_count)
+                //     3'h0: tx_data <= Red;
+                //     3'h1: tx_data <= Green;
+                //     3'h2: tx_data <= Blue;
+                // endcase
+                tx_data <= sdram_rd2_data;
                 if(~rxBusy & ~txBusy) begin
                     send_count <= send_count + 1;
                     rxEn <= 1;
@@ -175,55 +178,57 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
     always @(*) begin
         case (present_state)
             RDY: begin
-                sdram_rd2_clk = 0;
+                clk_high = 0;
                 sdram_rd2_load = 0;
             end
             READ: begin
-                sdram_rd2_clk = 1;
+                clk_high = 1;
                 sdram_rd2_load = 1;
             end
             WAIT_READ: begin
-                sdram_rd2_clk = 0;
-                sdram_rd2_load = 0;
+                clk_high = 0;
+                sdram_rd2_load = 1;
             end
             CONVERT: begin
-                sdram_rd2_clk = 0;
+                clk_high = 0;
                 sdram_rd2_load = 0;
             end
             WAIT_CONVERT: begin
-                sdram_rd2_clk = 0;
+                clk_high = 0;
                 sdram_rd2_load = 0;
             end
             SEND: begin
-                sdram_rd2_clk = 0;
+                clk_high = 0;
                 sdram_rd2_load = 0;      
             end
             WAIT_SEND: begin
-                sdram_rd2_clk = 0;
+                clk_high = 0;
                 sdram_rd2_load = 0;
                 
             end
             DONE: begin
-                sdram_rd2_clk = 0;
+                clk_high = 0;
                 sdram_rd2_load = 0;
                 
             end
             default: begin
-                sdram_rd2_clk = 0;
+                clk_high = 0;
                 sdram_rd2_load = 0;
             end
         endcase
     end
 
-    // RAW2RGB_J s0(
-    //     .iDATA(sdram_rd2_data),
-    //     .RST(VGA_VS),
-    //     .VGA_CLK(clk),
-    //     .READ_Request(READ_Request),
-    //     .VGA_VS(VGA_VS),
-    //     .VGA_HS(VGA_HS),
-    //     .oRed(Red),
-    //     .oGreen(Green),
-    //     .oBlue(Blue)
-    // );
+    assign sdram_rd2_clk = clk_high ? clk : 0;
+    
+    RAW2RGB_J s0(
+        .iDATA(sdram_rd2_data),
+        .RST(VGA_VS),
+        .VGA_CLK(sdram_rd2_clk),
+        .READ_Request(READ_Request),
+        .VGA_VS(VGA_VS),
+        .VGA_HS(VGA_HS),
+        .oRed(Red),
+        .oGreen(Green),
+        .oBlue(Blue)
+    );
 endmodule
