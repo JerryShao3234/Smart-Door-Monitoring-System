@@ -306,15 +306,15 @@ Sdram_RD_FIFO  u_read1_fifo (
 				.q(RD1_DATA),
 				.wrusedw(read_side_fifo_wusedw1) );
 				
-//Sdram_RD_FIFO  u_read2_fifo (
-//				.data(mDATAOUT),
-//				.wrreq(OUT_VALID&&RD_MASK[1]),
-//				.wrclk(CLK),
-//				.aclr(RD2_LOAD),
-//				.rdreq(RD2),
-//				.rdclk(RD2_CLK),
-//				.q(RD2_DATA),
-//				.wrusedw(read_side_fifo_wusedw2) );
+Sdram_RD_FIFO  u_read2_fifo (
+				.data(mDATAOUT),
+				.wrreq(OUT_VALID&&RD_MASK[1]),
+				.wrclk(CLK),
+				.aclr(RD2_LOAD),
+				.rdreq(RD2),
+				.rdclk(RD2_CLK),
+				.q(RD2_DATA),
+				.wrusedw(read_side_fifo_wusedw2) );
 //
 
 
@@ -472,14 +472,14 @@ always@(posedge CLK or negedge RESET_N)
 			else
 				rRD1_ADDR	<=	RD1_ADDR;
 		end
-		////	Read Side 2
-		//if (mRD_DONE&&RD_MASK[1])
-		//begin
-		//	if(rRD2_ADDR<rRD2_MAX_ADDR-rRD2_LENGTH)
-		//		rRD2_ADDR	<=	rRD2_ADDR+rRD2_LENGTH;
-		//	else
-		//		rRD2_ADDR	<=	RD2_ADDR;
-		//end
+		//	Read Side 2
+		if (mRD_DONE&&RD_MASK[1])
+		begin
+			if(rRD2_ADDR<rRD2_MAX_ADDR-rRD2_LENGTH)
+				rRD2_ADDR	<=	rRD2_ADDR+rRD2_LENGTH;
+			else
+				rRD2_ADDR	<=	RD2_ADDR;
+		end
 	end
 
 //	Auto Read/Write Control
@@ -501,8 +501,8 @@ always@(posedge CLK or negedge RESET_N)
 			&&	(RD1_LOAD==0)
 		//	&&
 			////(WR2_LOAD==0)	
-			//&&	
-			//(RD2_LOAD==0)
+			&&	
+			(RD2_LOAD==0)
 			)
 		begin
 			//	Write Side 1
@@ -537,15 +537,15 @@ always@(posedge CLK or negedge RESET_N)
 			end
 			
 			//	Read Side 2
-			//else if ( (read_side_fifo_wusedw2 < rRD2_LENGTH) )
-			//begin
-			//	mADDR  	<=	rRD2_ADDR;
-			//	mLENGTH	<=	rRD2_LENGTH;
-			//	WR_MASK	<=	2'b00;
-			//	RD_MASK	<=	2'b10;
-			//	mWR		  <=	0;
-			//	mRD		  <=	1;
-			//end
+			else if ( (read_side_fifo_wusedw2 < rRD2_LENGTH) )
+			begin
+				mADDR  	<=	rRD2_ADDR;
+				mLENGTH	<=	rRD2_LENGTH;
+				WR_MASK	<=	2'b00;
+				RD_MASK	<=	2'b10;
+				mWR		  <=	0;
+				mRD		  <=	1;
+			end
 			
 		end
 		//if (mRD_DONE)
