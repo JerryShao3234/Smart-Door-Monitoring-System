@@ -19,7 +19,12 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
     // mipi to RGB
     READ_Request,
     VGA_HS,
-    VGA_VS
+    VGA_VS,
+
+    // debugging
+    state,
+    rxBusy,
+    rxEn
 );
     input clk, rst_n;
     
@@ -35,9 +40,14 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
     output reg[7:0] tx_data;
     output reg txEn, txStart;
     input txDone, txBusy;
+    input rxBusy;
+    output reg rxEn;
 
     // mipi to RGB
     input VGA_HS, VGA_VS;
+
+    // debugging
+    output[2:0] state;
 
     // internal signals
     reg[7:0] H_cont, V_cont; // set to a byte for uart   
@@ -46,6 +56,7 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
     reg[2:0] send_count;
     reg[2:0] next_state;
     wire[2:0] present_state;
+    wire not_rx_busy;
 
     // state declarations
     localparam  RDY = 3'h0,
@@ -56,7 +67,8 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
                 SEND = 3'h5,
                 WAIT_SEND = 3'h6,
                 DONE = 3'h7;
-
+                
+    assign state = present_state;
     assign present_state = next_state;
 
     always @(posedge clk) begin
@@ -80,18 +92,18 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
                 CONVERT: next_state <= WAIT_CONVERT;
                 WAIT_CONVERT: next_state <= SEND;
                 SEND: begin
-                    if(send_count === 3'h3)
+                    if(send_count >= 3'h3)
                         next_state <= READ;
-                    else if(txBusy & 1)
+                    else if(~rxBusy & ~txBusy)
                         next_state <= WAIT_SEND;
                     else
                         next_state <= SEND;
                 end
                 WAIT_SEND: begin
-                    if(txBusy & 1)
-                        next_state <= WAIT_SEND;
-                    else 
+                    if(txDone)
                         next_state <= SEND;
+                    else 
+                        next_state <= WAIT_SEND;
                 end
                 DONE: begin
                     if(en & 1)
@@ -111,6 +123,7 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
                 V_cont <= 0;
                 send_count <= 0;
                 num_pixels_left <= WIDTH * HEIGHT;
+                rxEn <= 0;
             end
             READ: begin
                 num_pixels_left <= num_pixels_left - 1;
@@ -128,8 +141,27 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
             end
             /* color will be assigned by RAW2RGB_J */
             SEND: begin
-                if(send_count != 3'h3 && txBusy & 1)
+                txStart <= 0;
+                txEn <= 0;
+                case(send_count)
+                    3'h0: tx_data <= Red;
+                    3'h1: tx_data <= Green;
+                    3'h2: tx_data <= Blue;
+                endcase
+                if(~rxBusy & ~txBusy) begin
                     send_count <= send_count + 1;
+                    rxEn <= 1;
+                end
+                else if(rxBusy)begin
+                    rxEn <= 1;
+                end
+                else begin
+                    rxEn <= 0;
+                end
+            end
+            WAIT_SEND: begin
+                txStart <= 1;
+                txEn <= 1;
             end
             default: begin
                 H_cont <= H_cont;
@@ -145,89 +177,53 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
             RDY: begin
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
-
-                txStart = 0;
-                txEn = 0;
-                
-                tx_data = 0;
             end
             READ: begin
                 sdram_rd2_clk = 1;
                 sdram_rd2_load = 1;
-
-                txStart = 0;
-                txEn = 0;
-                
-                tx_data = 0;
             end
             WAIT_READ: begin
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
-
-                txStart = 0;
-                txEn = 0;
-                
-                tx_data = 0;
             end
             CONVERT: begin
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
-
-                txStart = 0;
-                txEn = 0;
-                
-                tx_data = 0;
             end
             WAIT_CONVERT: begin
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
-
-                txStart = 0;
-                txEn = 0;
-                
-                tx_data = 0;
             end
             SEND: begin
                 sdram_rd2_clk = 0;
-                sdram_rd2_load = 0;
-
-                txStart= 1;
-                txEn = 1;
-                
-                case(send_count)
-                    3'h0: tx_data = Red;
-                    3'h1: tx_data = Green;
-                    3'h2: tx_data = Blue;
-                    default: tx_data = 0;
-                endcase
+                sdram_rd2_load = 0;      
             end
             WAIT_SEND: begin
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
-
-                txStart = 0;
-                txEn = 0;
                 
-                tx_data = 0;
             end
             DONE: begin
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
-
-                txStart = 0;
-                txEn = 0;
                 
-                tx_data = 0;
             end
             default: begin
                 sdram_rd2_clk = 0;
                 sdram_rd2_load = 0;
-
-                txStart = 0;
-                txEn = 0;
-                
-                tx_data = 0;
             end
         endcase
-    end	 
+    end
+
+    // RAW2RGB_J s0(
+    //     .iDATA(sdram_rd2_data),
+    //     .RST(VGA_VS),
+    //     .VGA_CLK(clk),
+    //     .READ_Request(READ_Request),
+    //     .VGA_VS(VGA_VS),
+    //     .VGA_HS(VGA_HS),
+    //     .oRed(Red),
+    //     .oGreen(Green),
+    //     .oBlue(Blue)
+    // );
 endmodule
