@@ -371,7 +371,7 @@ uart_sender us0(
 	.LEDR(LEDR),
 	.SW(SW),
 	.GPIO(GPIO),
-	.sdram_rddata(SDRAM_RD_DATA),
+	.sdram_rddata(sdram_rd2_data),
 	.sdram_rd_clk(sdram_rd_clk),
 	.sdram_load(sdram_load)
 );

@@ -34,6 +34,8 @@ module uart_sender(
 
 	reg[7:0] val;
 
+    wire[7:0] Red, Green, Blue;
+
 
     //------ Image Sender Module ------//
     Image_Sender #(.WIDTH(10), .HEIGHT(1)) is0(
@@ -53,7 +55,10 @@ module uart_sender(
         .VGA_VS(VGA_VS),
         .state(is_state),
 		.rxBusy(rxBusy),
-		.rxEn(rxEn)
+		.rxEn(rxEn),
+        .oRed(Red),
+        .oGreen(Green),
+        .oBlue(Blue)
     );
 
     //------ UART module ------//
@@ -90,12 +95,12 @@ module uart_sender(
 
     assign LEDR = SW;
 	
-    seven_seg_hex h0(SW[3:0], HEX0);
-    seven_seg_hex h1(SW[7:4], HEX1);
-    seven_seg_hex h2(out[3:0], HEX2);
-    seven_seg_hex h3(out[7:4], HEX3);
-	seven_seg_hex h4({1'b0, is_state}, HEX4);
-    seven_seg_hex h5({1'b0, uart_state}, HEX5);
+    seven_seg_hex h0(Blue[3:0], HEX0);
+    seven_seg_hex h1(Blue[7:4], HEX1);
+    seven_seg_hex h2(Green[3:0], HEX2);
+    seven_seg_hex h3(Green[7:4], HEX3);
+	seven_seg_hex h4(RED[3:0], HEX4);
+    seven_seg_hex h5(RED[7:4], HEX5);
 endmodule
 
 module seven_seg_hex (input [3:0] hex_digit, output reg[6:0] hex_display);

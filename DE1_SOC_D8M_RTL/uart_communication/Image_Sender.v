@@ -24,7 +24,12 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
     // debugging
     state,
     rxBusy,
-    rxEn
+    rxEn,
+    
+    // RGB
+    oRed,
+    oGreen,
+    oBlue
 );
     input clk, rst_n;
     
@@ -49,6 +54,7 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
 
     // debugging
     output[2:0] state;
+    output[7:0] oRed, oGreen, oBlue;
 
     // internal signals
     reg[7:0] H_cont, V_cont; // set to a byte for uart   
@@ -145,12 +151,12 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
             SEND: begin
                 txStart <= 0;
                 txEn <= 0;
-                // case(send_count)
-                //     3'h0: tx_data <= Red;
-                //     3'h1: tx_data <= Green;
-                //     3'h2: tx_data <= Blue;
-                // endcase
-                tx_data <= sdram_rd2_data;
+                case(send_count)
+                    3'h0: tx_data <= Red;
+                    3'h1: tx_data <= Green;
+                    3'h2: tx_data <= Blue;
+                endcase
+                //tx_data <= sdram_rd2_data;
                 if(~rxBusy & ~txBusy) begin
                     send_count <= send_count + 1;
                     rxEn <= 1;
@@ -219,6 +225,9 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
     end
 
     assign sdram_rd2_clk = clk_high ? clk : 0;
+    assign oRed = Red;
+    assign oGreen = Green;
+    assign oBlue = Blue;
     
     RAW2RGB_J s0(
         .iDATA(sdram_rd2_data),
