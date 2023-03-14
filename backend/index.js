@@ -101,6 +101,7 @@ app.post("/logout", async (req, res) => {
 	}
 })
 
+//get all messages of a user
 app.post("/getmessagesuser", async (req, res) => {
 	var token = req.body.token
 	var user = await client.db("sdmsDB").collection("user").findOne({"token": token}) //find via _userID, search in visits collection
@@ -114,6 +115,7 @@ app.post("/getmessagesuser", async (req, res) => {
 	res.status(200).send(messages)
 })
 
+//get all visits of a user
 app.post("/getvisits", async (req, res) => {
 	var token = req.body.token
 	var user = await client.db("sdmsDB").collection("user").findOne({"token": token}) //find via _userID, search in visits collection
@@ -133,7 +135,7 @@ app.post("/getvisits", async (req, res) => {
  * The conventional token does not need to be checked because the DE1-SoC is trusted and this operation
  * does not expose any sensitive information
  * 
- * Should be a socket.io connection (doorbell analogy)
+ * Should have a socket.io connection (doorbell analogy)
 */
 app.post("/visit", async (req, res) => {
 	console.log(req.body)
@@ -154,7 +156,7 @@ app.post("/visit", async (req, res) => {
 		}
 	)
 	res.status(200).send("Visit logged")
-	socket.emit('visitNotification', "You have a visitor!")
+	io.sockets.emit('visitNotification', "You have a visitor!")
 })
 
 //hardware will continuously poll for messages whenever a visit occurs, only stopping when the <STOP> token is received
@@ -252,7 +254,6 @@ app.post("/readMessage", async (req, res) => {
 	)
 	res.status(200).send("Message read")
 })
-
 
 async function run() {
 	try {
