@@ -101,6 +101,19 @@ app.post("/logout", async (req, res) => {
 	}
 })
 
+app.post("/getmessagesuser", async (req, res) => {
+	var token = req.body.token
+	var user = await client.db("sdmsDB").collection("user").findOne({"token": token}) //find via _userID, search in visits collection
+	if (user == null || user === undefined) {
+		console.log("user not found")
+		res.status(404).send("User not found")
+		return
+	}
+	user_id = user._id
+	var messages = await client.db("sdmsDB").collection("messages").find({"userID": user_id}).toArray()
+	res.status(200).send(messages)
+})
+
 app.post("/getvisits", async (req, res) => {
 	var token = req.body.token
 	var user = await client.db("sdmsDB").collection("user").findOne({"token": token}) //find via _userID, search in visits collection
@@ -144,10 +157,33 @@ app.post("/visit", async (req, res) => {
 	socket.emit('visitNotification', "You have a visitor!")
 })
 
+//hardware will continuously poll for messages whenever a visit occurs, only stopping when the <STOP> token is received
+app.post("/pollmessages", async (req, res) => {
+	var user = await client.db("sdmsDB").collection("user").findOne({ "de1socID": req.body.de1socID })
+	if (user == null || user === undefined) {
+		console.log("user not found")
+		res.status(404).send("User not found")
+		return
+	}
+	user_id = user._id
+	var messages = await client.db("sdmsDB").collection("messages").find({
+		"userID": user_id,
+		"sender": "user",
+		"read": false
+	}).toArray()
+	await client.db("sdmsDB").collection("messages").updateMany({
+		"userID": user_id,
+		"sender": "user",
+		"read": false
+	}, { $set: { "read": true } }
+	)
+	res.status(200).send(messages)
+})
+
 //visitor->user message
 //add message entry to message collection
 //add message id to user's visit history
-app.post("/message", async (req, res) => {
+app.post("/visitormessage", async (req, res) => {
 	console.log(req.body)
 	user = await client.db("sdmsDB").collection("user").findOne({"de1socID": req.body.de1socID})
 	if (user == null || user === undefined) {
@@ -165,7 +201,8 @@ app.post("/message", async (req, res) => {
 			"read": false
 		}
 	)
-	io.sockets.emit('message', msg)
+	msg_id = await client.db("sdmsDB").collection("messages").findOne({"userID": user_id, "messageInfo": req.body.messageInfo, "date": req.body.date, "sender": "visitor", "read": false})
+	io.sockets.emit('message', msg + " " + msg_id + "")
 	res.status(200).send("Message sent")
 })
 
@@ -173,17 +210,25 @@ app.post("/message", async (req, res) => {
 //add message entry to message collection
 //add message id to user's visit history
 //in hardware, visitor should continuously poll for new messages until the <STOP> token is sent
-socket.on('userMessage', async (msg) => {
-	console.log(msg);
+app.post("/usermessage", async (req, res) => {
+	console.log(req.body)
+	user = await client.db("sdmsDB").collection("user").findOne({"token": req.body.token})
+	if (user == null || user === undefined) {
+		console.log("user not found")
+		res.status(404).send("User not found")
+		return
+	}
+	user_id = user._id
 	await client.db("sdmsDB").collection("messages").insertOne(
 		{
 			"userID": user_id,
-			"messageInfo": msg,
+			"messageInfo": req.body.messageInfo,
 			"date": req.body.date,
 			"sender": "user",
-			"read": true //assume visitor has read message
+			"read": false
 		}
 	)
+	res.status(200).send("Message sent")
 })
 
 //user acknowledges message
@@ -201,6 +246,7 @@ app.post("/readMessage", async (req, res) => {
 	)
 	res.status(200).send("Message read")
 })
+
 
 async function run() {
 	try {
