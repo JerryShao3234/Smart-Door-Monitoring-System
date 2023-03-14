@@ -40,6 +40,7 @@ app.post("/signup", (req, res) => {
 			"password": req.body.password,
 			"token": null,
 			"de1socID": req.body.de1socID,
+			"lastVisit": null
 		}
 	)
 	res.status(200).send("User created")
@@ -115,7 +116,7 @@ app.post("/getmessagesuser", async (req, res) => {
 	res.status(200).send(messages)
 })
 
-//get all visits of a user
+//get all visits (with messages) of a user
 app.post("/getvisits", async (req, res) => {
 	var token = req.body.token
 	var user = await client.db("sdmsDB").collection("user").findOne({"token": token}) //find via _userID, search in visits collection
@@ -126,6 +127,11 @@ app.post("/getvisits", async (req, res) => {
 	}
 	user_id = user._id
 	var visits = await client.db("sdmsDB").collection("visits").find({"userID": user_id}).toArray()
+	for (var i = 0; i < visits.length; i++) {
+		var messages = await client.db("sdmsDB").collection("messages").find({"visitID": visits[i]._id}).toArray()
+		visits[i].messages = messages
+	}
+
 	res.status(200).send(visits)
 })
 
@@ -153,8 +159,16 @@ app.post("/visit", async (req, res) => {
 			"date": req.body.date,
 			"intent": req.body.intent,
 			"img": req.body.img
+		}, (err, res) => {
+			if (err) throw err
+			const visit_id = res.insertedId
+			client.db("sdmsDB").collection("user").updateOne(
+				{"_id": user_id},
+				{$set: {"lastVisit": visit_id}}
+			)
 		}
 	)
+	
 	res.status(200).send("Visit logged")
 	io.sockets.emit('visitNotification', "You have a visitor!")
 })
@@ -200,18 +214,21 @@ app.post("/visitormessage", async (req, res) => {
 		return
 	}
 	user_id = user._id
+	visit_id = user.lastVisit
 	await client.db("sdmsDB").collection("messages").insertOne(
 		{
 			"userID": user_id,
 			"messageInfo": req.body.messageInfo,
 			"date": req.body.date,
 			"sender": "visitor",
-			"read": false
+			"read": false,
+			"visitID": visit_id
+		}, (err, res) => {
+			msg_id = res.insertedId
+			io.sockets.emit('message', req.body.messageInfo + " " + msg_id + "")
+			res.status(200).send("Message sent")
 		}
 	)
-	msg_id = await client.db("sdmsDB").collection("messages").findOne({"userID": user_id, "messageInfo": req.body.messageInfo, "date": req.body.date, "sender": "visitor", "read": false})
-	io.sockets.emit('message', msg + " " + msg_id + "")
-	res.status(200).send("Message sent")
 })
 
 //user->visitor message socket.io connection
@@ -227,13 +244,15 @@ app.post("/usermessage", async (req, res) => {
 		return
 	}
 	user_id = user._id
+	visit_id = user.lastVisit
 	await client.db("sdmsDB").collection("messages").insertOne(
 		{
 			"userID": user_id,
 			"messageInfo": req.body.messageInfo,
 			"date": req.body.date,
 			"sender": "user",
-			"read": false
+			"read": false,
+			"visitID": visit_id
 		}
 	)
 	res.status(200).send("Message sent")
@@ -244,7 +263,7 @@ app.post("/readMessage", async (req, res) => {
 	console.log(req.body)
 	await client.db("sdmsDB").collection("messages").updateOne(
 		{
-			"_id": req.body.messageID
+			"_id": ObjectID(req.body.messageID)
 		},
 		{
 			$set: {
