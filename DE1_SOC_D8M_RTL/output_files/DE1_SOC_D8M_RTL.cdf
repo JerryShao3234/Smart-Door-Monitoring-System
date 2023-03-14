@@ -6,7 +6,7 @@ JedecChain;
 	P ActionCode(Ign)
 		Device PartName(SOCVHPS) MfrSpec(OpMask(0));
 	P ActionCode(Cfg)
-		Device PartName(5CSEMA5F31) Path("C:/Users/user/Desktop/image_store/DE1_SOC_D8M_RTL/output_files/") File("DE1_SOC_D8M_RTL.sof") MfrSpec(OpMask(1));
+		Device PartName(5CSEMA5F31) Path("C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/output_files/") File("DE1_SOC_D8M_RTL.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

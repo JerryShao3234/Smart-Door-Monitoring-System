@@ -101,8 +101,7 @@ module DE1_SOC_D8M_RTL(
 	output		          		MIPI_REFCLK,
 	output		          		MIPI_RESET_n,
 	//////////// GPIO_0, GPIO_0 connect to GPIO Default //////////
-	inout 		    [35:0]		GPIO 	
-	
+	inout 		    [35:0]		GPIO
 );
 //=============================================================================
 // REG/WIRE declarations
@@ -143,6 +142,9 @@ wire        LUT_MIPI_PIXEL_VS;
 wire [9:0]  LUT_MIPI_PIXEL_D  ;
 wire        MIPI_PIXEL_CLK_; 
 wire [9:0]  PCK;
+
+wire [9:0] sdram_rd2_data;
+wire sdram_rd_clk, sdram_load;
 //=======================================================
 // Structural coding
 //=======================================================
@@ -158,10 +160,6 @@ assign LUT_MIPI_PIXEL_D =MIPI_PIXEL_D ;
 assign UART_RTS =0; 
 assign UART_TXD =0; 
 //------HEX OFF --
-//assign HEX2           = 7'h7F;
-assign HEX3           = 7'h7F;
-assign HEX4           = 7'h7F;
-assign HEX5           = 7'h7F;
 
 //------ MIPI BRIGE & CAMERA RESET  --
 assign CAMERA_PWDN_n  = 1; 
@@ -171,7 +169,7 @@ assign MIPI_RESET_n   = RESET_N ;
 //------ CAMERA MODULE I2C SWITCH  --
 assign I2C_RELEASE    = CAMERA_MIPI_RELAESE & MIPI_BRIDGE_RELEASE; 
 assign CAMERA_I2C_SCL =( I2C_RELEASE  )?  CAMERA_I2C_SCL_AF  : CAMERA_I2C_SCL_MIPI ;   
- 
+
 //----- RESET RELAY  --		
 RESET_DELAY			u2	(	
 							.iRST  ( KEY[0] ),
@@ -240,7 +238,17 @@ Sdram_Control	   u7	(	//	HOST Side
 							.RD1_LENGTH  ( 256  ),
 							.RD1_LOAD    ( !DLY_RST_1 ),
 							.RD1_CLK     ( VGA_CLK ),
-											
+							// FIFO Read Side 2
+							.RD2_DATA(sdram_rd2_data),
+							.RD2(READ_Request), // this may need to change to high when I want to read (sdram_rd2_clk)
+							.RD2_ADDR(0),
+							.RD2_MAX_ADDR(640*480),
+							.RD2_LENGTH(256),
+							// use RD1 values to check if values can be read
+							.RD2_LOAD(sdram_load),
+							.RD2_CLK(sdram_rd_clk),
+
+
 							//	SDRAM Side
 						   .SA          ( DRAM_ADDR ),
 							.BA          ( DRAM_BA ),
@@ -251,7 +259,7 @@ Sdram_Control	   u7	(	//	HOST Side
 							.WE_N        ( DRAM_WE_N ),
 							.DQ          ( DRAM_DQ ),
 							.DQM         ( DRAM_DQM  ),
-							.HEX2		 ( HEX2 ),
+							.HEX2		 (  ),
 							.KEY		 ( KEY )
 						   );	 	 
 	 
@@ -338,8 +346,8 @@ FpsMonitor uFps(
 	   .vs       ( LUT_MIPI_PIXEL_VS ),
 	
 	   .fps      (),
-	   .hex_fps_h( HEX1 ),
-	   .hex_fps_l( HEX0 )
+	   .hex_fps_h(  ),
+	   .hex_fps_l(  )
 );
 
 
@@ -349,6 +357,23 @@ CLOCKMEM  ck2 ( .CLK(MIPI_REFCLK   )   ,.CLK_FREQ  (20000000   ) , . CK_1HZ (D8M
 CLOCKMEM  ck3 ( .CLK(MIPI_PIXEL_CLK_)   ,.CLK_FREQ  (25000000  ) , . CK_1HZ (D8M_CK_HZ3  )  )  ;//25MHZ
 
 
-assign LEDR = { D8M_CK_HZ ,D8M_CK_HZ2,D8M_CK_HZ3 ,5'h0,CAMERA_MIPI_RELAESE ,MIPI_BRIDGE_RELEASE  } ; 
+/* ----------------------------------------- added modules --------------------------------------------------------*/
+
+uart_sender us0(
+	.CLOCK_50(CLOCK_50),
+	.HEX0(HEX0),
+	.HEX1(HEX1),
+	.HEX2(HEX2),
+	.HEX3(HEX3),
+	.HEX4(HEX4),
+	.HEX5(HEX5),
+	.KEY(KEY),
+	.LEDR(LEDR),
+	.SW(SW),
+	.GPIO(GPIO),
+	.sdram_rddata(sdram_rd2_data),
+	.sdram_rd_clk(sdram_rd_clk),
+	.sdram_load(sdram_load)
+);
 
 endmodule
