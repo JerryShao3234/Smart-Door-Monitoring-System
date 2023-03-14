@@ -58,8 +58,8 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
 
     // internal signals
     reg[7:0] H_cont, V_cont; // set to a byte for uart   
-    wire [7:0] Red, Green, Blue;
-    reg[18:0] num_pixels_left = WIDTH * HEIGHT;
+    reg [7:0] Red, Green, Blue;
+    reg[18:0] num_pixels_left;
     reg[2:0] send_count;
     reg[2:0] next_state;
     wire[2:0] present_state;
@@ -141,13 +141,13 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
                 else 
                     H_cont <= H_cont + 1;
             end
-            // /* this state is temporary for testing only*/
-            // WAIT_CONVERT: begin
-            //     Red <= sdram_rd2_data;
-            //     Green <= sdram_rd2_data + 1;
-            //     Blue <= sdram_rd2_data + 2;
-            // end
-            // /* color will be assigned by RAW2RGB_J */
+            /* this state is temporary for testing only*/
+            WAIT_CONVERT: begin
+                Red <= sdram_rd2_data;
+                Green <= sdram_rd2_data + 1;
+                Blue <= sdram_rd2_data + 2;
+            end
+            /* color will be assigned by RAW2RGB_J */
             SEND: begin
                 txStart <= 0;
                 txEn <= 0;
@@ -210,12 +210,10 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
             WAIT_SEND: begin
                 clk_high = 0;
                 sdram_rd2_load = 0;
-                
             end
             DONE: begin
                 clk_high = 0;
-                sdram_rd2_load = 0;
-                
+                sdram_rd2_load = 0; 
             end
             default: begin
                 clk_high = 0;
@@ -229,15 +227,15 @@ module Image_Sender #(parameter WIDTH=640, parameter HEIGHT=480)(
     assign oGreen = Green;
     assign oBlue = Blue;
     
-    RAW2RGB_J s0(
-        .iDATA(sdram_rd2_data),
-        .RST(VGA_VS),
-        .VGA_CLK(sdram_rd2_clk),
-        .READ_Request(READ_Request),
-        .VGA_VS(VGA_VS),
-        .VGA_HS(VGA_HS),
-        .oRed(Red),
-        .oGreen(Green),
-        .oBlue(Blue)
-    );
+    // RAW2RGB_J s0(
+    //     .iDATA(sdram_rd2_data),
+    //     .RST(VGA_VS),
+    //     .VGA_CLK(sdram_rd2_clk),
+    //     .READ_Request(READ_Request),
+    //     .VGA_VS(VGA_VS),
+    //     .VGA_HS(VGA_HS),
+    //     .oRed(Red),
+    //     .oGreen(Green),
+    //     .oBlue(Blue)
+    // );
 endmodule

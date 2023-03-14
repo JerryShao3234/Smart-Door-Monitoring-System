@@ -1,5 +1,5 @@
 Assembler report for DE1_SOC_D8M_RTL
-Tue Feb 14 10:14:54 2023
+Sun Mar 12 11:58:39 2023
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -9,9 +9,10 @@ Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
   1. Legal Notice
   2. Assembler Summary
   3. Assembler Settings
-  4. Assembler Generated Files
-  5. Assembler Device Options: C:/Users/user/Desktop/image_store/DE1_SOC_D8M_RTL/output_files/DE1_SOC_D8M_RTL.sof
-  6. Assembler Messages
+  4. Assembler Encrypted IP Cores Summary
+  5. Assembler Generated Files
+  6. Assembler Device Options: C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/output_files/DE1_SOC_D8M_RTL.sof
+  7. Assembler Messages
 
 
 
@@ -37,7 +38,7 @@ refer to the applicable agreement for further details.
 +---------------------------------------------------------------+
 ; Assembler Summary                                             ;
 +-----------------------+---------------------------------------+
-; Assembler Status      ; Successful - Tue Feb 14 10:14:54 2023 ;
+; Assembler Status      ; Successful - Sun Mar 12 11:58:39 2023 ;
 ; Revision Name         ; DE1_SOC_D8M_RTL                       ;
 ; Top-level Entity Name ; DE1_SOC_D8M_RTL                       ;
 ; Family                ; Cyclone V                             ;
@@ -52,23 +53,33 @@ refer to the applicable agreement for further details.
 +--------+---------+---------------+
 
 
-+------------------------------------------------------------------------------------+
-; Assembler Generated Files                                                          ;
-+------------------------------------------------------------------------------------+
-; File Name                                                                          ;
-+------------------------------------------------------------------------------------+
-; C:/Users/user/Desktop/image_store/DE1_SOC_D8M_RTL/output_files/DE1_SOC_D8M_RTL.sof ;
-+------------------------------------------------------------------------------------+
++------------------------------------------------+
+; Assembler Encrypted IP Cores Summary           ;
++--------+------------------------+--------------+
+; Vendor ; IP Core Name           ; License Type ;
++--------+------------------------+--------------+
+; Altera ; Signal Tap (6AF7 BCE1) ; Licensed     ;
+; Altera ; Signal Tap (6AF7 BCEC) ; Licensed     ;
++--------+------------------------+--------------+
 
 
-+--------------------------------------------------------------------------------------------------------------+
-; Assembler Device Options: C:/Users/user/Desktop/image_store/DE1_SOC_D8M_RTL/output_files/DE1_SOC_D8M_RTL.sof ;
-+----------------+---------------------------------------------------------------------------------------------+
-; Option         ; Setting                                                                                     ;
-+----------------+---------------------------------------------------------------------------------------------+
-; JTAG usercode  ; 0x011ECD8A                                                                                  ;
-; Checksum       ; 0x011ECD8A                                                                                  ;
-+----------------+---------------------------------------------------------------------------------------------+
++---------------------------------------------------------------------------------------------------------+
+; Assembler Generated Files                                                                               ;
++---------------------------------------------------------------------------------------------------------+
+; File Name                                                                                               ;
++---------------------------------------------------------------------------------------------------------+
+; C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/output_files/DE1_SOC_D8M_RTL.sof ;
++---------------------------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------+
+; Assembler Device Options: C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/output_files/DE1_SOC_D8M_RTL.sof ;
++----------------+------------------------------------------------------------------------------------------------------------------+
+; Option         ; Setting                                                                                                          ;
++----------------+------------------------------------------------------------------------------------------------------------------+
+; JTAG usercode  ; 0x013E8373                                                                                                       ;
+; Checksum       ; 0x013E8373                                                                                                       ;
++----------------+------------------------------------------------------------------------------------------------------------------+
 
 
 +--------------------+
@@ -77,14 +88,14 @@ refer to the applicable agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus Prime Assembler
     Info: Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
-    Info: Processing started: Tue Feb 14 10:14:43 2023
+    Info: Processing started: Sun Mar 12 11:58:16 2023
 Info: Command: quartus_asm --read_settings_files=off --write_settings_files=off DE1_SOC_D8M_RTL -c DE1_SOC_D8M_RTL
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (115030): Assembler is generating device programming files
 Info: Quartus Prime Assembler was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 4867 megabytes
-    Info: Processing ended: Tue Feb 14 10:14:54 2023
-    Info: Elapsed time: 00:00:11
-    Info: Total CPU time (on all processors): 00:00:08
+    Info: Peak virtual memory: 4880 megabytes
+    Info: Processing ended: Sun Mar 12 11:58:39 2023
+    Info: Elapsed time: 00:00:23
+    Info: Total CPU time (on all processors): 00:00:10
 
 

@@ -1,0 +1,43 @@
+C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/verilog-uart/uart/BaudRateGenerator.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/verilog-uart/uart/BaudRateGenerator.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module BaudRateGenerator
+
+Top level modules:
+	BaudRateGenerator
+
+} {} {}} C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/verilog-uart/uart/Uart8.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/verilog-uart/uart/Uart8.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Uart8
+
+Top level modules:
+	Uart8
+
+} {} {}} C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/Image_Sender.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/Image_Sender.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Image_Sender
+
+Top level modules:
+	Image_Sender
+
+} {} {}} C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/Image_Sender_tb.sv {1 {vlog -work work -sv -stats=none C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/Image_Sender_tb.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Image_Sender_tb
+
+Top level modules:
+	Image_Sender_tb
+
+} {} {}} C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/verilog-uart/uart/Uart8Transmitter.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/verilog-uart/uart/Uart8Transmitter.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Uart8Transmitter
+
+Top level modules:
+	Uart8Transmitter
+
+} {} {}} C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/verilog-uart/uart/Uart8Receiver.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year3/T2/CPEN391/l2a-02-sdms/DE1_SOC_D8M_RTL/uart_communication/verilog-uart/uart/Uart8Receiver.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Uart8Receiver
+
+Top level modules:
+	Uart8Receiver
+
+} {} {}}

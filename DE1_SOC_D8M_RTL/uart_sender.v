@@ -64,7 +64,7 @@ module uart_sender(
     //------ UART module ------//
     Uart8  #(
         .CLOCK_RATE(50000000), // 50 MHz
-        .BAUD_RATE(9600)
+        .BAUD_RATE(115200)
     ) uart
     (
         .clk(CLOCK_50),
@@ -99,8 +99,8 @@ module uart_sender(
     seven_seg_hex h1(Blue[7:4], HEX1);
     seven_seg_hex h2(Green[3:0], HEX2);
     seven_seg_hex h3(Green[7:4], HEX3);
-	seven_seg_hex h4(RED[3:0], HEX4);
-    seven_seg_hex h5(RED[7:4], HEX5);
+	seven_seg_hex h4(Red[3:0], HEX4);
+    seven_seg_hex h5(Red[7:4], HEX5);
 endmodule
 
 module seven_seg_hex (input [3:0] hex_digit, output reg[6:0] hex_display);
