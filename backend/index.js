@@ -171,11 +171,17 @@ app.post("/pollmessages", async (req, res) => {
 		"sender": "user",
 		"read": false
 	}).toArray()
+
+	if(messages.length === 0) {
+		res.status(200).send("STOP")
+		return
+	}
+
 	await client.db("sdmsDB").collection("messages").updateMany({
 		"userID": user_id,
 		"sender": "user",
 		"read": false
-	}, { $set: { "read": true } }
+	}, { $set: { "read": true } } //assume hardware will read all messages
 	)
 	res.status(200).send(messages)
 })
