@@ -38,11 +38,8 @@ app.post("/signup", (req, res) => {
 		{
 			"username": req.body.username,
 			"password": req.body.password,
-			"de1socID": req.body.de1socID,
 			"token": null,
-			"visitHistory": [],
-			"outgoingMessages": [],
-			"incomingMessages": []
+			"de1socID": req.body.de1socID,
 		}
 	)
 	res.status(200).send("User created")
@@ -107,18 +104,15 @@ app.post("/logout", async (req, res) => {
 app.post("/getvisits", async (req, res) => {
 	var username = req.body.username
 	var token = req.body.token
-	var user = await client.db("sdmsDB").collection("user").findOne({"username": username})
+	var user = await client.db("sdmsDB").collection("user").findOne({"token": token}) //find via _userID, search in visits collection
 	if (user == null || user === undefined) {
 		console.log("user not found")
 		res.status(404).send("User not found")
 		return
 	}
-
-	if(user.token === token) {
-		res.status(200).send(user.visitHistory)
-	} else {
-		res.status(404).send("Invalid token")
-	}
+	user_id = user._id
+	var visits = await client.db("sdmsDB").collection("visits").find({"_userID": user_id}).toArray()
+	res.status(200).send(visits)
 })
 
 /*
@@ -126,42 +120,87 @@ app.post("/getvisits", async (req, res) => {
  * DE1-SoC does not have a token, so we use the de1socID
  * The conventional token does not need to be checked because the DE1-SoC is trusted and this operation
  * does not expose any sensitive information
+ * 
+ * Should be a socket.io connection (doorbell analogy)
 */
-app.post("/visit", (req, res) => {
+app.post("/visit", async (req, res) => {
 	console.log(req.body)
-
-	client.db("sdmsDB").collection("user").updateOne(
+	user = await client.db("sdmsDB").collection("user").findOne({"de1socID": req.body.de1socID})
+	if (user == null || user === undefined) {
+		console.log("user not found")
+		res.status(404).send("User not found")
+		return
+	}
+	user_id = user._id
+	await client.db("sdmsDB").collection("visits").insertOne(
 		{
-			"de1socID": req.body.de1socID,
-		}, 
-		{
-			$push: {
-				"visitHistory": {
-					"visitor": req.body.visitor,
-					"date": req.body.date,
-					"message": req.body.message,
-					"image": req.body.image
-				}
-			}
+			"userID": user_id,
+			"visitor": req.body.visitor,
+			"date": req.body.date,
+			"intent": req.body.intent,
+			"img": req.body.img
 		}
-	).catch((err) => {
-		res.send("Error")
-		console.log(err)
-	})
+	)
+	res.status(200).send("Visit logged")
+	socket.emit('visitNotification', "You have a visitor!")
 })
 
-/*
- * Realtime notification from homeowner to visitor (needs DE1-SoC endpoint to be integrated to work)
-*/
-app.post("/messagevisitor", (req, res) => {
-	client.db("sdmsDB").collection("user").findOne(
+//visitor->user message
+//add message entry to message collection
+//add message id to user's visit history
+app.post("/message", async (req, res) => {
+	console.log(req.body)
+	user = await client.db("sdmsDB").collection("user").findOne({"de1socID": req.body.de1socID})
+	if (user == null || user === undefined) {
+		console.log("user not found")
+		res.status(404).send("User not found")
+		return
+	}
+	user_id = user._id
+	await client.db("sdmsDB").collection("messages").insertOne(
 		{
-			"username": req.body.username,
+			"userID": user_id,
+			"messageInfo": req.body.messageInfo,
+			"date": req.body.date,
+			"sender": "visitor",
+			"read": false
 		}
-	).then((result) => {
-		//add message to user's visit history
-		console.log(req.body.message)
-	})
+	)
+	io.sockets.emit('message', msg)
+	res.status(200).send("Message sent")
+})
+
+//user->visitor message socket.io connection
+//add message entry to message collection
+//add message id to user's visit history
+//in hardware, visitor should continuously poll for new messages until the <STOP> token is sent
+socket.on('userMessage', async (msg) => {
+	console.log(msg);
+	await client.db("sdmsDB").collection("messages").insertOne(
+		{
+			"userID": user_id,
+			"messageInfo": msg,
+			"date": req.body.date,
+			"sender": "user",
+			"read": true //assume visitor has read message
+		}
+	)
+})
+
+//user acknowledges message
+app.post("/readMessage", async (req, res) => {
+	console.log(req.body)
+	await client.db("sdmsDB").collection("messages").updateOne(
+		{
+			"_id": req.body.messageID
+		},
+		{
+			$set: {
+				"read": true
+			}
+		}
+	)
+	res.status(200).send("Message read")
 })
 
 async function run() {
