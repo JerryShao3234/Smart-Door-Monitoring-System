@@ -102,7 +102,6 @@ app.post("/logout", async (req, res) => {
 })
 
 app.post("/getvisits", async (req, res) => {
-	var username = req.body.username
 	var token = req.body.token
 	var user = await client.db("sdmsDB").collection("user").findOne({"token": token}) //find via _userID, search in visits collection
 	if (user == null || user === undefined) {
@@ -111,7 +110,7 @@ app.post("/getvisits", async (req, res) => {
 		return
 	}
 	user_id = user._id
-	var visits = await client.db("sdmsDB").collection("visits").find({"_userID": user_id}).toArray()
+	var visits = await client.db("sdmsDB").collection("visits").find({"userID": user_id}).toArray()
 	res.status(200).send(visits)
 })
 
