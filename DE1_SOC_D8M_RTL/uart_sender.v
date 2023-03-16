@@ -27,7 +27,8 @@ module uart_sender(
 	wire rxEn;
     wire rxBusy;
     wire rxErr, rx;
-    wire[2:0] is_state, uart_state;
+    wire[2:0] uart_state;
+    wire[3:0] is_state;
 
     wire[3:0] hundred_digit, ten_digit, digit;
 	wire clk;

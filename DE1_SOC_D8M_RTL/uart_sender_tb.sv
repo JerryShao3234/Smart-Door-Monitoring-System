@@ -104,10 +104,10 @@ module uart_sender_tb ();
     always #5 CLOCK_50 = ~CLOCK_50;
 
     initial begin
+		$monitor("state: %d", dut.is_state);
 		SW = 8;
         #10; KEY[2] = 0; #10;
-        wait(dut.is_state == 3'h7);
-		wait(dut.uart.rxInst.state == 3'h1)
+        wait(dut.is_state == 4'h7);
         #10;
         $stop;
     end

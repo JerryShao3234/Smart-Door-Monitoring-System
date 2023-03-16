@@ -564,6 +564,14 @@ set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
 set_global_assignment -name ENABLE_SIGNALTAP ON
 set_global_assignment -name USE_SIGNALTAP_FILE output_files/DE1_SOC_D8M_RTL.stp
 set_global_assignment -name EDA_SIMULATION_TOOL "<None>"
+set_global_assignment -name QIP_FILE ../DE1_SOC_D8M_RTL/V_D8M/int_line.qip
+set_global_assignment -name VERILOG_FILE ../DE1_SOC_D8M_RTL/V_D8M/VGA_RD_COUNTER.v
+set_global_assignment -name VERILOG_FILE ../DE1_SOC_D8M_RTL/V_D8M/RAW_RGB_BIN.v
+set_global_assignment -name VERILOG_FILE ../DE1_SOC_D8M_RTL/V_D8M/MIPI_CAMERA_CONFIG.v
+set_global_assignment -name VERILOG_FILE ../DE1_SOC_D8M_RTL/V_D8M/MIPI_BRIDGE_CONFIG.v
+set_global_assignment -name VERILOG_FILE ../DE1_SOC_D8M_RTL/V_D8M/Line_Buffer_J.v
+set_global_assignment -name VERILOG_FILE ../DE1_SOC_D8M_RTL/V_D8M/RAW2RGB_J.v
+set_global_assignment -name VERILOG_FILE ../DE1_SOC_D8M_RTL/V_D8M/MIPI_BRIDGE_CAMERA_Config.v
 set_global_assignment -name VERILOG_FILE ../DE1_SOC_D8M_RTL/uart_sender.v
 set_global_assignment -name VERILOG_FILE sdms_hardware.v
 set_global_assignment -name QIP_FILE ../SDMS/sdms_sys/synthesis/sdms_sys.qip
