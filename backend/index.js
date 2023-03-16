@@ -171,8 +171,13 @@ app.post("/visit", async (req, res) => {
 			"intent": req.body.intent,
 			"img": req.body.img
 		}, (err, res) => {
-			if (err) throw err
+			if (err) {
+				console.log(err)
+				res.status(500).send("Error logging visit")
+				return
+			}
 			const visit_id = res.insertedId
+			Console.log(user_id + " " + visit_id)
 			client.db("sdmsDB").collection("user").updateOne(
 				{"_id": user_id},
 				{$set: {"lastVisit": visit_id}}
@@ -240,6 +245,7 @@ app.post("/visitormessage", async (req, res) => {
 			res.status(200).send("Message sent")
 		}
 	)
+	res.status(200).send("Message sent")
 })
 
 //user->visitor message socket.io connection
