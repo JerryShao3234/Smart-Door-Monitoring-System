@@ -163,28 +163,21 @@ app.post("/visit", async (req, res) => {
 		return
 	}
 	user_id = user._id
+	insert_id = ObjectID()
 	await client.db("sdmsDB").collection("visits").insertOne(
 		{
+			"_id": insert_id,
 			"userID": user_id,
 			"visitor": req.body.visitor,
 			"date": req.body.date,
 			"intent": req.body.intent,
 			"img": req.body.img
-		}, (err, res) => {
-			if (err) {
-				console.log(err)
-				res.status(500).send("Error logging visit")
-				return
-			}
-			const visit_id = res.insertedId
-			Console.log(user_id + " " + visit_id)
-			client.db("sdmsDB").collection("user").updateOne(
-				{"_id": user_id},
-				{$set: {"lastVisit": visit_id}}
-			)
 		}
 	)
-	
+	client.db("sdmsDB").collection("user").updateOne(
+		{"_id": user_id},
+		{$set: {"lastVisit": visit_id}}
+	)
 	res.status(200).send("Visit logged")
 	io.sockets.emit('visitNotification', "You have a visitor!")
 })
