@@ -75,7 +75,9 @@ app.post("/login", async (req, res) => {
 		)
 		res.status(200).send({
 			"token": token,
-			"username": user.username
+			"name": user.name,
+			"email": user.email,
+			"de1socID": user.de1socID
 		})
 
 	} else {
