@@ -32,6 +32,13 @@ app.get("/", (req, res) => {
 	totalAccesses += 1
 })
 
+app.post("/hardware", (req, res) => {
+	console.log(req.body)
+	res.status(200).send("Received!")
+	io.sockets.emit('hardware_message', 'hardware says hi')
+	io.sockets.emit('hardware_message', req.body)
+})
+
 app.post("/signup", (req, res) => {
 	console.log(req.body)
 	client.db("sdmsDB").collection("user").insertOne(
