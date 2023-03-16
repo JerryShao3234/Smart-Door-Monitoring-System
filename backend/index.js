@@ -36,11 +36,13 @@ app.post("/signup", (req, res) => {
 	console.log(req.body)
 	client.db("sdmsDB").collection("user").insertOne(
 		{
-			"username": req.body.username,
+			"name": req.body.name,
+			"email": req.body.email,
 			"password": req.body.password,
 			"token": null,
 			"de1socID": req.body.de1socID,
-			"lastVisit": null
+			"lastVisit": null,
+			"presetOptions": ["Is anybody home?", "Your delivery has arrived!", "Are you available to for a moment to discuss our lord and saviour chatGPT?"]
 		}
 	)
 	res.status(200).send("User created")
@@ -48,9 +50,9 @@ app.post("/signup", (req, res) => {
 
 app.post("/login", async (req, res) => {
 	console.log(req.body)
-	var username = req.body.username
+	var email = req.body.email
 	var password = req.body.password
-	const user = await client.db("sdmsDB").collection("user").findOne({ "username": username })
+	const user = await client.db("sdmsDB").collection("user").findOne({ "email": email })
 	if (user == null || user === undefined) {
 		console.log("user not found")
 		res.status(404).send("User not found")
@@ -84,8 +86,8 @@ app.post("/login", async (req, res) => {
 
 app.post("/logout", async (req, res) => {
 	console.log(req.body)
-	var username = req.body.username
-	const user = await client.db("sdmsDB").collection("user").findOne({"username": username})
+	var email = req.body.email
+	const user = await client.db("sdmsDB").collection("user").findOne({"email": email})
 	if (user == null || user === undefined) {
 		console.log("user not found")
 		res.status(404).send("User not found")
