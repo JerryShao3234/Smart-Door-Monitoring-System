@@ -178,7 +178,7 @@ app.post("/visit", async (req, res) => {
         console.log(insert_id)
         await client.db("sdmsDB").collection("user").updateOne(
                 {"_id": user_id},
-                {$set: {"lastVisit": insert_id}}
+                {$set: {"lastVisit": insert_id.toString()}}
         )
         res.status(200).send("Visit logged")
         io.sockets.emit('visitNotification', "You have a visitor!")
@@ -275,7 +275,7 @@ app.post("/readMessage", async (req, res) => {
         console.log(req.body)
         await client.db("sdmsDB").collection("messages").updateOne(
                 {
-                        "_id": ObjectID(req.body.messageID)
+                        "_id": new ObjectId(req.body.messageID)
                 },
                 {
                         $set: {
