@@ -165,12 +165,13 @@ app.post("/visit", async (req, res) => {
         user_id = user._id
 		//generate a unique id for the visit
         insert_id = new ObjectId()
+		date = Date.prototype.getTime()
         await client.db("sdmsDB").collection("visits").insertOne(
                 {
                         "_id": insert_id,
                         "userID": user_id,
                         "visitor": req.body.visitor,
-                        "date": Date.prototype.getTime(),
+                        "date": date,
                         "intent": req.body.intent,
                         "img": req.body.img
                 }
@@ -226,11 +227,12 @@ app.post("/visitormessage", async (req, res) => {
         }
         user_id = user._id
         visit_id = user.lastVisit
+		date = Date.prototype.getTime()
         await client.db("sdmsDB").collection("messages").insertOne(
                 {
                         "userID": user_id,
                         "messageInfo": req.body.messageInfo,
-                        "date": Date.prototype.getTime(),
+                        "date": date,
                         "sender": "visitor",
                         "read": false,
                         "visitID": visit_id
@@ -257,11 +259,12 @@ app.post("/usermessage", async (req, res) => {
         }
         user_id = user._id
         visit_id = user.lastVisit
+		date = Date.prototype.getTime()
         await client.db("sdmsDB").collection("messages").insertOne(
                 {
                         "userID": user_id,
                         "messageInfo": req.body.messageInfo,
-                        "date": Date.prototype.getTime(),
+                        "date": date,
                         "sender": "user",
                         "read": false,
                         "visitID": visit_id
