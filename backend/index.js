@@ -114,18 +114,18 @@ app.post("/logout", async (req, res) => {
 })
 
 //get all messages of a user
-app.post("/getmessagesuser", async (req, res) => {
-        var token = req.body.token
-        var user = await client.db("sdmsDB").collection("user").findOne({"token": token}) //find via _userID, search in visits collection
-        if (user == null || user === undefined) {
-                console.log("user not found")
-                res.status(404).send("User not found")
-                return
-        }
-        user_id = user._id
-        var messages = await client.db("sdmsDB").collection("messages").find({"userID": user_id}).toArray()
-        res.status(200).send(messages)
-})
+// app.post("/getmessagesuser", async (req, res) => {
+//         var token = req.body.token
+//         var user = await client.db("sdmsDB").collection("user").findOne({"token": token}) //find via _userID, search in visits collection
+//         if (user == null || user === undefined) {
+//                 console.log("user not found")
+//                 res.status(404).send("User not found")
+//                 return
+//         }
+//         user_id = user._id
+//         var messages = await client.db("sdmsDB").collection("messages").find({"userID": user_id}).toArray()
+//         res.status(200).send(messages)
+// })
 
 //get all visits (with messages) of a user
 app.post("/getvisits", async (req, res) => {
@@ -139,7 +139,7 @@ app.post("/getvisits", async (req, res) => {
         user_id = user._id
         var visits = await client.db("sdmsDB").collection("visits").find({"userID": user_id}).toArray()
         for (var i = 0; i < visits.length; i++) {
-                var messages = await client.db("sdmsDB").collection("messages").find({"visitID": visits[i]._id}).toArray()
+                var messages = await client.db("sdmsDB").collection("messages").find({"visitID": visits[i]._id.toString()}).toArray()
                 visits[i].messages = messages
         }
 
@@ -170,7 +170,7 @@ app.post("/visit", async (req, res) => {
                         "_id": insert_id,
                         "userID": user_id,
                         "visitor": req.body.visitor,
-                        "date": req.body.date,
+                        "date": Date.prototype.getTime(),
                         "intent": req.body.intent,
                         "img": req.body.img
                 }
@@ -230,7 +230,7 @@ app.post("/visitormessage", async (req, res) => {
                 {
                         "userID": user_id,
                         "messageInfo": req.body.messageInfo,
-                        "date": req.body.date,
+                        "date": Date.prototype.getTime(),
                         "sender": "visitor",
                         "read": false,
                         "visitID": visit_id
@@ -261,7 +261,7 @@ app.post("/usermessage", async (req, res) => {
                 {
                         "userID": user_id,
                         "messageInfo": req.body.messageInfo,
-                        "date": req.body.date,
+                        "date": Date.prototype.getTime(),
                         "sender": "user",
                         "read": false,
                         "visitID": visit_id
@@ -272,18 +272,18 @@ app.post("/usermessage", async (req, res) => {
 
 //user acknowledges message
 app.post("/readMessage", async (req, res) => {
-        console.log(req.body)
-        await client.db("sdmsDB").collection("messages").updateOne(
-                {
-                        "_id": new ObjectId(req.body.messageID)
-                },
-                {
-                        $set: {
-                                "read": true
-                        }
-                }
-        )
-        res.status(200).send("Message read")
+	console.log(req.body)
+	await client.db("sdmsDB").collection("messages").updateOne(
+		{
+			"_id": new ObjectId(req.body.messageID)
+		},
+		{
+			$set: {
+				"read": true
+			}
+		}
+	)
+	res.status(200).send("Message read")
 })
 
 async function run() {
