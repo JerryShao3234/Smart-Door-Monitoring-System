@@ -7,6 +7,8 @@ const server = http.createServer(app);
 var io = require('socket.io')(server);
 const oneDay = 1000 * 60 * 60 * 24;
 const crypto = require('crypto')
+const speech = require('@google-cloud/speech');
+const sCli = new speech.SpeechClient();
 
 app.use(bodyParser.urlencoded({
           extended: true
@@ -165,7 +167,7 @@ app.post("/visit", async (req, res) => {
         user_id = user._id
 		//generate a unique id for the visit
         insert_id = new ObjectId()
-		date = (new Date()).getTime()
+	date = (new Date()).getTime()
         await client.db("sdmsDB").collection("visits").insertOne(
                 {
                         "_id": insert_id,
@@ -288,6 +290,32 @@ app.post("/readMessage", async (req, res) => {
 	)
 	res.status(200).send("Message read")
 })
+
+async function quickstart() {
+        // The path to the remote LINEAR16 file stored in Google Cloud Storage
+        const gcsUri = 'gs://cloud-samples-data/speech/brooklyn_bridge.raw';
+
+        // The audio file's encoding, sample rate in hertz, and BCP-47 language code
+        const audio = {
+                uri: gcsUri,
+        };
+        const config = {
+                encoding: 'LINEAR16',
+                sampleRateHertz: 16000,
+                languageCode: 'en-US',
+        };
+        const request = {
+                audio: audio,
+                config: config,
+        };
+
+        // Detects speech in the audio file
+        const [response] = await sCli.recognize(request);
+        const transcription = response.results
+                .map(result => result.alternatives[0].transcript)
+                .join('\n');
+        console.log(`Transcription: ${transcription}`);
+}
 
 async function run() {
         try {
