@@ -409,7 +409,7 @@ int main()
         return 0;
 
     /* Initialize touchscreen */ 
-    Init_Touch();
+    // Init_Touch();
 
     /**
      * State machine outline for SDMS
