@@ -291,6 +291,10 @@ app.post("/readMessage", async (req, res) => {
 	res.status(200).send("Message read")
 })
 
+app.post("/piimage", async (req, res) => {
+        console.log(req.body)
+})
+
 async function quickstart() {
         // The path to the remote LINEAR16 file stored in Google Cloud Storage
         const gcsUri = 'gs://cloud-samples-data/speech/brooklyn_bridge.raw';
@@ -329,6 +333,7 @@ async function run() {
                 console.log(err)
                 await client.close()
         }
+        quickstart()
 }
 
 run()
