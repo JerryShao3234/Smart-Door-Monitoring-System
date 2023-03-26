@@ -1,0 +1,1360 @@
+
+VGA_Display.elf:     file format elf32-littlenios2
+VGA_Display.elf
+architecture: nios2:r1, flags 0x00000112:
+EXEC_P, HAS_SYMS, D_PAGED
+start address 0x00000020
+
+Program Header:
+    LOAD off    0x00001000 vaddr 0x00000000 paddr 0x00000000 align 2**12
+         filesz 0x00000020 memsz 0x00000020 flags r-x
+    LOAD off    0x00001020 vaddr 0x00000020 paddr 0x00000020 align 2**12
+         filesz 0x00000920 memsz 0x00000920 flags r-x
+    LOAD off    0x00001940 vaddr 0x00000940 paddr 0x00000adc align 2**12
+         filesz 0x0000019c memsz 0x0000019c flags rw-
+    LOAD off    0x00001c78 vaddr 0x00000c78 paddr 0x00000c78 align 2**12
+         filesz 0x00000000 memsz 0x00000020 flags rw-
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .entry        00000020  00000000  00000000  00001000  2**5
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .exceptions   00000000  00000020  00000020  00001adc  2**0
+                  CONTENTS
+  2 .text         00000830  00000020  00000020  00001020  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  3 .rodata       000000f0  00000850  00000850  00001850  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  4 .rwdata       0000019c  00000940  00000adc  00001940  2**2
+                  CONTENTS, ALLOC, LOAD, DATA, SMALL_DATA
+  5 .bss          00000020  00000c78  00000c78  00001c78  2**2
+                  ALLOC, SMALL_DATA
+  6 .SDRAM        00000000  00000c98  00000c98  00001adc  2**0
+                  CONTENTS
+  7 .VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM 00000000  09000000  09000000  00001adc  2**0
+                  CONTENTS
+  8 .comment      00000023  00000000  00000000  00001adc  2**0
+                  CONTENTS, READONLY
+  9 .debug_aranges 000001e0  00000000  00000000  00001b00  2**3
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_info   00001a89  00000000  00000000  00001ce0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_abbrev 00000aae  00000000  00000000  00003769  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_line   00000bca  00000000  00000000  00004217  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_frame  0000023c  00000000  00000000  00004de4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 14 .debug_str    00000bbe  00000000  00000000  00005020  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 15 .debug_loc    000006c4  00000000  00000000  00005bde  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 16 .debug_alt_sim_info 00000020  00000000  00000000  000062a4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 17 .debug_ranges 000000d0  00000000  00000000  000062c8  2**3
+                  CONTENTS, READONLY, DEBUGGING
+ 18 .thread_model 00000003  00000000  00000000  00007486  2**0
+                  CONTENTS, READONLY
+ 19 .cpu          00000005  00000000  00000000  00007489  2**0
+                  CONTENTS, READONLY
+ 20 .qsys         00000001  00000000  00000000  0000748e  2**0
+                  CONTENTS, READONLY
+ 21 .simulation_enabled 00000001  00000000  00000000  0000748f  2**0
+                  CONTENTS, READONLY
+ 22 .stderr_dev   00000004  00000000  00000000  00007490  2**0
+                  CONTENTS, READONLY
+ 23 .stdin_dev    00000004  00000000  00000000  00007494  2**0
+                  CONTENTS, READONLY
+ 24 .stdout_dev   00000004  00000000  00000000  00007498  2**0
+                  CONTENTS, READONLY
+ 25 .sopc_system_name 0000000f  00000000  00000000  0000749c  2**0
+                  CONTENTS, READONLY
+ 26 .quartus_project_dir 00000018  00000000  00000000  000074ab  2**0
+                  CONTENTS, READONLY
+ 27 .jdi          00003f95  00000000  00000000  000074c3  2**0
+                  CONTENTS, READONLY
+ 28 .sopcinfo     000a8449  00000000  00000000  0000b458  2**0
+                  CONTENTS, READONLY
+SYMBOL TABLE:
+00000000 l    d  .entry	00000000 .entry
+00000020 l    d  .exceptions	00000000 .exceptions
+00000020 l    d  .text	00000000 .text
+00000850 l    d  .rodata	00000000 .rodata
+00000940 l    d  .rwdata	00000000 .rwdata
+00000c78 l    d  .bss	00000000 .bss
+00000c98 l    d  .SDRAM	00000000 .SDRAM
+09000000 l    d  .VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM	00000000 .VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM
+00000000 l    d  .comment	00000000 .comment
+00000000 l    d  .debug_aranges	00000000 .debug_aranges
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_frame	00000000 .debug_frame
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 l    d  .debug_loc	00000000 .debug_loc
+00000000 l    d  .debug_alt_sim_info	00000000 .debug_alt_sim_info
+00000000 l    d  .debug_ranges	00000000 .debug_ranges
+00000000 l    df *ABS*	00000000 ../VGA_Display_bsp//obj/HAL/src/crt0.o
+00000058 l       .text	00000000 alt_after_alt_main
+00000000 l    df *ABS*	00000000 video.c
+00000000 l    df *ABS*	00000000 memcpy.c
+00000000 l    df *ABS*	00000000 memset.c
+00000000 l    df *ABS*	00000000 alt_load.c
+00000000 l    df *ABS*	00000000 alt_main.c
+00000000 l    df *ABS*	00000000 alt_sys_init.c
+000004ac l     F .text	00000008 alt_dev_reg
+00000a3c l     O .rwdata	00000030 AV_Config
+000009e0 l     O .rwdata	0000005c VGA_Subsystem_Char_Buf_Subsystem_Char_Buf_DMA
+00000984 l     O .rwdata	0000005c VGA_Subsystem_VGA_Pixel_DMA
+00000940 l     O .rwdata	00000044 VGA_Subsystem_VGA_Pixel_RGB_Resampler
+00000000 l    df *ABS*	00000000 alt_dcache_flush_all.c
+00000000 l    df *ABS*	00000000 alt_dev.c
+00000790 l     F .text	00000008 alt_dev_null_write
+00000000 l    df *ABS*	00000000 alt_dev_llist_insert.c
+00000000 l    df *ABS*	00000000 alt_errno.c
+00000000 l    df *ABS*	00000000 alt_icache_flush_all.c
+00000000 l    df *ABS*	00000000 altera_nios2_gen2_irq.c
+00000000 l    df *ABS*	00000000 alt_icache_flush.c
+00000000 l    df *ABS*	00000000 int_errno.c
+00000480 g     F .text	0000002c alt_main
+00000adc g       *ABS*	00000000 __flash_rwdata_start
+00000c78 g     O .bss	00000004 screen_x
+00000810 g     F .text	00000008 altera_nios2_gen2_irq_init
+00000000 g     F .entry	0000001c __reset
+00000020 g       *ABS*	00000000 __flash_exceptions_start
+00000c94 g     O .bss	00000004 errno
+00000098 g     F .text	00000078 video_box
+00000c8c g     O .bss	00000004 alt_argv
+00008ac4 g       *ABS*	00000000 _gp
+00000a6c g     O .rwdata	00000030 alt_fd_list
+00000358 g     F .text	00000028 memcpy
+00000818 g     F .text	00000038 alt_icache_flush
+00000ac4 g     O .rwdata	00000004 alt_max_fd
+00000c7c g     O .bss	00000004 col_offset
+00000c98 g       *ABS*	00000000 __bss_end
+00000a9c g     O .rwdata	00000028 alt_dev_null
+0000078c g     F .text	00000004 alt_dcache_flush_all
+00000adc g       *ABS*	00000000 __ram_rwdata_end
+00000ac8 g     O .rwdata	00000008 alt_dev_list
+00000940 g       *ABS*	00000000 __ram_rodata_end
+00000c80 g     O .bss	00000004 res_offset
+00000000 g       *ABS*	00000000 __alt_mem_SDRAM
+00000c98 g       *ABS*	00000000 end
+04000000 g       *ABS*	00000000 __alt_stack_pointer
+00000c84 g     O .bss	00000004 screen_y
+00000020 g     F .text	0000003c _start
+000004d4 g     F .text	000002b8 alt_sys_init
+00000940 g       *ABS*	00000000 __ram_rwdata_start
+00000850 g       *ABS*	00000000 __ram_rodata_start
+00000174 g     F .text	000000b8 get_data_bits
+00000c98 g       *ABS*	00000000 __alt_stack_base
+00000798 g     F .text	0000006c alt_dev_llist_insert
+00000c78 g       *ABS*	00000000 __bss_start
+00000380 g     F .text	00000020 memset
+0000022c g     F .text	0000012c main
+00000c88 g     O .bss	00000004 alt_envp
+00000ad8 g     O .rwdata	00000004 alt_errno
+00000850 g       *ABS*	00000000 __flash_rodata_start
+000004b4 g     F .text	00000020 alt_irq_init
+00000c90 g     O .bss	00000004 alt_argc
+09000000 g       *ABS*	00000000 __alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM
+00000ad0 g     O .rwdata	00000008 alt_fs_list
+00000020 g       *ABS*	00000000 __ram_exceptions_start
+00000adc g       *ABS*	00000000 _edata
+00000c98 g       *ABS*	00000000 _end
+00000020 g       *ABS*	00000000 __ram_exceptions_end
+00000110 g     F .text	00000064 resample_rgb
+04000000 g       *ABS*	00000000 __alt_data_end
+0000001c g       .entry	00000000 _exit
+0000005c g     F .text	0000003c video_text
+00000804 g     F .text	0000000c alt_icache_flush_all
+000003a0 g     F .text	000000e0 alt_load
+
+
+
+Disassembly of section .entry:
+
+00000000 <__reset>:
+#if NIOS2_ICACHE_SIZE > 0 && defined(ALT_ALLOW_CODE_AT_RESET) && (!defined(ALT_SIM_OPTIMIZE) || defined(NIOS2_ECC_PRESENT))
+    /* Assume the instruction cache size is always a power of two. */
+#if NIOS2_ICACHE_SIZE > 0x8000
+    movhi r2, %hi(NIOS2_ICACHE_SIZE)
+#else
+    movui r2, NIOS2_ICACHE_SIZE
+   0:	00840014 	movui	r2,4096
+#endif
+
+0:
+    initi r2
+   4:	1001483a 	initi	r2
+    addi r2, r2, -NIOS2_ICACHE_LINE_SIZE
+   8:	10bff804 	addi	r2,r2,-32
+    bgt r2, zero, 0b
+   c:	00bffd16 	blt	zero,r2,4 <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf7000004>
+ * Jump to the _start entry point in the .text section if reset code
+ * is allowed or if optimizing for RTL simulation.
+ */
+#if defined(ALT_ALLOW_CODE_AT_RESET) || defined(ALT_SIM_OPTIMIZE)
+    /* Jump to the _start entry point in the .text section. */
+    movhi r1, %hi(_start)
+  10:	00400034 	movhi	at,0
+    ori r1, r1, %lo(_start)
+  14:	08400814 	ori	at,at,32
+    jmp r1
+  18:	0800683a 	jmp	at
+
+0000001c <_exit>:
+  1c:	00000000 	call	0 <__reset>
+
+Disassembly of section .text:
+
+00000020 <_start>:
+
+    /*
+     * Now that the caches are initialized, set up the stack pointer and global pointer.
+     * The values provided by the linker are assumed to be correctly aligned.
+     */
+    movhi sp, %hi(__alt_stack_pointer)
+  20:	06c10034 	movhi	sp,1024
+    ori sp, sp, %lo(__alt_stack_pointer)
+  24:	dec00014 	ori	sp,sp,0
+    movhi gp, %hi(_gp)
+  28:	06800034 	movhi	gp,0
+    ori gp, gp, %lo(_gp)
+  2c:	d6a2b114 	ori	gp,gp,35524
+ */
+#ifndef ALT_SIM_OPTIMIZE
+    /* Log that the BSS is about to be cleared. */
+    ALT_LOG_PUTS(alt_log_msg_bss)
+
+    movhi r2, %hi(__bss_start)
+  30:	00800034 	movhi	r2,0
+    ori r2, r2, %lo(__bss_start)
+  34:	10831e14 	ori	r2,r2,3192
+
+    movhi r3, %hi(__bss_end)
+  38:	00c00034 	movhi	r3,0
+    ori r3, r3, %lo(__bss_end)
+  3c:	18c32614 	ori	r3,r3,3224
+
+    beq r2, r3, 1f
+  40:	10c00326 	beq	r2,r3,50 <_start+0x30>
+
+0:
+    stw zero, (r2)
+  44:	10000015 	stw	zero,0(r2)
+    addi r2, r2, 4
+  48:	10800104 	addi	r2,r2,4
+    bltu r2, r3, 0b
+  4c:	10fffd36 	bltu	r2,r3,44 <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf7000044>
+     * section aren't defined until alt_load() has been called).
+     */
+    mov   et, zero
+#endif
+
+    call alt_load
+  50:	00003a00 	call	3a0 <alt_load>
+
+    /* Log that alt_main is about to be called. */
+    ALT_LOG_PUTS(alt_log_msg_alt_main)
+
+    /* Call the C entry point. It should never return. */
+    call alt_main
+  54:	00004800 	call	480 <alt_main>
+
+00000058 <alt_after_alt_main>:
+
+    /* Wait in infinite loop in case alt_main does return. */
+alt_after_alt_main:
+    br alt_after_alt_main
+  58:	003fff06 	br	58 <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf7000058>
+
+0000005c <video_text>:
+    int             offset;
+    volatile char * character_buffer =
+        (char *)FPGA_CHAR_BASE; // video character buffer
+
+    /* assume that the text string fits on one line */
+    offset = (y << 7) + x;
+  5c:	280a91fa 	slli	r5,r5,7
+  60:	2909883a 	add	r4,r5,r4
+  64:	01424034 	movhi	r5,2304
+  68:	298bc83a 	sub	r5,r5,r6
+  6c:	290b883a 	add	r5,r5,r4
+    while (*(text_ptr)) {
+  70:	30800003 	ldbu	r2,0(r6)
+  74:	10c03fcc 	andi	r3,r2,255
+  78:	18c0201c 	xori	r3,r3,128
+  7c:	18ffe004 	addi	r3,r3,-128
+  80:	18000426 	beq	r3,zero,94 <video_text+0x38>
+  84:	3147883a 	add	r3,r6,r5
+        *(character_buffer + offset) =
+  88:	18800005 	stb	r2,0(r3)
+            *(text_ptr); // write to the character buffer
+        ++text_ptr;
+  8c:	31800044 	addi	r6,r6,1
+  90:	003ff706 	br	70 <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf7000070>
+        ++offset;
+    }
+}
+  94:	f800283a 	ret
+
+00000098 <video_box>:
+ * in resolution and color bits.
+ ******************************************************************************/
+void video_box(int x1, int y1, int x2, int y2, short pixel_color) {
+    int pixel_buf_ptr = *(int *)PIXEL_BUF_CTRL_BASE;
+    int pixel_ptr, row, col;
+    int x_factor = 0x1 << (res_offset + col_offset);
+  98:	d2206f17 	ldw	r8,-32324(gp)
+  9c:	d2606e17 	ldw	r9,-32328(gp)
+ * Draw a filled rectangle on the video monitor
+ * Takes in points assuming 320x240 resolution and adjusts based on differences
+ * in resolution and color bits.
+ ******************************************************************************/
+void video_box(int x1, int y1, int x2, int y2, short pixel_color) {
+    int pixel_buf_ptr = *(int *)PIXEL_BUF_CTRL_BASE;
+  a0:	00bfc834 	movhi	r2,65312
+  a4:	108c0804 	addi	r2,r2,12320
+  a8:	12800017 	ldw	r10,0(r2)
+    int pixel_ptr, row, col;
+    int x_factor = 0x1 << (res_offset + col_offset);
+  ac:	4247883a 	add	r3,r8,r9
+  b0:	00800044 	movi	r2,1
+  b4:	10c6983a 	sll	r3,r2,r3
+    int y_factor = 0x1 << (res_offset);
+  b8:	1204983a 	sll	r2,r2,r8
+/*******************************************************************************
+ * Draw a filled rectangle on the video monitor
+ * Takes in points assuming 320x240 resolution and adjusts based on differences
+ * in resolution and color bits.
+ ******************************************************************************/
+void video_box(int x1, int y1, int x2, int y2, short pixel_color) {
+  bc:	dac0000b 	ldhu	r11,0(sp)
+    int pixel_buf_ptr = *(int *)PIXEL_BUF_CTRL_BASE;
+    int pixel_ptr, row, col;
+    int x_factor = 0x1 << (res_offset + col_offset);
+    int y_factor = 0x1 << (res_offset);
+    x1           = x1 / x_factor;
+  c0:	20c9283a 	div	r4,r4,r3
+    x2           = x2 / x_factor;
+    y1           = y1 / y_factor;
+  c4:	288b283a 	div	r5,r5,r2
+    y2           = y2 / y_factor;
+  c8:	388f283a 	div	r7,r7,r2
+  cc:	00800284 	movi	r2,10
+  d0:	1205c83a 	sub	r2,r2,r8
+    int pixel_buf_ptr = *(int *)PIXEL_BUF_CTRL_BASE;
+    int pixel_ptr, row, col;
+    int x_factor = 0x1 << (res_offset + col_offset);
+    int y_factor = 0x1 << (res_offset);
+    x1           = x1 / x_factor;
+    x2           = x2 / x_factor;
+  d4:	30cd283a 	div	r6,r6,r3
+  d8:	1247c83a 	sub	r3,r2,r9
+    y1           = y1 / y_factor;
+    y2           = y2 / y_factor;
+
+    /* assume that the box coordinates are valid */
+    for (row = y1; row <= y2; row++)
+  dc:	39400b16 	blt	r7,r5,10c <video_box+0x74>
+  e0:	28d0983a 	sll	r8,r5,r3
+        for (col = x1; col <= x2; ++col) {
+            pixel_ptr = pixel_buf_ptr +
+  e4:	2005883a 	mov	r2,r4
+  e8:	4291883a 	add	r8,r8,r10
+    y1           = y1 / y_factor;
+    y2           = y2 / y_factor;
+
+    /* assume that the box coordinates are valid */
+    for (row = y1; row <= y2; row++)
+        for (col = x1; col <= x2; ++col) {
+  ec:	30800516 	blt	r6,r2,104 <video_box+0x6c>
+            pixel_ptr = pixel_buf_ptr +
+                        (row << (10 - res_offset - col_offset)) + (col << 1);
+            *(short *)pixel_ptr = pixel_color; // set pixel color
+  f0:	1093883a 	add	r9,r2,r2
+  f4:	4a13883a 	add	r9,r9,r8
+  f8:	4ac0000d 	sth	r11,0(r9)
+    y1           = y1 / y_factor;
+    y2           = y2 / y_factor;
+
+    /* assume that the box coordinates are valid */
+    for (row = y1; row <= y2; row++)
+        for (col = x1; col <= x2; ++col) {
+  fc:	10800044 	addi	r2,r2,1
+ 100:	003ffa06 	br	ec <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf70000ec>
+    x2           = x2 / x_factor;
+    y1           = y1 / y_factor;
+    y2           = y2 / y_factor;
+
+    /* assume that the box coordinates are valid */
+    for (row = y1; row <= y2; row++)
+ 104:	29400044 	addi	r5,r5,1
+ 108:	003ff406 	br	dc <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf70000dc>
+ 10c:	f800283a 	ret
+
+00000110 <resample_rgb>:
+
+/********************************************************************************
+ * Resamples 24-bit color to 16-bit or 8-bit color
+ *******************************************************************************/
+int resample_rgb(int num_bits, int color) {
+    if (num_bits == 8) {
+ 110:	00c00204 	movi	r3,8
+}
+
+/********************************************************************************
+ * Resamples 24-bit color to 16-bit or 8-bit color
+ *******************************************************************************/
+int resample_rgb(int num_bits, int color) {
+ 114:	2805883a 	mov	r2,r5
+    if (num_bits == 8) {
+ 118:	20c00b1e 	bne	r4,r3,148 <resample_rgb+0x38>
+        color = (((color >> 16) & 0x000000E0) | ((color >> 11) & 0x0000001C) |
+ 11c:	1007d2fa 	srai	r3,r2,11
+ 120:	280bd43a 	srai	r5,r5,16
+ 124:	1005d1ba 	srai	r2,r2,6
+ 128:	18c0070c 	andi	r3,r3,28
+ 12c:	2940380c 	andi	r5,r5,224
+ 130:	28cab03a 	or	r5,r5,r3
+ 134:	108000cc 	andi	r2,r2,3
+ 138:	2884b03a 	or	r2,r5,r2
+                 ((color >> 6) & 0x00000003));
+        color = (color << 8) | color;
+ 13c:	100a923a 	slli	r5,r2,8
+ 140:	2884b03a 	or	r2,r5,r2
+ 144:	f800283a 	ret
+    } else if (num_bits == 16) {
+ 148:	00c00404 	movi	r3,16
+ 14c:	20c0081e 	bne	r4,r3,170 <resample_rgb+0x60>
+        color = (((color >> 8) & 0x0000F800) | ((color >> 5) & 0x000007E0) |
+ 150:	2807d23a 	srai	r3,r5,8
+                 ((color >> 3) & 0x0000001F));
+ 154:	2805d0fa 	srai	r2,r5,3
+    if (num_bits == 8) {
+        color = (((color >> 16) & 0x000000E0) | ((color >> 11) & 0x0000001C) |
+                 ((color >> 6) & 0x00000003));
+        color = (color << 8) | color;
+    } else if (num_bits == 16) {
+        color = (((color >> 8) & 0x0000F800) | ((color >> 5) & 0x000007E0) |
+ 158:	193e000c 	andi	r4,r3,63488
+ 15c:	2807d17a 	srai	r3,r5,5
+                 ((color >> 3) & 0x0000001F));
+ 160:	108007cc 	andi	r2,r2,31
+    if (num_bits == 8) {
+        color = (((color >> 16) & 0x000000E0) | ((color >> 11) & 0x0000001C) |
+                 ((color >> 6) & 0x00000003));
+        color = (color << 8) | color;
+    } else if (num_bits == 16) {
+        color = (((color >> 8) & 0x0000F800) | ((color >> 5) & 0x000007E0) |
+ 164:	18c1f80c 	andi	r3,r3,2016
+ 168:	20c6b03a 	or	r3,r4,r3
+ 16c:	1884b03a 	or	r2,r3,r2
+                 ((color >> 3) & 0x0000001F));
+    }
+    return color;
+}
+ 170:	f800283a 	ret
+
+00000174 <get_data_bits>:
+
+/********************************************************************************
+ * Finds the number of data bits from the mode
+ *******************************************************************************/
+int get_data_bits(int mode) {
+    switch (mode) {
+ 174:	008005c4 	movi	r2,23
+ 178:	20801d26 	beq	r4,r2,1f0 <get_data_bits+0x7c>
+ 17c:	11000a16 	blt	r2,r4,1a8 <get_data_bits+0x34>
+ 180:	00800444 	movi	r2,17
+ 184:	20801826 	beq	r4,r2,1e8 <get_data_bits+0x74>
+ 188:	11000316 	blt	r2,r4,198 <get_data_bits+0x24>
+ 18c:	20002326 	beq	r4,zero,21c <get_data_bits+0xa8>
+ 190:	008001c4 	movi	r2,7
+ 194:	00000a06 	br	1c0 <get_data_bits+0x4c>
+ 198:	00800484 	movi	r2,18
+ 19c:	20802126 	beq	r4,r2,224 <get_data_bits+0xb0>
+ 1a0:	00800504 	movi	r2,20
+ 1a4:	00000d06 	br	1dc <get_data_bits+0x68>
+ 1a8:	00800c84 	movi	r2,50
+ 1ac:	20801426 	beq	r4,r2,200 <get_data_bits+0x8c>
+ 1b0:	11000516 	blt	r2,r4,1c8 <get_data_bits+0x54>
+ 1b4:	00800644 	movi	r2,25
+ 1b8:	20800f26 	beq	r4,r2,1f8 <get_data_bits+0x84>
+ 1bc:	00800c44 	movi	r2,49
+ 1c0:	20800926 	beq	r4,r2,1e8 <get_data_bits+0x74>
+ 1c4:	00001406 	br	218 <get_data_bits+0xa4>
+ 1c8:	00800dc4 	movi	r2,55
+ 1cc:	20800e26 	beq	r4,r2,208 <get_data_bits+0x94>
+ 1d0:	00800e44 	movi	r2,57
+ 1d4:	20800e26 	beq	r4,r2,210 <get_data_bits+0x9c>
+ 1d8:	00800cc4 	movi	r2,51
+ 1dc:	20800e1e 	bne	r4,r2,218 <get_data_bits+0xa4>
+    case 0x31:
+        return 8;
+    case 0x32:
+        return 12;
+    case 0x33:
+        return 16;
+ 1e0:	00800404 	movi	r2,16
+ 1e4:	f800283a 	ret
+int get_data_bits(int mode) {
+    switch (mode) {
+    case 0x0:
+        return 1;
+    case 0x7:
+        return 8;
+ 1e8:	00800204 	movi	r2,8
+ 1ec:	f800283a 	ret
+    case 0x12:
+        return 9;
+    case 0x14:
+        return 16;
+    case 0x17:
+        return 24;
+ 1f0:	00800604 	movi	r2,24
+ 1f4:	f800283a 	ret
+    case 0x19:
+        return 30;
+ 1f8:	00800784 	movi	r2,30
+ 1fc:	f800283a 	ret
+    case 0x31:
+        return 8;
+    case 0x32:
+        return 12;
+ 200:	00800304 	movi	r2,12
+ 204:	f800283a 	ret
+    case 0x33:
+        return 16;
+    case 0x37:
+        return 32;
+ 208:	00800804 	movi	r2,32
+ 20c:	f800283a 	ret
+    case 0x39:
+        return 40;
+ 210:	00800a04 	movi	r2,40
+ 214:	f800283a 	ret
+    }
+}
+ 218:	f800283a 	ret
+ * Finds the number of data bits from the mode
+ *******************************************************************************/
+int get_data_bits(int mode) {
+    switch (mode) {
+    case 0x0:
+        return 1;
+ 21c:	00800044 	movi	r2,1
+ 220:	f800283a 	ret
+    case 0x7:
+        return 8;
+    case 0x11:
+        return 8;
+    case 0x12:
+        return 9;
+ 224:	00800244 	movi	r2,9
+    case 0x37:
+        return 32;
+    case 0x39:
+        return 40;
+    }
+}
+ 228:	f800283a 	ret
+
+0000022c <main>:
+ * Draws a blue box on the video display, and places a text string inside the
+ * box
+ ******************************************************************************/
+int main(void) {
+    volatile int * video_resolution = (int *)(PIXEL_BUF_CTRL_BASE + 0x8);
+    screen_x                        = *video_resolution & 0xFFFF;
+ 22c:	00bfc834 	movhi	r2,65312
+/*******************************************************************************
+ * This program demonstrates use of the video in the computer system.
+ * Draws a blue box on the video display, and places a text string inside the
+ * box
+ ******************************************************************************/
+int main(void) {
+ 230:	deffe804 	addi	sp,sp,-96
+    volatile int * video_resolution = (int *)(PIXEL_BUF_CTRL_BASE + 0x8);
+    screen_x                        = *video_resolution & 0xFFFF;
+ 234:	108c0a04 	addi	r2,r2,12328
+/*******************************************************************************
+ * This program demonstrates use of the video in the computer system.
+ * Draws a blue box on the video display, and places a text string inside the
+ * box
+ ******************************************************************************/
+int main(void) {
+ 238:	dc001515 	stw	r16,84(sp)
+    volatile int * video_resolution = (int *)(PIXEL_BUF_CTRL_BASE + 0x8);
+    screen_x                        = *video_resolution & 0xFFFF;
+ 23c:	14000017 	ldw	r16,0(r2)
+/*******************************************************************************
+ * This program demonstrates use of the video in the computer system.
+ * Draws a blue box on the video display, and places a text string inside the
+ * box
+ ******************************************************************************/
+int main(void) {
+ 240:	dfc01715 	stw	ra,92(sp)
+ 244:	dc401615 	stw	r17,88(sp)
+    volatile int * video_resolution = (int *)(PIXEL_BUF_CTRL_BASE + 0x8);
+    screen_x                        = *video_resolution & 0xFFFF;
+ 248:	843fffcc 	andi	r16,r16,65535
+ 24c:	d4206d15 	stw	r16,-32332(gp)
+    screen_y                        = (*video_resolution >> 16) & 0xFFFF;
+ 250:	10800017 	ldw	r2,0(r2)
+
+    volatile int * rgb_status = (int *)(RGB_RESAMPLER_BASE);
+    int            db         = get_data_bits(*rgb_status & 0x3F);
+
+    /* check if resolution is smaller than the standard 320 x 240 */
+    res_offset = (screen_x == 160) ? 1 : 0;
+ 254:	84002820 	cmpeqi	r16,r16,160
+ * box
+ ******************************************************************************/
+int main(void) {
+    volatile int * video_resolution = (int *)(PIXEL_BUF_CTRL_BASE + 0x8);
+    screen_x                        = *video_resolution & 0xFFFF;
+    screen_y                        = (*video_resolution >> 16) & 0xFFFF;
+ 258:	1004d43a 	srli	r2,r2,16
+ 25c:	d0a07015 	stw	r2,-32320(gp)
+
+    volatile int * rgb_status = (int *)(RGB_RESAMPLER_BASE);
+    int            db         = get_data_bits(*rgb_status & 0x3F);
+ 260:	00bfc834 	movhi	r2,65312
+ 264:	108c0404 	addi	r2,r2,12304
+ 268:	11000017 	ldw	r4,0(r2)
+ 26c:	21000fcc 	andi	r4,r4,63
+ 270:	00001740 	call	174 <get_data_bits>
+
+    /* check if number of data bits is less than the standard 16-bits */
+    col_offset = (db == 8) ? 1 : 0;
+
+    /* create a message to be displayed on the video and LCD displays */
+    char text_top_row[40]    = "Intel FPGA\0";
+ 274:	01400034 	movhi	r5,0
+ 278:	01800304 	movi	r6,12
+ 27c:	29421404 	addi	r5,r5,2128
+ 280:	d9000b04 	addi	r4,sp,44
+    volatile int * video_resolution = (int *)(PIXEL_BUF_CTRL_BASE + 0x8);
+    screen_x                        = *video_resolution & 0xFFFF;
+    screen_y                        = (*video_resolution >> 16) & 0xFFFF;
+
+    volatile int * rgb_status = (int *)(RGB_RESAMPLER_BASE);
+    int            db         = get_data_bits(*rgb_status & 0x3F);
+ 284:	1023883a 	mov	r17,r2
+
+    /* check if resolution is smaller than the standard 320 x 240 */
+    res_offset = (screen_x == 160) ? 1 : 0;
+
+    /* check if number of data bits is less than the standard 16-bits */
+    col_offset = (db == 8) ? 1 : 0;
+ 288:	10800220 	cmpeqi	r2,r2,8
+
+    volatile int * rgb_status = (int *)(RGB_RESAMPLER_BASE);
+    int            db         = get_data_bits(*rgb_status & 0x3F);
+
+    /* check if resolution is smaller than the standard 320 x 240 */
+    res_offset = (screen_x == 160) ? 1 : 0;
+ 28c:	d4206f15 	stw	r16,-32324(gp)
+
+    /* check if number of data bits is less than the standard 16-bits */
+    col_offset = (db == 8) ? 1 : 0;
+ 290:	d0a06e15 	stw	r2,-32328(gp)
+
+    /* create a message to be displayed on the video and LCD displays */
+    char text_top_row[40]    = "Intel FPGA\0";
+ 294:	00003580 	call	358 <memcpy>
+ 298:	01800704 	movi	r6,28
+ 29c:	000b883a 	mov	r5,zero
+ 2a0:	d9000e04 	addi	r4,sp,56
+ 2a4:	00003800 	call	380 <memset>
+    char text_bottom_row[40] = "Computer Systems\0";
+ 2a8:	01400034 	movhi	r5,0
+ 2ac:	01800484 	movi	r6,18
+ 2b0:	29421e04 	addi	r5,r5,2168
+ 2b4:	d9000104 	addi	r4,sp,4
+ 2b8:	00003580 	call	358 <memcpy>
+ 2bc:	01800584 	movi	r6,22
+ 2c0:	000b883a 	mov	r5,zero
+ 2c4:	d989883a 	add	r4,sp,r6
+ 2c8:	00003800 	call	380 <memset>
+
+/********************************************************************************
+ * Resamples 24-bit color to 16-bit or 8-bit color
+ *******************************************************************************/
+int resample_rgb(int num_bits, int color) {
+    if (num_bits == 8) {
+ 2cc:	00800204 	movi	r2,8
+ 2d0:	88800426 	beq	r17,r2,2e4 <main+0xb8>
+        color = (((color >> 16) & 0x000000E0) | ((color >> 11) & 0x0000001C) |
+                 ((color >> 6) & 0x00000003));
+        color = (color << 8) | color;
+    } else if (num_bits == 16) {
+ 2d4:	00800404 	movi	r2,16
+ 2d8:	8880041e 	bne	r17,r2,2ec <main+0xc0>
+        color = (((color >> 8) & 0x0000F800) | ((color >> 5) & 0x000007E0) |
+ 2dc:	0400e604 	movi	r16,920
+ 2e0:	00000306 	br	2f0 <main+0xc4>
+
+/********************************************************************************
+ * Resamples 24-bit color to 16-bit or 8-bit color
+ *******************************************************************************/
+int resample_rgb(int num_bits, int color) {
+    if (num_bits == 8) {
+ 2e4:	0403c3c4 	movi	r16,3855
+ 2e8:	00000106 	br	2f0 <main+0xc4>
+        color = (((color >> 16) & 0x000000E0) | ((color >> 11) & 0x0000001C) |
+                 ((color >> 6) & 0x00000003));
+        color = (color << 8) | color;
+    } else if (num_bits == 16) {
+ 2ec:	041c7144 	movi	r16,29125
+    char text_bottom_row[40] = "Computer Systems\0";
+
+    /* update color */
+    short background_color = resample_rgb(db, INTEL_BLUE);
+
+    video_text(35, 29, text_top_row);
+ 2f0:	d9800b04 	addi	r6,sp,44
+ 2f4:	01400744 	movi	r5,29
+ 2f8:	010008c4 	movi	r4,35
+ 2fc:	000005c0 	call	5c <video_text>
+    video_text(32, 30, text_bottom_row);
+ 300:	d9800104 	addi	r6,sp,4
+ 304:	01400784 	movi	r5,30
+ 308:	01000804 	movi	r4,32
+ 30c:	000005c0 	call	5c <video_text>
+    video_box(0, 0, STANDARD_X, STANDARD_Y, 0); // clear the screen
+ 310:	01c03c04 	movi	r7,240
+ 314:	d8000015 	stw	zero,0(sp)
+ 318:	01805004 	movi	r6,320
+ 31c:	000b883a 	mov	r5,zero
+ 320:	0009883a 	mov	r4,zero
+ 324:	00000980 	call	98 <video_box>
+    video_box(31 * 4, 28 * 4, 49 * 4 - 1, 32 * 4 - 1, background_color);
+ 328:	01c01fc4 	movi	r7,127
+ 32c:	dc000015 	stw	r16,0(sp)
+ 330:	018030c4 	movi	r6,195
+ 334:	01401c04 	movi	r5,112
+ 338:	01001f04 	movi	r4,124
+ 33c:	00000980 	call	98 <video_box>
+}
+ 340:	0005883a 	mov	r2,zero
+ 344:	dfc01717 	ldw	ra,92(sp)
+ 348:	dc401617 	ldw	r17,88(sp)
+ 34c:	dc001517 	ldw	r16,84(sp)
+ 350:	dec01804 	addi	sp,sp,96
+ 354:	f800283a 	ret
+
+00000358 <memcpy>:
+ 358:	2005883a 	mov	r2,r4
+ 35c:	2007883a 	mov	r3,r4
+ 360:	218d883a 	add	r6,r4,r6
+ 364:	19800526 	beq	r3,r6,37c <memcpy+0x24>
+ 368:	29000003 	ldbu	r4,0(r5)
+ 36c:	18c00044 	addi	r3,r3,1
+ 370:	29400044 	addi	r5,r5,1
+ 374:	193fffc5 	stb	r4,-1(r3)
+ 378:	003ffa06 	br	364 <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf7000364>
+ 37c:	f800283a 	ret
+
+00000380 <memset>:
+ 380:	2005883a 	mov	r2,r4
+ 384:	2007883a 	mov	r3,r4
+ 388:	218d883a 	add	r6,r4,r6
+ 38c:	19800326 	beq	r3,r6,39c <memset+0x1c>
+ 390:	19400005 	stb	r5,0(r3)
+ 394:	18c00044 	addi	r3,r3,1
+ 398:	003ffc06 	br	38c <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf700038c>
+ 39c:	f800283a 	ret
+
+000003a0 <alt_load>:
+ * there is no bootloader, so this application is responsible for loading to
+ * RAM any sections that are required.
+ */  
+
+void alt_load (void)
+{
+ 3a0:	deffff04 	addi	sp,sp,-4
+ 3a4:	01000034 	movhi	r4,0
+ 3a8:	01400034 	movhi	r5,0
+ 3ac:	dfc00015 	stw	ra,0(sp)
+ 3b0:	21025004 	addi	r4,r4,2368
+ 3b4:	2942b704 	addi	r5,r5,2780
+
+static void ALT_INLINE alt_load_section (alt_u32* from, 
+                                         alt_u32* to, 
+                                         alt_u32* end)
+{
+  if (to != from)
+ 3b8:	2140061e 	bne	r4,r5,3d4 <alt_load+0x34>
+ 3bc:	01000034 	movhi	r4,0
+ 3c0:	01400034 	movhi	r5,0
+ 3c4:	21000804 	addi	r4,r4,32
+ 3c8:	29400804 	addi	r5,r5,32
+ 3cc:	2140121e 	bne	r4,r5,418 <alt_load+0x78>
+ 3d0:	00000b06 	br	400 <alt_load+0x60>
+ 3d4:	00c00034 	movhi	r3,0
+ 3d8:	18c2b704 	addi	r3,r3,2780
+ 3dc:	1907c83a 	sub	r3,r3,r4
+ 3e0:	0005883a 	mov	r2,zero
+  {
+    while( to != end )
+ 3e4:	10fff526 	beq	r2,r3,3bc <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf70003bc>
+    {
+      *to++ = *from++;
+ 3e8:	114f883a 	add	r7,r2,r5
+ 3ec:	39c00017 	ldw	r7,0(r7)
+ 3f0:	110d883a 	add	r6,r2,r4
+ 3f4:	10800104 	addi	r2,r2,4
+ 3f8:	31c00015 	stw	r7,0(r6)
+ 3fc:	003ff906 	br	3e4 <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf70003e4>
+ 400:	01000034 	movhi	r4,0
+ 404:	01400034 	movhi	r5,0
+ 408:	21021404 	addi	r4,r4,2128
+ 40c:	29421404 	addi	r5,r5,2128
+
+static void ALT_INLINE alt_load_section (alt_u32* from, 
+                                         alt_u32* to, 
+                                         alt_u32* end)
+{
+  if (to != from)
+ 410:	2140101e 	bne	r4,r5,454 <alt_load+0xb4>
+ 414:	00000b06 	br	444 <alt_load+0xa4>
+ 418:	00c00034 	movhi	r3,0
+ 41c:	18c00804 	addi	r3,r3,32
+ 420:	1907c83a 	sub	r3,r3,r4
+ 424:	0005883a 	mov	r2,zero
+  {
+    while( to != end )
+ 428:	10fff526 	beq	r2,r3,400 <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf7000400>
+    {
+      *to++ = *from++;
+ 42c:	114f883a 	add	r7,r2,r5
+ 430:	39c00017 	ldw	r7,0(r7)
+ 434:	110d883a 	add	r6,r2,r4
+ 438:	10800104 	addi	r2,r2,4
+ 43c:	31c00015 	stw	r7,0(r6)
+ 440:	003ff906 	br	428 <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf7000428>
+  
+  /*
+   * Now ensure that the caches are in synch.
+   */
+  
+  alt_dcache_flush_all();
+ 444:	000078c0 	call	78c <alt_dcache_flush_all>
+  alt_icache_flush_all();
+}
+ 448:	dfc00017 	ldw	ra,0(sp)
+ 44c:	dec00104 	addi	sp,sp,4
+  /*
+   * Now ensure that the caches are in synch.
+   */
+  
+  alt_dcache_flush_all();
+  alt_icache_flush_all();
+ 450:	00008041 	jmpi	804 <alt_icache_flush_all>
+ 454:	00c00034 	movhi	r3,0
+ 458:	18c25004 	addi	r3,r3,2368
+ 45c:	1907c83a 	sub	r3,r3,r4
+
+static void ALT_INLINE alt_load_section (alt_u32* from, 
+                                         alt_u32* to, 
+                                         alt_u32* end)
+{
+  if (to != from)
+ 460:	0005883a 	mov	r2,zero
+  {
+    while( to != end )
+ 464:	18bff726 	beq	r3,r2,444 <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf7000444>
+    {
+      *to++ = *from++;
+ 468:	114f883a 	add	r7,r2,r5
+ 46c:	39c00017 	ldw	r7,0(r7)
+ 470:	110d883a 	add	r6,r2,r4
+ 474:	10800104 	addi	r2,r2,4
+ 478:	31c00015 	stw	r7,0(r6)
+ 47c:	003ff906 	br	464 <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf7000464>
+
+00000480 <alt_main>:
+ * devices/filesystems/components in the system; and call the entry point for
+ * the users application, i.e. main().
+ */
+
+void alt_main (void)
+{
+ 480:	deffff04 	addi	sp,sp,-4
+#endif
+
+  /* ALT LOG - please see HAL/sys/alt_log_printf.h for details */
+  ALT_LOG_PRINT_BOOT("[alt_main.c] Entering alt_main, calling alt_irq_init.\r\n");
+  /* Initialize the interrupt controller. */
+  alt_irq_init (NULL);
+ 484:	0009883a 	mov	r4,zero
+ * devices/filesystems/components in the system; and call the entry point for
+ * the users application, i.e. main().
+ */
+
+void alt_main (void)
+{
+ 488:	dfc00015 	stw	ra,0(sp)
+#endif
+
+  /* ALT LOG - please see HAL/sys/alt_log_printf.h for details */
+  ALT_LOG_PRINT_BOOT("[alt_main.c] Entering alt_main, calling alt_irq_init.\r\n");
+  /* Initialize the interrupt controller. */
+  alt_irq_init (NULL);
+ 48c:	00004b40 	call	4b4 <alt_irq_init>
+  ALT_LOG_PRINT_BOOT("[alt_main.c] Done OS Init, calling alt_sem_create.\r\n");
+  ALT_SEM_CREATE (&alt_fd_list_lock, 1);
+
+  /* Initialize the device drivers/software components. */
+  ALT_LOG_PRINT_BOOT("[alt_main.c] Calling alt_sys_init.\r\n");
+  alt_sys_init();
+ 490:	00004d40 	call	4d4 <alt_sys_init>
+   */
+
+  ALT_LOG_PRINT_BOOT("[alt_main.c] Calling main.\r\n");
+
+#ifdef ALT_NO_EXIT
+  main (alt_argc, alt_argv, alt_envp);
+ 494:	d1a07117 	ldw	r6,-32316(gp)
+ 498:	d1607217 	ldw	r5,-32312(gp)
+ 49c:	d1207317 	ldw	r4,-32308(gp)
+  close(STDOUT_FILENO);
+  exit (result);
+#endif
+
+  ALT_LOG_PRINT_BOOT("[alt_main.c] After main - we should not be here?.\r\n");
+}
+ 4a0:	dfc00017 	ldw	ra,0(sp)
+ 4a4:	dec00104 	addi	sp,sp,4
+   */
+
+  ALT_LOG_PRINT_BOOT("[alt_main.c] Calling main.\r\n");
+
+#ifdef ALT_NO_EXIT
+  main (alt_argc, alt_argv, alt_envp);
+ 4a8:	000022c1 	jmpi	22c <main>
+
+000004ac <alt_dev_reg>:
+
+static ALT_INLINE int alt_dev_reg (alt_dev* dev)
+{
+  extern alt_llist alt_dev_list;
+
+  return alt_dev_llist_insert ((alt_dev_llist*) dev, &alt_dev_list);
+ 4ac:	d1600104 	addi	r5,gp,-32764
+ 4b0:	00007981 	jmpi	798 <alt_dev_llist_insert>
+
+000004b4 <alt_irq_init>:
+ * The "base" parameter is ignored and only
+ * present for backwards-compatibility.
+ */
+
+void alt_irq_init ( const void* base )
+{
+ 4b4:	deffff04 	addi	sp,sp,-4
+ 4b8:	dfc00015 	stw	ra,0(sp)
+    ALTERA_NIOS2_GEN2_IRQ_INIT ( NIOS2, Nios2);
+ 4bc:	00008100 	call	810 <altera_nios2_gen2_irq_init>
+ * alt_irq_cpu_enable_interrupts() enables the CPU to start taking interrupts.
+ */
+static ALT_INLINE void ALT_ALWAYS_INLINE 
+       alt_irq_cpu_enable_interrupts (void)
+{
+    NIOS2_WRITE_STATUS(NIOS2_STATUS_PIE_MSK
+ 4c0:	00800044 	movi	r2,1
+ 4c4:	1001703a 	wrctl	status,r2
+    alt_irq_cpu_enable_interrupts();
+}
+ 4c8:	dfc00017 	ldw	ra,0(sp)
+ 4cc:	dec00104 	addi	sp,sp,4
+ 4d0:	f800283a 	ret
+
+000004d4 <alt_sys_init>:
+ * Called after alt_irq_init().
+ */
+
+void alt_sys_init( void )
+{
+    ALTERA_UP_AVALON_AUDIO_AND_VIDEO_CONFIG_INIT ( AV_CONFIG, AV_Config);
+ 4d4:	01000034 	movhi	r4,0
+ * Initialize the non-interrupt controller devices.
+ * Called after alt_irq_init().
+ */
+
+void alt_sys_init( void )
+{
+ 4d8:	deffff04 	addi	sp,sp,-4
+    ALTERA_UP_AVALON_AUDIO_AND_VIDEO_CONFIG_INIT ( AV_CONFIG, AV_Config);
+ 4dc:	21028f04 	addi	r4,r4,2620
+ * Initialize the non-interrupt controller devices.
+ * Called after alt_irq_init().
+ */
+
+void alt_sys_init( void )
+{
+ 4e0:	dfc00015 	stw	ra,0(sp)
+    ALTERA_UP_AVALON_AUDIO_AND_VIDEO_CONFIG_INIT ( AV_CONFIG, AV_Config);
+ 4e4:	00004ac0 	call	4ac <alt_dev_reg>
+    ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER_INIT ( VGA_SUBSYSTEM_CHAR_BUF_SUBSYSTEM_CHAR_BUF_DMA, VGA_Subsystem_Char_Buf_Subsystem_Char_Buf_DMA);
+ 4e8:	00800034 	movhi	r2,0
+ 4ec:	10827804 	addi	r2,r2,2528
+ 4f0:	11400a17 	ldw	r5,40(r2)
+ 4f4:	28c00017 	ldw	r3,0(r5)
+ 4f8:	10c00b15 	stw	r3,44(r2)
+ 4fc:	28c00117 	ldw	r3,4(r5)
+ 500:	10c00c15 	stw	r3,48(r2)
+ 504:	28c00204 	addi	r3,r5,8
+ 508:	1900000b 	ldhu	r4,0(r3)
+ 50c:	29400304 	addi	r5,r5,12
+ 510:	11001115 	stw	r4,68(r2)
+ 514:	18c00017 	ldw	r3,0(r3)
+ 518:	1806d43a 	srli	r3,r3,16
+ 51c:	10c01215 	stw	r3,72(r2)
+ 520:	28c00017 	ldw	r3,0(r5)
+ 524:	1807d07a 	srai	r3,r3,1
+ 528:	18c0004c 	andi	r3,r3,1
+ 52c:	10c00d15 	stw	r3,52(r2)
+ 530:	28c00017 	ldw	r3,0(r5)
+ 534:	1807d23a 	srai	r3,r3,8
+ 538:	18c003cc 	andi	r3,r3,15
+ 53c:	19800044 	addi	r6,r3,1
+ 540:	11800e15 	stw	r6,56(r2)
+ 544:	29000017 	ldw	r4,0(r5)
+ 548:	2009d1ba 	srai	r4,r4,6
+ 54c:	210000cc 	andi	r4,r4,3
+ 550:	20c00044 	addi	r3,r4,1
+ 554:	10c00f15 	stw	r3,60(r2)
+ 558:	30c7383a 	mul	r3,r6,r3
+ 55c:	01000204 	movi	r4,8
+ 560:	18c03fcc 	andi	r3,r3,255
+ 564:	20c00236 	bltu	r4,r3,570 <alt_sys_init+0x9c>
+ 568:	00c00044 	movi	r3,1
+ 56c:	00000506 	br	584 <alt_sys_init+0xb0>
+ 570:	01000404 	movi	r4,16
+ 574:	20c00236 	bltu	r4,r3,580 <alt_sys_init+0xac>
+ 578:	00c00084 	movi	r3,2
+ 57c:	00000106 	br	584 <alt_sys_init+0xb0>
+ 580:	00c00104 	movi	r3,4
+ 584:	10c01015 	stw	r3,64(r2)
+ 588:	29400017 	ldw	r5,0(r5)
+ 58c:	12001017 	ldw	r8,64(r2)
+ 590:	01000034 	movhi	r4,0
+ 594:	01c00044 	movi	r7,1
+ 598:	2807d43a 	srai	r3,r5,16
+ 59c:	280cd63a 	srli	r6,r5,24
+ 5a0:	21027804 	addi	r4,r4,2528
+ 5a4:	41c0021e 	bne	r8,r7,5b0 <alt_sys_init+0xdc>
+ 5a8:	20001315 	stw	zero,76(r4)
+ 5ac:	00000506 	br	5c4 <alt_sys_init+0xf0>
+ 5b0:	01400084 	movi	r5,2
+ 5b4:	4140021e 	bne	r8,r5,5c0 <alt_sys_init+0xec>
+ 5b8:	21c01315 	stw	r7,76(r4)
+ 5bc:	00000106 	br	5c4 <alt_sys_init+0xf0>
+ 5c0:	21401315 	stw	r5,76(r4)
+ 5c4:	18c03fcc 	andi	r3,r3,255
+ 5c8:	01400804 	movi	r5,32
+ 5cc:	28cfc83a 	sub	r7,r5,r3
+ 5d0:	013fffc4 	movi	r4,-1
+ 5d4:	21ced83a 	srl	r7,r4,r7
+ 5d8:	298bc83a 	sub	r5,r5,r6
+ 5dc:	2148d83a 	srl	r4,r4,r5
+ 5e0:	11c01415 	stw	r7,80(r2)
+ 5e4:	11c01317 	ldw	r7,76(r2)
+ 5e8:	11001615 	stw	r4,88(r2)
+ 5ec:	01000034 	movhi	r4,0
+ 5f0:	38c7883a 	add	r3,r7,r3
+ 5f4:	21027804 	addi	r4,r4,2528
+ 5f8:	10c01515 	stw	r3,84(r2)
+ 5fc:	00004ac0 	call	4ac <alt_dev_reg>
+    ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER_INIT ( VGA_SUBSYSTEM_VGA_PIXEL_DMA, VGA_Subsystem_VGA_Pixel_DMA);
+ 600:	00800034 	movhi	r2,0
+ 604:	10826104 	addi	r2,r2,2436
+ 608:	11400a17 	ldw	r5,40(r2)
+ 60c:	28c00017 	ldw	r3,0(r5)
+ 610:	10c00b15 	stw	r3,44(r2)
+ 614:	28c00117 	ldw	r3,4(r5)
+ 618:	10c00c15 	stw	r3,48(r2)
+ 61c:	28c00204 	addi	r3,r5,8
+ 620:	1900000b 	ldhu	r4,0(r3)
+ 624:	29400304 	addi	r5,r5,12
+ 628:	11001115 	stw	r4,68(r2)
+ 62c:	18c00017 	ldw	r3,0(r3)
+ 630:	1806d43a 	srli	r3,r3,16
+ 634:	10c01215 	stw	r3,72(r2)
+ 638:	28c00017 	ldw	r3,0(r5)
+ 63c:	1807d07a 	srai	r3,r3,1
+ 640:	18c0004c 	andi	r3,r3,1
+ 644:	10c00d15 	stw	r3,52(r2)
+ 648:	28c00017 	ldw	r3,0(r5)
+ 64c:	1807d23a 	srai	r3,r3,8
+ 650:	18c003cc 	andi	r3,r3,15
+ 654:	19800044 	addi	r6,r3,1
+ 658:	11800e15 	stw	r6,56(r2)
+ 65c:	29000017 	ldw	r4,0(r5)
+ 660:	2009d1ba 	srai	r4,r4,6
+ 664:	210000cc 	andi	r4,r4,3
+ 668:	20c00044 	addi	r3,r4,1
+ 66c:	10c00f15 	stw	r3,60(r2)
+ 670:	30c7383a 	mul	r3,r6,r3
+ 674:	01000204 	movi	r4,8
+ 678:	18c03fcc 	andi	r3,r3,255
+ 67c:	20c00236 	bltu	r4,r3,688 <alt_sys_init+0x1b4>
+ 680:	00c00044 	movi	r3,1
+ 684:	00000506 	br	69c <alt_sys_init+0x1c8>
+ 688:	01000404 	movi	r4,16
+ 68c:	20c00236 	bltu	r4,r3,698 <alt_sys_init+0x1c4>
+ 690:	00c00084 	movi	r3,2
+ 694:	00000106 	br	69c <alt_sys_init+0x1c8>
+ 698:	00c00104 	movi	r3,4
+ 69c:	10c01015 	stw	r3,64(r2)
+ 6a0:	29400017 	ldw	r5,0(r5)
+ 6a4:	12001017 	ldw	r8,64(r2)
+ 6a8:	01000034 	movhi	r4,0
+ 6ac:	01c00044 	movi	r7,1
+ 6b0:	2807d43a 	srai	r3,r5,16
+ 6b4:	280cd63a 	srli	r6,r5,24
+ 6b8:	21026104 	addi	r4,r4,2436
+ 6bc:	41c0021e 	bne	r8,r7,6c8 <alt_sys_init+0x1f4>
+ 6c0:	20001315 	stw	zero,76(r4)
+ 6c4:	00000506 	br	6dc <alt_sys_init+0x208>
+ 6c8:	01400084 	movi	r5,2
+ 6cc:	4140021e 	bne	r8,r5,6d8 <alt_sys_init+0x204>
+ 6d0:	21c01315 	stw	r7,76(r4)
+ 6d4:	00000106 	br	6dc <alt_sys_init+0x208>
+ 6d8:	21401315 	stw	r5,76(r4)
+ 6dc:	18c03fcc 	andi	r3,r3,255
+ 6e0:	01400804 	movi	r5,32
+ 6e4:	28cfc83a 	sub	r7,r5,r3
+ 6e8:	013fffc4 	movi	r4,-1
+ 6ec:	21ced83a 	srl	r7,r4,r7
+ 6f0:	298bc83a 	sub	r5,r5,r6
+ 6f4:	2148d83a 	srl	r4,r4,r5
+ 6f8:	11c01415 	stw	r7,80(r2)
+ 6fc:	11c01317 	ldw	r7,76(r2)
+ 700:	11001615 	stw	r4,88(r2)
+ 704:	01000034 	movhi	r4,0
+ 708:	38c7883a 	add	r3,r7,r3
+ 70c:	21026104 	addi	r4,r4,2436
+ 710:	10c01515 	stw	r3,84(r2)
+ 714:	00004ac0 	call	4ac <alt_dev_reg>
+    ALTERA_UP_AVALON_VIDEO_RGB_RESAMPLER_INIT ( VGA_SUBSYSTEM_VGA_PIXEL_RGB_RESAMPLER, VGA_Subsystem_VGA_Pixel_RGB_Resampler);
+ 718:	01000034 	movhi	r4,0
+ 71c:	21025004 	addi	r4,r4,2368
+ 720:	20800a17 	ldw	r2,40(r4)
+ 724:	10c00017 	ldw	r3,0(r2)
+ 728:	18c003cc 	andi	r3,r3,15
+ 72c:	20c00b15 	stw	r3,44(r4)
+ 730:	10c00017 	ldw	r3,0(r2)
+ 734:	1807d13a 	srai	r3,r3,4
+ 738:	18c0004c 	andi	r3,r3,1
+ 73c:	20c00c15 	stw	r3,48(r4)
+ 740:	10c00017 	ldw	r3,0(r2)
+ 744:	1807d17a 	srai	r3,r3,5
+ 748:	18c0004c 	andi	r3,r3,1
+ 74c:	20c00d15 	stw	r3,52(r4)
+ 750:	10c00017 	ldw	r3,0(r2)
+ 754:	1807d43a 	srai	r3,r3,16
+ 758:	18c003cc 	andi	r3,r3,15
+ 75c:	20c00e15 	stw	r3,56(r4)
+ 760:	10c00017 	ldw	r3,0(r2)
+ 764:	1807d53a 	srai	r3,r3,20
+ 768:	18c0004c 	andi	r3,r3,1
+ 76c:	20c00f15 	stw	r3,60(r4)
+ 770:	10800017 	ldw	r2,0(r2)
+ 774:	1005d57a 	srai	r2,r2,21
+ 778:	1080004c 	andi	r2,r2,1
+ 77c:	20801015 	stw	r2,64(r4)
+}
+ 780:	dfc00017 	ldw	ra,0(sp)
+ 784:	dec00104 	addi	sp,sp,4
+void alt_sys_init( void )
+{
+    ALTERA_UP_AVALON_AUDIO_AND_VIDEO_CONFIG_INIT ( AV_CONFIG, AV_Config);
+    ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER_INIT ( VGA_SUBSYSTEM_CHAR_BUF_SUBSYSTEM_CHAR_BUF_DMA, VGA_Subsystem_Char_Buf_Subsystem_Char_Buf_DMA);
+    ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER_INIT ( VGA_SUBSYSTEM_VGA_PIXEL_DMA, VGA_Subsystem_VGA_Pixel_DMA);
+    ALTERA_UP_AVALON_VIDEO_RGB_RESAMPLER_INIT ( VGA_SUBSYSTEM_VGA_PIXEL_RGB_RESAMPLER, VGA_Subsystem_VGA_Pixel_RGB_Resampler);
+ 788:	00004ac1 	jmpi	4ac <alt_dev_reg>
+
+0000078c <alt_dcache_flush_all>:
+/*
+ * alt_dcache_flush_all() is called to flush the entire data cache.
+ */
+
+void alt_dcache_flush_all (void)
+{
+ 78c:	f800283a 	ret
+
+00000790 <alt_dev_null_write>:
+ */
+
+static int alt_dev_null_write (alt_fd* fd, const char* ptr, int len)
+{
+  return len;
+}
+ 790:	3005883a 	mov	r2,r6
+ 794:	f800283a 	ret
+
+00000798 <alt_dev_llist_insert>:
+{
+  /*
+   * check that the device exists, and that it has a valid name.
+   */
+
+  if (!dev || !dev->name)
+ 798:	20000226 	beq	r4,zero,7a4 <alt_dev_llist_insert+0xc>
+ 79c:	20800217 	ldw	r2,8(r4)
+ 7a0:	1000101e 	bne	r2,zero,7e4 <alt_dev_llist_insert+0x4c>
+
+extern int errno;
+
+static ALT_INLINE int* alt_get_errno(void)
+{
+  return ((alt_errno) ? alt_errno() : &errno);
+ 7a4:	d0a00517 	ldw	r2,-32748(gp)
+ 7a8:	10000926 	beq	r2,zero,7d0 <alt_dev_llist_insert+0x38>
+/*
+ *
+ */
+
+int alt_dev_llist_insert (alt_dev_llist* dev, alt_llist* list)
+{
+ 7ac:	deffff04 	addi	sp,sp,-4
+ 7b0:	dfc00015 	stw	ra,0(sp)
+ 7b4:	103ee83a 	callr	r2
+   * check that the device exists, and that it has a valid name.
+   */
+
+  if (!dev || !dev->name)
+  {
+    ALT_ERRNO = EINVAL;
+ 7b8:	00c00584 	movi	r3,22
+ 7bc:	10c00015 	stw	r3,0(r2)
+    return -EINVAL;
+ 7c0:	00bffa84 	movi	r2,-22
+   */
+  
+  alt_llist_insert(list, &dev->llist);
+
+  return 0;  
+}
+ 7c4:	dfc00017 	ldw	ra,0(sp)
+ 7c8:	dec00104 	addi	sp,sp,4
+ 7cc:	f800283a 	ret
+ 7d0:	d0a07404 	addi	r2,gp,-32304
+   * check that the device exists, and that it has a valid name.
+   */
+
+  if (!dev || !dev->name)
+  {
+    ALT_ERRNO = EINVAL;
+ 7d4:	00c00584 	movi	r3,22
+ 7d8:	10c00015 	stw	r3,0(r2)
+    return -EINVAL;
+ 7dc:	00bffa84 	movi	r2,-22
+   */
+  
+  alt_llist_insert(list, &dev->llist);
+
+  return 0;  
+}
+ 7e0:	f800283a 	ret
+
+static ALT_INLINE void ALT_ALWAYS_INLINE alt_llist_insert(alt_llist* list, 
+                alt_llist* entry)
+{
+  entry->previous = list;
+  entry->next     = list->next;
+ 7e4:	28800017 	ldw	r2,0(r5)
+ */
+
+static ALT_INLINE void ALT_ALWAYS_INLINE alt_llist_insert(alt_llist* list, 
+                alt_llist* entry)
+{
+  entry->previous = list;
+ 7e8:	21400115 	stw	r5,4(r4)
+  entry->next     = list->next;
+ 7ec:	20800015 	stw	r2,0(r4)
+
+  list->next->previous = entry;
+ 7f0:	28800017 	ldw	r2,0(r5)
+ 7f4:	11000115 	stw	r4,4(r2)
+  list->next           = entry;
+ 7f8:	29000015 	stw	r4,0(r5)
+   * register the device.
+   */
+  
+  alt_llist_insert(list, &dev->llist);
+
+  return 0;  
+ 7fc:	0005883a 	mov	r2,zero
+ 800:	f800283a 	ret
+
+00000804 <alt_icache_flush_all>:
+ */
+
+void alt_icache_flush_all (void)
+{
+#if NIOS2_ICACHE_SIZE > 0
+  alt_icache_flush (0, NIOS2_ICACHE_SIZE);
+ 804:	01440004 	movi	r5,4096
+ 808:	0009883a 	mov	r4,zero
+ 80c:	00008181 	jmpi	818 <alt_icache_flush>
+
+00000810 <altera_nios2_gen2_irq_init>:
+ * To initialize the internal interrupt controller, just clear the IENABLE
+ * register so that all possible IRQs are disabled.
+ */
+void altera_nios2_gen2_irq_init(void) 
+{
+    NIOS2_WRITE_IENABLE(0);
+ 810:	000170fa 	wrctl	ienable,zero
+ 814:	f800283a 	ret
+
+00000818 <alt_icache_flush>:
+  if (len > NIOS2_ICACHE_SIZE)
+  {
+    len = NIOS2_ICACHE_SIZE;
+  }
+
+  end = ((char*) start) + len;
+ 818:	00840004 	movi	r2,4096
+ 81c:	1140012e 	bgeu	r2,r5,824 <alt_icache_flush+0xc>
+ 820:	100b883a 	mov	r5,r2
+ 824:	214b883a 	add	r5,r4,r5
+
+  for (i = start; i < end; i+= NIOS2_ICACHE_LINE_SIZE)
+ 828:	2005883a 	mov	r2,r4
+ 82c:	1140032e 	bgeu	r2,r5,83c <alt_icache_flush+0x24>
+  { 
+    __asm__ volatile ("flushi %0" :: "r" (i)); 
+ 830:	1000603a 	flushi	r2
+    len = NIOS2_ICACHE_SIZE;
+  }
+
+  end = ((char*) start) + len;
+
+  for (i = start; i < end; i+= NIOS2_ICACHE_LINE_SIZE)
+ 834:	10800804 	addi	r2,r2,32
+ 838:	003ffc06 	br	82c <__alt_mem_VGA_Subsystem_Char_Buf_Subsystem_Onchip_SRAM+0xf700082c>
+   * For an unaligned flush request, we've got one more line left.
+   * Note that this is dependent on NIOS2_ICACHE_LINE_SIZE to be a 
+   * multiple of 2 (which it always is).
+   */
+
+  if (((alt_u32) start) & (NIOS2_ICACHE_LINE_SIZE - 1))
+ 83c:	210007cc 	andi	r4,r4,31
+ 840:	20000126 	beq	r4,zero,848 <alt_icache_flush+0x30>
+  {
+    __asm__ volatile ("flushi %0" :: "r" (i));
+ 844:	1000603a 	flushi	r2
+  /* 
+   * Having flushed the cache, flush any stale instructions in the 
+   * pipeline 
+   */
+
+  __asm__ volatile ("flushp");
+ 848:	0000203a 	flushp
+ 84c:	f800283a 	ret
