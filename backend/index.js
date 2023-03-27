@@ -360,4 +360,3 @@ async function speech2text() {
 
 
 run()
->>>>>>> Stashed changes
