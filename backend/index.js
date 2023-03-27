@@ -9,6 +9,7 @@ const oneDay = 1000 * 60 * 60 * 24;
 const crypto = require('crypto')
 const speech = require('@google-cloud/speech');
 const sCli = new speech.SpeechClient();
+const fs = require('fs');
 
 app.use(bodyParser.urlencoded({
           extended: true
@@ -329,6 +330,34 @@ async function run() {
                 console.log(err)
                 await client.close()
         }
+        speech2text()
 }
 
+async function speech2text() {
+	        const filename = './real.mp3'
+	        const file = fs.readFileSync(filename)
+	        const audioBytes = file.toString('base64')
+
+	        const audio = {
+			                content: audioBytes,
+			        };
+
+	        const config = {
+			                encoding: 'MP3',
+			                sampleRateHertz: 16000,
+			                languageCode: 'en-US',
+			        };
+	        const request = {
+			                audio: audio,
+			                config: config,
+			        };
+	        const [response] = await sCli.recognize(request);
+	        const transcription = response.results
+	                .map(result => result.alternatives[0].transcript)
+	                .join('\n');
+	        console.log(`Transcription: ${transcription}`);
+}
+
+
 run()
+>>>>>>> Stashed changes
