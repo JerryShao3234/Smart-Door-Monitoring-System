@@ -7,7 +7,9 @@
 #define MEDIUM_FONT_XPIXELS	10				// width of Font10x14 characters in pixels (no spacing)
 #define MEDIUM_FONT_YPIXELS	14				// height of Font10x14 characters in pixels (no spacing)
 
-extern const unsigned short int Font5x7[95][7] ;
+#define LETTER_SPACING 2
+
+extern const unsigned char Font5x7[][7] ;
 extern const unsigned short int Font10x14[][14] ;
 
 #endif // FONTS_H_
