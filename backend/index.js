@@ -21,6 +21,25 @@ io.on('connection', (socket) => {
                 console.log(msg);
                 io.sockets.emit('message', msg)
         });
+        socket.on('image', async (msg) => {
+                console.log(msg);
+                io.sockets.emit('image', "image received by server")
+                //get userID using de1socID
+                //update image in user object using lastvisit
+		var msg_js = JSON.parse(msg)
+                const user = await client.db("sdmsDB").collection("user").findOne({ de1socID: msg_js.de1socID})
+                if (user == null || user === undefined) {
+                        console.log("user not found")
+                        const users = await client.db("sdmsDB").collection("user").find({}).toArray()
+                        console.log(users)
+                        io.sockets.emit('image', "problem with image: user not found")
+                        return
+                }
+                await client.db("sdmsDB").collection("visits").updateOne(
+                        {"_id": new ObjectId(user.lastVisit)},
+                        {$set: {"img": msg_js.image}}
+                ).then(()=>{console.log("image updated")})
+        });
 });
 
 const { MongoClient, ObjectId } = require("mongodb") //setup MongoDB
@@ -141,6 +160,7 @@ app.post("/getvisits", async (req, res) => {
         }
         user_id = user._id
         var visits = await client.db("sdmsDB").collection("visits").find({"userID": user_id}).toArray()
+	console.log(visits)
         for (var i = 0; i < visits.length; i++) {
                 var messages = await client.db("sdmsDB").collection("messages").find({"visitID": visits[i]._id.toString()}).toArray()
                 visits[i].messages = messages
@@ -169,6 +189,7 @@ app.post("/visit", async (req, res) => {
 		//generate a unique id for the visit
         insert_id = new ObjectId()
 	date = (new Date()).getTime()
+
         await client.db("sdmsDB").collection("visits").insertOne(
                 {
                         "_id": insert_id,
@@ -176,7 +197,7 @@ app.post("/visit", async (req, res) => {
                         "visitor": req.body.visitor,
                         "date": date,
                         "intent": req.body.intent,
-                        "img": req.body.img
+                        "img": req.body.img //no longer necessary
                 }
         )
         console.log(insert_id)
@@ -184,8 +205,24 @@ app.post("/visit", async (req, res) => {
                 {"_id": user_id},
                 {$set: {"lastVisit": insert_id.toString()}}
         )
-        res.status(200).send("Visit logged")
         io.sockets.emit('visitNotification', "You have a visitor!")
+        obj = {
+                "de1socID": "123",
+                "visitor": "mockvisitorID"
+        }
+        io.sockets.emit('image', obj)
+        res.status(200).send("Visit logged")
+        
+})
+
+app.post("/testvisit", async (req, res) => {
+        console.log("testvisit called")
+        obj = {
+                "de1socID": "123",
+                "visitor": "mockvisitorID"
+        }
+        io.sockets.emit('image', obj)
+        res.status(200).send("Visit logged")
 })
 
 //hardware will continuously poll for messages whenever a visit occurs, only stopping when the <STOP> token is received
@@ -330,7 +367,7 @@ async function run() {
                 console.log(err)
                 await client.close()
         }
-        speech2text()
+//        speech2text()
 }
 
 async function speech2text() {
