@@ -8,7 +8,6 @@
 void setup() {
   Serial.begin(115200);
   WiFi.begin("Simran’s iPhone", "simranwifi");
-//  WiFi.begin("TELUS8951", "YPEmmXLLG7rt");
   
   //Wait for the WiFI connection completion
   Serial.println();
