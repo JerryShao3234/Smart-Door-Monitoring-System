@@ -1,4 +1,5 @@
 var express = require("express")
+var multer = require('multer')
 var bodyParser = require('body-parser')
 const http = require('http');
 
@@ -10,6 +11,19 @@ const crypto = require('crypto')
 const speech = require('@google-cloud/speech');
 const sCli = new speech.SpeechClient();
 const fs = require('fs');
+
+const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+          // specify the destination folder for uploaded files, relative file path
+          cb(null, 'uploads/');
+        },
+        filename: (req, file, cb) => {
+          // specify how to name the uploaded files
+          cb(null, file.originalname);
+        }
+      });
+      
+      const upload = multer({ storage: storage });
 
 app.use(bodyParser.urlencoded({
           extended: true
@@ -177,6 +191,8 @@ app.post("/getvisits", async (req, res) => {
  *
  * Should have a socket.io connection (doorbell analogy)
 */
+
+//If intent is "record" send a socket.io message to the app to start recording
 app.post("/visit", async (req, res) => {
         console.log(req.body)
         user = await client.db("sdmsDB").collection("user").findOne({"de1socID": req.body.de1socID})
@@ -221,7 +237,7 @@ app.post("/testvisit", async (req, res) => {
                 "de1socID": "123",
                 "visitor": "mockvisitorID"
         }
-        io.sockets.emit('image', obj)
+        io.sockets.emit('audio', obj)
         res.status(200).send("Visit logged")
 })
 
@@ -329,31 +345,63 @@ app.post("/readMessage", async (req, res) => {
 	res.status(200).send("Message read")
 })
 
-async function quickstart() {
-        // The path to the remote LINEAR16 file stored in Google Cloud Storage
-        const gcsUri = 'gs://cloud-samples-data/speech/brooklyn_bridge.raw';
+//multipart form data containing a wav file
+//the endpoint will save the file locally
+app.post("/audio", upload.single('audio'), async (req, res) => {
+        console.log(req.file)
 
-        // The audio file's encoding, sample rate in hertz, and BCP-47 language code
+        //const filepath = "~/CPEN391_git/l2a-02-sdms/backend/" + "audio.wav"
+        const filename = './uploads/audio.wav'
+        const file = fs.readFileSync(filename)
+        const audioBytes = file.toString('base64')
+
         const audio = {
-                uri: gcsUri,
+                content: audioBytes,
         };
+
         const config = {
-                encoding: 'LINEAR16',
-                sampleRateHertz: 16000,
+                //encoding: 'MP3',
+                encoding: 'WAV',
+                sampleRateHertz: 44100,
                 languageCode: 'en-US',
+                audioChannelCount: 2,
         };
         const request = {
                 audio: audio,
                 config: config,
         };
-
-        // Detects speech in the audio file
         const [response] = await sCli.recognize(request);
         const transcription = response.results
                 .map(result => result.alternatives[0].transcript)
                 .join('\n');
         console.log(`Transcription: ${transcription}`);
-}
+
+        user = await client.db("sdmsDB").collection("user").findOne({"de1socID": req.body.de1socID})
+        if (user == null || user === undefined) {
+                console.log("user not found")
+                res.status(404).send("User not found")
+                return
+        }
+        user_id = user._id
+        visit_id = user.lastVisit
+		date = (new Date()).getTime()
+        await client.db("sdmsDB").collection("messages").insertOne(
+                {
+                        "userID": user_id,
+                        "messageInfo": transcription,
+                        "date": date,
+                        "sender": "visitor",
+                        "read": false,
+                        "visitID": visit_id
+                }, (err, res) => {
+                        msg_id = res.insertedId
+                        io.sockets.emit('message', req.body.messageInfo + " " + msg_id + "")
+                        res.status(200).send("Message sent")
+                }
+        )
+
+        res.status(200).send("Audio received")
+})
 
 async function run() {
         try {
@@ -367,11 +415,11 @@ async function run() {
                 console.log(err)
                 await client.close()
         }
-//        speech2text()
 }
 
 async function speech2text() {
-	        const filename = './real.mp3'
+	        //const filename = './real.mp3'
+                const filename = './uploads/audio.wav'
 	        const file = fs.readFileSync(filename)
 	        const audioBytes = file.toString('base64')
 
@@ -380,9 +428,11 @@ async function speech2text() {
 			        };
 
 	        const config = {
-			                encoding: 'MP3',
-			                sampleRateHertz: 16000,
+			                //encoding: 'MP3',
+                                        encoding: 'WAV',
+			                sampleRateHertz: 44100,
 			                languageCode: 'en-US',
+                                        audioChannelCount: 2,
 			        };
 	        const request = {
 			                audio: audio,
