@@ -231,8 +231,8 @@ app.post("/visit", async (req, res) => {
         
 })
 
-app.post("/testvisit", async (req, res) => {
-        console.log("testvisit called")
+app.post("/testaudio", async (req, res) => {
+        console.log("testaudio called")
         obj = {
                 "de1socID": "123",
                 "visitor": "mockvisitorID"
@@ -240,6 +240,17 @@ app.post("/testvisit", async (req, res) => {
         io.sockets.emit('audio', obj)
         res.status(200).send("Visit logged")
 })
+
+app.post("/testimage", async (req, res) => {
+        console.log("testimage called")
+        obj = {
+                "de1socID": "123",
+                "visitor": "mockvisitorID"
+        }
+        io.sockets.emit('image', obj)
+        res.status(200).send("Visit logged")
+})
+
 
 //hardware will continuously poll for messages whenever a visit occurs, only stopping when the <STOP> token is received
 app.post("/pollmessages", async (req, res) => {
