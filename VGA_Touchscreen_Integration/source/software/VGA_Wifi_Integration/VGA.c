@@ -103,30 +103,54 @@ void ShowRecordingEnd(int wait_time)
 
 	// }
 
-	// int index = 0;
-	// char msg[1024];
-	// char c = 'a';
-	// // usleep(2000000);
+	int index = 0;
+
+	char msg_1[30] = "";
+	char msg_2[30] = "";
+	char msg_3[30] = "";
+
+	char c = 'a';
+	// usleep(2000000);
 	// while(1) {
 	// 	c = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
 	// 	printf("Loop 1: %c\n", c);
-	// 	usleep(375000);
+	// 	usleep(355000);
 	// }
-	// while(c = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE) != '<')
-	// {
-	// 	usleep(42);
-	// 	printf("Loop 1: %c\n", c);
-	// }
+	while(c != '<')
+	{
+		c = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
+		printf("Loop 1: %c\n", c);
+		usleep(355000);
+	}
 
-	// while(c != '>'){
-	// 	c = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
-	// 	msg[index++] = c;
-	// 	printf("Loop 2: %d\n", c);
-	// 	usleep(42);
-	// }
+	while(c == '<')
+	{
+		c = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
+		printf("Loop 1: %c\n", c);
+		usleep(355000);
+	}
 
-	// printf("message: %s\n", msg);
-	// ShowMessage(msg);
+	while(c != '>'){
+		if(index < 25) {
+			msg_1[index] = c;
+		} 
+		else if (index < 50) {
+			msg_2[index % 25] = c;
+		}
+		else {
+			msg_3[index % 50] = c;
+		}
+		index++;
+		// msg[index++] = c;
+		c = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
+		printf("Loop 2: %c\n", c);
+		usleep(355000);
+	}
+
+	printf("message 1: %s\n", msg_1);
+	printf("message 2: %s\n", msg_2);
+	printf("message 3: %s\n", msg_3);
+	ShowMessage(msg_1, msg_2, msg_3);
 }
 
 void ShowFinish(void) 
@@ -140,11 +164,13 @@ void ShowFinish(void)
 	DrawString(LEFT_X_LIMIT + 4, WELCOME_TITLE_Y + 16, WHITE, BLACK, "for visiting!", TRUE, MEDIUM_FONT);
 }
 
-void ShowMessage(char *message) 
+void ShowMessage(char *message_1, char *message_2, char *message_3) 
 {
 	ResetScreen();
 
-	DrawString(QUESTION_X, INTENT_Y + 10, WHITE, BLACK, message, FALSE, SMALL_FONT);
+	DrawString(LEFT_X_LIMIT + 5, TOP_Y_LIMIT + 20, WHITE, BLACK, message_1, FALSE, SMALL_FONT);
+	DrawString(LEFT_X_LIMIT + 5, TOP_Y_LIMIT + 40, WHITE, BLACK, message_2, FALSE, SMALL_FONT);
+	DrawString(LEFT_X_LIMIT + 5, TOP_Y_LIMIT + 60, WHITE, BLACK, message_3, FALSE, SMALL_FONT);
 
 	DrawButton(FINISH);
 }
