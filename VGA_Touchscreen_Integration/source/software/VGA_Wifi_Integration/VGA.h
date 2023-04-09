@@ -47,7 +47,7 @@ void ShowOptionRecord(void);
 void ShowRecordingInProgress(void);
 void ShowRecordingEnd(int wait_time);
 void ShowFinish(void);
-void ShowMessage(char *message_1, char *message_2, char *message_3);
+void ShowMessage(char *message_1, char *message_2, char *message_3, char *message_4);
 
 /* Helper Functions */
 void vga_plot(unsigned x, unsigned y, unsigned colour);

@@ -93,64 +93,80 @@ void ShowRecordingEnd(int wait_time)
 
 	DrawString(QUESTION_X + 13, INTENT_Y + 10, WHITE, BLACK, "Message sent!", FALSE, SMALL_FONT);
 	DrawString(QUESTION_X + 3, INTENT_Y + 20, WHITE, BLACK, "Awaiting reply...", FALSE, SMALL_FONT);
-	
-	// TODO: show timer
-	// for(int i = wait_time; i >= 0; i--){
-	// 	sprintf(num, "%d", i);
-	// 	DrawString(QUESTION_X + 40, INTENT_Y + 35, WHITE, BLACK, num, TRUE, MEDIUM_FONT);
-	// 	usleep(1000000);
-	// 	DrawString(QUESTION_X + 40, INTENT_Y + 35, BLACK, BLACK, num, TRUE, MEDIUM_FONT);
-
-	// }
 
 	int index = 0;
 
+	char msg[100] = "";
 	char msg_1[30] = "";
 	char msg_2[30] = "";
 	char msg_3[30] = "";
+	char msg_4[30] = "";
 
 	char c = 'a';
-	// usleep(2000000);
-	// while(1) {
-	// 	c = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
-	// 	printf("Loop 1: %c\n", c);
-	// 	usleep(355000);
-	// }
+	
 	while(c != '<')
 	{
 		c = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
 		printf("Loop 1: %c\n", c);
-		usleep(355000);
+		usleep(35500);
 	}
 
 	while(c == '<')
 	{
 		c = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
 		printf("Loop 1: %c\n", c);
-		usleep(355000);
+		usleep(35500);
 	}
 
 	while(c != '>'){
-		if(index < 25) {
-			msg_1[index] = c;
-		} 
-		else if (index < 50) {
-			msg_2[index % 25] = c;
-		}
-		else {
-			msg_3[index % 50] = c;
-		}
-		index++;
-		// msg[index++] = c;
+		msg[index++] = c;
 		c = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
 		printf("Loop 2: %c\n", c);
-		usleep(355000);
+		usleep(35500);
+	}
+
+	msg[index] = ' ';
+
+	int index_1 = index;
+	int index_2 = index;
+	int index_3 = index;
+
+	for(int i = 0; i <= index; i++) {
+		if(i <= 25 && (msg[i] == ' ')) {
+			index_1 = i;
+		}
+		else if(i <= (index_1 + 25) && (msg[i] == ' ')) {
+			index_2 = i;
+		}
+		else if(i <= (index_2 + 25) && (msg[i] == ' ')) {
+			index_3 = i;
+		}
+	}
+
+	printf("Index 1: %d\n", index_1);
+	printf("Index 2: %d\n", index_2);
+	printf("Index 3: %d\n", index_3);
+
+	for(int i = 0; i < index; i++) {
+		if(i >= 0 && i < index_1) {
+			msg_1[i] = msg[i];
+		}
+		else if(i >= index_1 && i < index_2) {
+			msg_2[i - index_1 - 1] = msg[i];
+		}
+		else if(i >= index_2 && i < index_3) {
+			msg_3[i - index_2 - 1] = msg[i];
+		}
+		else if(i >= index_3) {
+			msg_4[i - index_3 - 1] = msg[i];
+		}
 	}
 
 	printf("message 1: %s\n", msg_1);
 	printf("message 2: %s\n", msg_2);
 	printf("message 3: %s\n", msg_3);
-	ShowMessage(msg_1, msg_2, msg_3);
+	printf("message 4: %s\n", msg_4);
+	ShowMessage(msg_1, msg_2, msg_3, msg_4);
 }
 
 void ShowFinish(void) 
@@ -164,13 +180,14 @@ void ShowFinish(void)
 	DrawString(LEFT_X_LIMIT + 4, WELCOME_TITLE_Y + 16, WHITE, BLACK, "for visiting!", TRUE, MEDIUM_FONT);
 }
 
-void ShowMessage(char *message_1, char *message_2, char *message_3) 
+void ShowMessage(char *message_1, char *message_2, char *message_3, char *message_4) 
 {
 	ResetScreen();
 
 	DrawString(LEFT_X_LIMIT + 5, TOP_Y_LIMIT + 20, WHITE, BLACK, message_1, FALSE, SMALL_FONT);
 	DrawString(LEFT_X_LIMIT + 5, TOP_Y_LIMIT + 40, WHITE, BLACK, message_2, FALSE, SMALL_FONT);
 	DrawString(LEFT_X_LIMIT + 5, TOP_Y_LIMIT + 60, WHITE, BLACK, message_3, FALSE, SMALL_FONT);
+	DrawString(LEFT_X_LIMIT + 5, TOP_Y_LIMIT + 80, WHITE, BLACK, message_4, FALSE, SMALL_FONT);
 
 	DrawButton(FINISH);
 }
