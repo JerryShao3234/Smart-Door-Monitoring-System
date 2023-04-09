@@ -15,6 +15,7 @@ void setup() {
   Serial.begin(115200);
   WiFi.begin("Simran’s iPhone", "simranwifi");
   
+  
   //Wait for the WiFI connection completion
   Serial.println();
   Serial.print("Connecting");
@@ -61,7 +62,7 @@ void loop() {
       }
 //  
       http.begin(client, "http://155.248.237.255:3000/visit");
-////      http.begin(client, "http://192.168.1.71:8000/test");
+//      http.begin(client, "http://192.168.1.71:8000/test");
 ////      http.begin(client, "http://172.20.10.2:8000/test");
 //
       http.addHeader("Content-Type", "application/json");
@@ -74,21 +75,23 @@ void loop() {
       Serial.println(payload);
       http.end();
 
-//      delay(10000);
-//      String test_message = "<My name is Simran and I am here to test the display. This is test displays.>";
+//      String test_message = "<<<<My name is Simran and I am here to test>>>>";
 //
 //      for(int i = 0; i < test_message.length(); i++) {
 //        char c = test_message.charAt(i);
 //        Serial.print(c);
-//        delay(500);
+//        delay(50);
+//        //delay(500);
 //      }
-//      Serial.print(test_message);
-      Polling Attempt
+
+    
+//      Polling Attempt
       payload = "";
       
       http.begin(client, "http://155.248.237.255:3000/pollmessages");
 
       int count_stop = 0;
+      boolean got_message = false;
       
       while(count_stop < 10) {
         http.addHeader("Content-Type", "application/json");
@@ -102,17 +105,37 @@ void loop() {
           payload = payload.substring(1, payload.length() - 1);
           deserializeJson(buf, payload);
           
-          String user_message = String(buf["messageInfo"]);
-          Serial.println("User message: " + user_message);
-          count_stop = 0;
+          String user_message = "<<<<" + String(buf["messageInfo"]) + ">>>>";
+
+          for(int i = 0; i < user_message.length(); i++) {
+            char c = user_message.charAt(i);
+            Serial.print(c);
+            delay(50);
+          }
+
+//          count_stop = 0;
+          count_stop = 10;
+          got_message = true;
+          
         }
         
-        Serial.println(httpCode);
-        Serial.println(payload);
+//        Serial.println(httpCode);
+//        Serial.println(payload);
         delay(3000);
         
       }
-      Serial.println("DONE");
+
+      if(got_message == false) {
+        String no_message = "<<<<No response received>>>>";
+        
+        for(int i = 0; i < no_message.length(); i++) {
+          char c = no_message.charAt(i);
+          Serial.print(c);
+          delay(50);
+        }   
+      }
+      
+//      Serial.println("DONE");
       http.end();
     }
   }
