@@ -13,7 +13,7 @@
 
 #define HEADER_X 5
 #define HEADER_Y 10
-#define QUESTION_X 30
+#define QUESTION_X 25
 #define QUESTION_Y 10
 #define WELCOME_TITLE_X 40
 #define WELCOME_TITLE_Y 50

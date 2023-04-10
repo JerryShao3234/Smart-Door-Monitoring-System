@@ -21,7 +21,6 @@ enum state {WELCOME=0, OP1=1, OP2 = 2,
 
 void Init_Touch(void);
 struct coordinate Get_Coordinates_Of_Touch(void);
-void Send_Blink(void);
 unsigned int pixelInRange(unsigned int x, unsigned int y, unsigned int lower_x, unsigned int upper_x, int lower_y, int upper_y);
 void displayScreen(enum state s);
 
@@ -129,7 +128,6 @@ int main()
         			prev_state = REC;
 					if(pixelInRange(x, y, SELECT_BUTTON_X, SELECT_BUTTON_X + SELECT_BUTTON_WIDTH,
 							SELECT_BUTTON_Y, SELECT_BUTTON_Y+SELECT_BUTTON_HEIGHT)){
-						// next_state = PROG;
 						next_state = END;
 						IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, 'd');
 					} else if(pixelInRange(x, y, LEFT_BUTTON_X, LEFT_BUTTON_X + LEFT_RIGHT_BUTTON_WIDTH,
@@ -141,16 +139,8 @@ int main()
 					break;
         		}
         		case PROG: {
-        			// prev_state = PROG;
-					// if(pixelInRange(x, y, SELECT_BUTTON_X, SELECT_BUTTON_X + SELECT_BUTTON_WIDTH,
-					// 		SELECT_BUTTON_Y, SELECT_BUTTON_Y+SELECT_BUTTON_HEIGHT)){
-					// 	next_state = END;
-					// } else{
-					// 	next_state = PROG;
-					// }
 					prev_state = PROG;
 					next_state = END;
-					// usleep(4500000);
 					break;
         		}
         		case END: {
@@ -233,31 +223,6 @@ struct coordinate Get_Coordinates_Of_Touch(void)
     touch_cord.y = y;
 
     return touch_cord;
-}
-
-void Send_Blink(void) 
-{
-    char blink_command[32] = "dofile(\"blinking_light.lua\")\n";
-    char init_command[26] = "gpio.mode(3,gpio.OUTPUT)\n";
-    // char blink_command[24] = "gpio.write(3,gpio.LOW)\n";
-
-    // for(int i = 0; i < 26; i++) {
-    //     IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, init_command[i]);
-    //     // printf("%c", init_command[i]);
-    //     char received = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
-    //     printf("%c", received);
-    //     usleep(833);
-    // }
-
-    // usleep(833);
-
-    for(int i = 0; i < 32; i++) {
-        IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, blink_command[i]);
-        // printf("%c", blink_command[i]);
-        // char received = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
-        // printf("%c", received);
-        usleep(833);
-    }
 }
 
 unsigned int pixelInRange(unsigned int x, unsigned int y, unsigned int lower_x, unsigned int upper_x, int lower_y, int upper_y){

@@ -11,7 +11,7 @@ void ShowWelcome(void)
 	ResetScreen();
 
 	DrawString(HEADER_X, HEADER_Y, WHITE, BLACK, "SDMS: Smart Door", FALSE, SMALL_FONT);
-	DrawString(HEADER_X + 54, HEADER_Y + 10, WHITE, BLACK, "Monitoring System", FALSE, SMALL_FONT);
+	DrawString(HEADER_X + 50, HEADER_Y + 10, WHITE, BLACK, "Monitoring System", FALSE, SMALL_FONT);
 
 	DrawString(WELCOME_TITLE_X, WELCOME_TITLE_Y, WHITE, BLACK, "Welcome!", TRUE, MEDIUM_FONT);
 	DrawString(WELCOME_SUBTITLE_X, WELCOME_SUBTITLE_Y, WHITE, BLACK, "Touch Screen to Proceed", TRUE, SMALL_FONT);
@@ -22,11 +22,11 @@ void ShowOption1(void)
 	ResetScreen();
 
 	DrawString(QUESTION_X, QUESTION_Y, WHITE, BLACK, "What is the purpose", FALSE, SMALL_FONT);
-	DrawString(QUESTION_X, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
+	DrawString(QUESTION_X + 15, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
 
-	DrawString(INTENT_X, INTENT_Y, WHITE, BLACK, "Family", TRUE, MEDIUM_FONT);
-	DrawString(INTENT_X + 28, INTENT_Y + 16, WHITE, BLACK, "or", TRUE, SMALL_FONT);
-	DrawString(INTENT_X, INTENT_Y + 25, WHITE, BLACK, "Friend", TRUE, MEDIUM_FONT);
+	DrawString(INTENT_X, INTENT_Y + 5, WHITE, BLACK, "Family", TRUE, MEDIUM_FONT);
+	DrawString(INTENT_X + 28, INTENT_Y + 21, WHITE, BLACK, "or", TRUE, SMALL_FONT);
+	DrawString(INTENT_X, INTENT_Y + 30, WHITE, BLACK, "Friend", TRUE, MEDIUM_FONT);
 
 	DrawButton(SELECT);
 	DrawButton(RIGHT);
@@ -37,10 +37,10 @@ void ShowOption2(void)
 	ResetScreen();
 
 	DrawString(QUESTION_X, QUESTION_Y, WHITE, BLACK, "What is the purpose", FALSE, SMALL_FONT);
-	DrawString(QUESTION_X, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
+	DrawString(QUESTION_X + 15, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
 
 	DrawString(INTENT_X - 10, INTENT_Y + 3, WHITE, BLACK, "Package", TRUE, MEDIUM_FONT);
-	DrawString(INTENT_X - 10, INTENT_Y + 20, WHITE, BLACK, "Delivery", TRUE, MEDIUM_FONT);
+	DrawString(INTENT_X - 15, INTENT_Y + 20, WHITE, BLACK, "Delivery", TRUE, MEDIUM_FONT);
 
 	DrawButton(SELECT);
 	DrawButton(LEFT);
@@ -52,7 +52,7 @@ void ShowOption3(void)
 	ResetScreen();
 
 	DrawString(QUESTION_X, QUESTION_Y, WHITE, BLACK, "What is the purpose", FALSE, SMALL_FONT);
-	DrawString(QUESTION_X, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
+	DrawString(QUESTION_X + 15, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
 
 	DrawString(INTENT_X - 3, INTENT_Y + 15, WHITE, BLACK, "Advertisement", TRUE, SMALL_FONT);
 
@@ -66,7 +66,7 @@ void ShowOptionRecord(void)
 	ResetScreen();
 
 	DrawString(QUESTION_X, QUESTION_Y, WHITE, BLACK, "What is the purpose", FALSE, SMALL_FONT);
-	DrawString(QUESTION_X, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
+	DrawString(QUESTION_X + 15, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
 
 	DrawString(INTENT_X + 4, INTENT_Y + 10, WHITE, BLACK, "Other", TRUE, MEDIUM_FONT);
 	DrawString(INTENT_X + 6, INTENT_Y + 35, WHITE, BLACK, "Record a", TRUE, SMALL_FONT);
@@ -80,11 +80,7 @@ void ShowRecordingInProgress(void)
 {
 	ResetScreen();
 
-	// DrawString(QUESTION_X, INTENT_Y + 10, WHITE, BLACK, "Please speak into", FALSE, SMALL_FONT);
-	// DrawString(QUESTION_X, INTENT_Y + 20, WHITE, BLACK, "the microphone...", FALSE, SMALL_FONT);
 	DrawString(LEFT_X_LIMIT + 5, INTENT_Y + 20, WHITE, BLACK, "Please refer to the phone", FALSE, SMALL_FONT);
-
-	// DrawButton(FINISH);
 }
 
 void ShowRecordingEnd(int wait_time)
@@ -92,7 +88,7 @@ void ShowRecordingEnd(int wait_time)
 	char num[2];
 	ResetScreen();
 
-	DrawString(QUESTION_X + 13, INTENT_Y, WHITE, BLACK, "Message sent!", FALSE, SMALL_FONT);
+	DrawString(LEFT_X_LIMIT + 43, INTENT_Y, WHITE, BLACK, "Message sent!", FALSE, SMALL_FONT);
 	DrawString(HEADER_X + 3, INTENT_Y + 20, WHITE, BLACK, "Please wait for a reply.", FALSE, SMALL_FONT);
 	DrawString(HEADER_X + 17, INTENT_Y + 30, WHITE, BLACK, "This may take up to ", FALSE, SMALL_FONT);
 	DrawString(HEADER_X + 45, INTENT_Y + 40, WHITE, BLACK, "60 seconds", FALSE, SMALL_FONT);
@@ -177,7 +173,7 @@ void ShowFinish(void)
 	ResetScreen();
 
 	DrawString(HEADER_X, HEADER_Y, WHITE, BLACK, "SDMS: Smart Door", FALSE, SMALL_FONT);
-	DrawString(HEADER_X + 54, HEADER_Y + 10, WHITE, BLACK, "Monitoring System", FALSE, SMALL_FONT);
+	DrawString(HEADER_X + 50, HEADER_Y + 10, WHITE, BLACK, "Monitoring System", FALSE, SMALL_FONT);
 
 	DrawString(LEFT_X_LIMIT + 25, WELCOME_TITLE_Y, WHITE, BLACK, "Thank you", TRUE, MEDIUM_FONT);
 	DrawString(LEFT_X_LIMIT + 4, WELCOME_TITLE_Y + 16, WHITE, BLACK, "for visiting!", TRUE, MEDIUM_FONT);
