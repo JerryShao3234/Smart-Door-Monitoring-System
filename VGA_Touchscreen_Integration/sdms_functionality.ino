@@ -15,7 +15,6 @@ void setup() {
   Serial.begin(115200);
   WiFi.begin("Simran’s iPhone", "simranwifi");
   
-  
   //Wait for the WiFI connection completion
   Serial.println();
   Serial.print("Connecting");
@@ -75,6 +74,10 @@ void loop() {
       Serial.println(payload);
       http.end();
 
+      if(input == 'd') {
+        delay(45000);
+      }
+      
 //      String test_message = "<<<<My name is Simran and I am here to test>>>>";
 //
 //      for(int i = 0; i < test_message.length(); i++) {
@@ -93,7 +96,7 @@ void loop() {
       int count_stop = 0;
       boolean got_message = false;
       
-      while(count_stop < 10) {
+      while(count_stop < 20) {
         http.addHeader("Content-Type", "application/json");
         httpCode = http.POST("{\"de1socID\": \"" + de1_soc_id + "\"}");
         payload = http.getString();
@@ -114,7 +117,7 @@ void loop() {
           }
 
 //          count_stop = 0;
-          count_stop = 10;
+          count_stop = 20;
           got_message = true;
           
         }
