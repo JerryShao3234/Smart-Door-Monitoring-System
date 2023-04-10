@@ -6,15 +6,20 @@
 /* VGA adapter base address */
 volatile unsigned *vga_addr = (volatile unsigned *)0x00004000;
 
+#define WHITE 63
+#define BLACK 0
+#define TEAL 10
+#define PURPLE 21
+
 void ShowWelcome(void)
 {
 	ResetScreen();
 
-	DrawString(HEADER_X, HEADER_Y, WHITE, BLACK, "SDMS: Smart Door", FALSE, SMALL_FONT);
-	DrawString(HEADER_X + 50, HEADER_Y + 10, WHITE, BLACK, "Monitoring System", FALSE, SMALL_FONT);
+	DrawString(HEADER_X, HEADER_Y, PURPLE, BLACK, "SDMS: Smart Door", FALSE, SMALL_FONT);
+	DrawString(HEADER_X + 50, HEADER_Y + 10, PURPLE, BLACK, "Monitoring System", FALSE, SMALL_FONT);
 
-	DrawString(WELCOME_TITLE_X, WELCOME_TITLE_Y, WHITE, BLACK, "Welcome!", TRUE, MEDIUM_FONT);
-	DrawString(WELCOME_SUBTITLE_X, WELCOME_SUBTITLE_Y, WHITE, BLACK, "Touch Screen to Proceed", TRUE, SMALL_FONT);
+	DrawString(WELCOME_TITLE_X, WELCOME_TITLE_Y, WHITE, TEAL, "Welcome!", TRUE, MEDIUM_FONT);
+	DrawString(WELCOME_SUBTITLE_X, WELCOME_SUBTITLE_Y, WHITE, TEAL, "Touch Screen to Proceed", TRUE, SMALL_FONT);
 }
 
 void ShowOption1(void)
@@ -24,9 +29,9 @@ void ShowOption1(void)
 	DrawString(QUESTION_X, QUESTION_Y, WHITE, BLACK, "What is the purpose", FALSE, SMALL_FONT);
 	DrawString(QUESTION_X + 15, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
 
-	DrawString(INTENT_X, INTENT_Y + 5, WHITE, BLACK, "Family", TRUE, MEDIUM_FONT);
-	DrawString(INTENT_X + 28, INTENT_Y + 21, WHITE, BLACK, "or", TRUE, SMALL_FONT);
-	DrawString(INTENT_X, INTENT_Y + 30, WHITE, BLACK, "Friend", TRUE, MEDIUM_FONT);
+	DrawString(INTENT_X, INTENT_Y + 5, WHITE, TEAL, "Family", TRUE, MEDIUM_FONT);
+	DrawString(INTENT_X + 28, INTENT_Y + 21, WHITE, TEAL, "or", TRUE, SMALL_FONT);
+	DrawString(INTENT_X, INTENT_Y + 30, WHITE, TEAL, "Friend", TRUE, MEDIUM_FONT);
 
 	DrawButton(SELECT);
 	DrawButton(RIGHT);
@@ -39,8 +44,8 @@ void ShowOption2(void)
 	DrawString(QUESTION_X, QUESTION_Y, WHITE, BLACK, "What is the purpose", FALSE, SMALL_FONT);
 	DrawString(QUESTION_X + 15, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
 
-	DrawString(INTENT_X - 10, INTENT_Y + 3, WHITE, BLACK, "Package", TRUE, MEDIUM_FONT);
-	DrawString(INTENT_X - 15, INTENT_Y + 20, WHITE, BLACK, "Delivery", TRUE, MEDIUM_FONT);
+	DrawString(INTENT_X - 10, INTENT_Y + 3, WHITE, TEAL, "Package", TRUE, MEDIUM_FONT);
+	DrawString(INTENT_X - 15, INTENT_Y + 20, WHITE, TEAL, "Delivery", TRUE, MEDIUM_FONT);
 
 	DrawButton(SELECT);
 	DrawButton(LEFT);
@@ -54,7 +59,7 @@ void ShowOption3(void)
 	DrawString(QUESTION_X, QUESTION_Y, WHITE, BLACK, "What is the purpose", FALSE, SMALL_FONT);
 	DrawString(QUESTION_X + 15, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
 
-	DrawString(INTENT_X - 3, INTENT_Y + 15, WHITE, BLACK, "Advertisement", TRUE, SMALL_FONT);
+	DrawString(INTENT_X - 3, INTENT_Y + 15, WHITE, TEAL, "Advertisement", TRUE, SMALL_FONT);
 
 	DrawButton(SELECT);
 	DrawButton(LEFT);
@@ -68,9 +73,9 @@ void ShowOptionRecord(void)
 	DrawString(QUESTION_X, QUESTION_Y, WHITE, BLACK, "What is the purpose", FALSE, SMALL_FONT);
 	DrawString(QUESTION_X + 15, QUESTION_Y + 10, WHITE, BLACK, "of your visit?", FALSE, SMALL_FONT);
 
-	DrawString(INTENT_X + 4, INTENT_Y + 10, WHITE, BLACK, "Other", TRUE, MEDIUM_FONT);
-	DrawString(INTENT_X + 6, INTENT_Y + 35, WHITE, BLACK, "Record a", TRUE, SMALL_FONT);
-	DrawString(INTENT_X - 6, INTENT_Y + 45, WHITE, BLACK, "custom message", TRUE, SMALL_FONT);
+	DrawString(INTENT_X + 4, INTENT_Y + 10, WHITE, TEAL, "Other", TRUE, MEDIUM_FONT);
+	DrawString(INTENT_X + 6, INTENT_Y + 35, WHITE, TEAL, "Record a", TRUE, SMALL_FONT);
+	DrawString(INTENT_X - 6, INTENT_Y + 45, WHITE, TEAL, "custom message", TRUE, SMALL_FONT);
 
 	DrawButton(RECORD);
 	DrawButton(LEFT);
@@ -172,11 +177,11 @@ void ShowFinish(void)
 {
 	ResetScreen();
 
-	DrawString(HEADER_X, HEADER_Y, WHITE, BLACK, "SDMS: Smart Door", FALSE, SMALL_FONT);
-	DrawString(HEADER_X + 50, HEADER_Y + 10, WHITE, BLACK, "Monitoring System", FALSE, SMALL_FONT);
+	DrawString(HEADER_X, HEADER_Y, PURPLE, BLACK, "SDMS: Smart Door", FALSE, SMALL_FONT);
+	DrawString(HEADER_X + 50, HEADER_Y + 10, PURPLE, BLACK, "Monitoring System", FALSE, SMALL_FONT);
 
-	DrawString(LEFT_X_LIMIT + 25, WELCOME_TITLE_Y, WHITE, BLACK, "Thank you", TRUE, MEDIUM_FONT);
-	DrawString(LEFT_X_LIMIT + 4, WELCOME_TITLE_Y + 16, WHITE, BLACK, "for visiting!", TRUE, MEDIUM_FONT);
+	DrawString(LEFT_X_LIMIT + 25, WELCOME_TITLE_Y, WHITE, TEAL, "Thank you", TRUE, MEDIUM_FONT);
+	DrawString(LEFT_X_LIMIT + 4, WELCOME_TITLE_Y + 16, WHITE, TEAL, "for visiting!", TRUE, MEDIUM_FONT);
 }
 
 void ShowMessage(char *message_1, char *message_2, char *message_3, char *message_4) 
@@ -324,7 +329,7 @@ void ResetScreen(void)
 	{
 		for (int j = TOP_Y_LIMIT; j < BOTTOM_Y_LIMIT; j++)
 		{
-			vga_plot(i, j, BLACK); // initialize screen to black
+			vga_plot(i, j, TEAL); // initialize screen to teal
 		}
 	}
 }
