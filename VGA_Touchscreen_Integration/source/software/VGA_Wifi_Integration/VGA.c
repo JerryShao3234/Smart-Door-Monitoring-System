@@ -80,10 +80,11 @@ void ShowRecordingInProgress(void)
 {
 	ResetScreen();
 
-	DrawString(QUESTION_X, INTENT_Y + 10, WHITE, BLACK, "Please speak into", FALSE, SMALL_FONT);
-	DrawString(QUESTION_X, INTENT_Y + 20, WHITE, BLACK, "the microphone...", FALSE, SMALL_FONT);
+	// DrawString(QUESTION_X, INTENT_Y + 10, WHITE, BLACK, "Please speak into", FALSE, SMALL_FONT);
+	// DrawString(QUESTION_X, INTENT_Y + 20, WHITE, BLACK, "the microphone...", FALSE, SMALL_FONT);
+	DrawString(LEFT_X_LIMIT + 5, INTENT_Y + 20, WHITE, BLACK, "Please refer to the phone", FALSE, SMALL_FONT);
 
-	DrawButton(FINISH);
+	// DrawButton(FINISH);
 }
 
 void ShowRecordingEnd(int wait_time)
@@ -91,8 +92,10 @@ void ShowRecordingEnd(int wait_time)
 	char num[2];
 	ResetScreen();
 
-	DrawString(QUESTION_X + 13, INTENT_Y + 10, WHITE, BLACK, "Message sent!", FALSE, SMALL_FONT);
-	DrawString(QUESTION_X + 3, INTENT_Y + 20, WHITE, BLACK, "Awaiting reply...", FALSE, SMALL_FONT);
+	DrawString(QUESTION_X + 13, INTENT_Y, WHITE, BLACK, "Message sent!", FALSE, SMALL_FONT);
+	DrawString(HEADER_X + 3, INTENT_Y + 20, WHITE, BLACK, "Please wait for a reply.", FALSE, SMALL_FONT);
+	DrawString(HEADER_X + 17, INTENT_Y + 30, WHITE, BLACK, "This may take up to ", FALSE, SMALL_FONT);
+	DrawString(HEADER_X + 45, INTENT_Y + 40, WHITE, BLACK, "60 seconds", FALSE, SMALL_FONT);
 
 	int index = 0;
 

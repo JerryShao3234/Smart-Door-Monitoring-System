@@ -129,7 +129,8 @@ int main()
         			prev_state = REC;
 					if(pixelInRange(x, y, SELECT_BUTTON_X, SELECT_BUTTON_X + SELECT_BUTTON_WIDTH,
 							SELECT_BUTTON_Y, SELECT_BUTTON_Y+SELECT_BUTTON_HEIGHT)){
-						next_state = PROG;
+						// next_state = PROG;
+						next_state = END;
 						IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, 'd');
 					} else if(pixelInRange(x, y, LEFT_BUTTON_X, LEFT_BUTTON_X + LEFT_RIGHT_BUTTON_WIDTH,
 							LEFT_BUTTON_Y, LEFT_BUTTON_Y+ LEFT_RIGHT_BUTTON_HEIGHT)){
@@ -140,13 +141,16 @@ int main()
 					break;
         		}
         		case PROG: {
-        			prev_state = PROG;
-					if(pixelInRange(x, y, SELECT_BUTTON_X, SELECT_BUTTON_X + SELECT_BUTTON_WIDTH,
-							SELECT_BUTTON_Y, SELECT_BUTTON_Y+SELECT_BUTTON_HEIGHT)){
-						next_state = END;
-					} else{
-						next_state = PROG;
-					}
+        			// prev_state = PROG;
+					// if(pixelInRange(x, y, SELECT_BUTTON_X, SELECT_BUTTON_X + SELECT_BUTTON_WIDTH,
+					// 		SELECT_BUTTON_Y, SELECT_BUTTON_Y+SELECT_BUTTON_HEIGHT)){
+					// 	next_state = END;
+					// } else{
+					// 	next_state = PROG;
+					// }
+					prev_state = PROG;
+					next_state = END;
+					// usleep(4500000);
 					break;
         		}
         		case END: {
@@ -287,6 +291,8 @@ void displayScreen(enum state s){
 			break;
 		}
 		case END: {
+			ShowRecordingInProgress();
+			usleep(31 * 1000000); //45 seconds in real time
 			ShowRecordingEnd(RECORD_TIMEOUT);
 			break;
 		}
