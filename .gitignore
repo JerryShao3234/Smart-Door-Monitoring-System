@@ -52,13 +52,11 @@ Mkfile.old
 dkms.conf
 
 # Hardware Stuff
-*.v
-*.sv
 *.tcl
-*.qsf
 *.bak
-*.qpf
 *.qws
 
 NIOS_VGA/*
 sdms-app/*
+
+Audio_Sys_Integration/*

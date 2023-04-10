@@ -21,7 +21,6 @@ enum state {WELCOME=0, OP1=1, OP2 = 2,
 
 void Init_Touch(void);
 struct coordinate Get_Coordinates_Of_Touch(void);
-void Send_Blink(void);
 unsigned int pixelInRange(unsigned int x, unsigned int y, unsigned int lower_x, unsigned int upper_x, int lower_y, int upper_y);
 void displayScreen(enum state s);
 
@@ -35,18 +34,11 @@ int main()
 	next_state = OP1;
     alt_putstr("Hello from Nios II!\n");
     ShowWelcome();
-    
+
     // Init_Touch();
-    Send_Blink(); 
 
     /* Event loop never exits. */
     while (1) {
-
-        // char received = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
-        // printf("%c\n", received);
-        // usleep(833);
-//    	struct coordinate touch_cord = Get_Coordinates_Of_Touch();
-//    	printf("(%d, %d)\n", touch_cord.x, touch_cord.y);
         if(IORD_ALTERA_AVALON_UART_RXDATA(TOUCHSCREEN_BASE) == 0x81){
         	current_state = IDLE;
         }else if(current_state == IDLE && IORD_ALTERA_AVALON_UART_RXDATA(TOUCHSCREEN_BASE) == 0x80){
@@ -73,14 +65,11 @@ int main()
 			printf("touch: (%d, %d)\n", x, y);
 
 			/* convert x, y to pixel coordinates */
-			x = (unsigned int)((x/4000.0)*160);
-			y = (unsigned int)((y/4000.0)*120);
+			x = (unsigned int)(((x-200)/3700.0)*160);
+			y = (unsigned int)(((y-500)/3300.0)*120);
 			printf("pixel: (%d, %d)\n", x, y);
 
-			current_state = next_state;
-        	if(prev_state != next_state){
-        		displayScreen(next_state);
-        	}
+			current_state = prev_state;
         	switch(current_state){
         		case WELCOME: {
         			next_state = OP1;
@@ -92,6 +81,7 @@ int main()
 					if(pixelInRange(x, y, SELECT_BUTTON_X, SELECT_BUTTON_X + SELECT_BUTTON_WIDTH,
 							SELECT_BUTTON_Y, SELECT_BUTTON_Y+SELECT_BUTTON_HEIGHT)){
 						next_state = POST;
+						IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, 'a');
 					} else if(pixelInRange(x, y, RIGHT_BUTTON_X, RIGHT_BUTTON_X + LEFT_RIGHT_BUTTON_WIDTH,
 							RIGHT_BUTTON_Y, RIGHT_BUTTON_Y+ LEFT_RIGHT_BUTTON_HEIGHT)){
 						next_state = OP2;
@@ -105,6 +95,7 @@ int main()
 					if(pixelInRange(x, y, SELECT_BUTTON_X, SELECT_BUTTON_X + SELECT_BUTTON_WIDTH,
 							SELECT_BUTTON_Y, SELECT_BUTTON_Y+SELECT_BUTTON_HEIGHT)){
 						next_state = POST;
+						IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, 'b');
 					} else if(pixelInRange(x, y, RIGHT_BUTTON_X, RIGHT_BUTTON_X + LEFT_RIGHT_BUTTON_WIDTH,
 							RIGHT_BUTTON_Y, RIGHT_BUTTON_Y+ LEFT_RIGHT_BUTTON_HEIGHT)){
 						next_state = OP3;
@@ -121,6 +112,7 @@ int main()
 					if(pixelInRange(x, y, SELECT_BUTTON_X, SELECT_BUTTON_X + SELECT_BUTTON_WIDTH,
 							SELECT_BUTTON_Y, SELECT_BUTTON_Y+SELECT_BUTTON_HEIGHT)){
 						next_state = POST;
+						IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, 'c');
 					} else if(pixelInRange(x, y, RIGHT_BUTTON_X, RIGHT_BUTTON_X + LEFT_RIGHT_BUTTON_WIDTH,
 							RIGHT_BUTTON_Y, RIGHT_BUTTON_Y+ LEFT_RIGHT_BUTTON_HEIGHT)){
 						next_state = REC;
@@ -136,7 +128,8 @@ int main()
         			prev_state = REC;
 					if(pixelInRange(x, y, SELECT_BUTTON_X, SELECT_BUTTON_X + SELECT_BUTTON_WIDTH,
 							SELECT_BUTTON_Y, SELECT_BUTTON_Y+SELECT_BUTTON_HEIGHT)){
-						next_state = PROG;
+						next_state = END;
+						IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, 'd');
 					} else if(pixelInRange(x, y, LEFT_BUTTON_X, LEFT_BUTTON_X + LEFT_RIGHT_BUTTON_WIDTH,
 							LEFT_BUTTON_Y, LEFT_BUTTON_Y+ LEFT_RIGHT_BUTTON_HEIGHT)){
 						next_state = OP3;
@@ -146,37 +139,34 @@ int main()
 					break;
         		}
         		case PROG: {
-        			prev_state = PROG;
-					if(pixelInRange(x, y, SELECT_BUTTON_X, SELECT_BUTTON_X + SELECT_BUTTON_WIDTH,
-							SELECT_BUTTON_Y, SELECT_BUTTON_Y+SELECT_BUTTON_HEIGHT)){
-						next_state = END;
-					} else{
-						next_state = PROG;
-					}
+					prev_state = PROG;
+					next_state = END;
 					break;
         		}
         		case END: {
         			prev_state = END;
-        			next_state = OP1;
+        			next_state = FIN;
         			int wait_time = SEND_TIMEOUT;
-					ShowFinish();
-					usleep(RETURN_TIMEOUT * 1000000);
-					ShowWelcome();
 					break;
         		}
         		case POST: {
         			prev_state = POST;
-        			next_state = OP1;
-        			usleep(SEND_TIMEOUT * 1000000);
-					ShowFinish();
-					usleep(RETURN_TIMEOUT * 1000000);
-					ShowWelcome();
+        			next_state = FIN;
+
         			break;
         		}
+				case FIN: {
+					prev_state = FIN;
+					next_state = OP1;
+				}
         		default: {
         			break;
         		}
         	}
+        	if(prev_state != next_state){
+				displayScreen(next_state);
+			}
+        	prev_state = next_state;
         }
     }
 
@@ -235,31 +225,6 @@ struct coordinate Get_Coordinates_Of_Touch(void)
     return touch_cord;
 }
 
-void Send_Blink(void) 
-{
-    char blink_command[32] = "dofile(\"blinking_light.lua\")\n";
-    char init_command[26] = "gpio.mode(3,gpio.OUTPUT)\n";
-    // char blink_command[24] = "gpio.write(3,gpio.LOW)\n";
-
-    // for(int i = 0; i < 26; i++) {
-    //     IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, init_command[i]);
-    //     // printf("%c", init_command[i]);
-    //     char received = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
-    //     printf("%c", received);
-    //     usleep(833);
-    // }
-
-    // usleep(833);
-
-    for(int i = 0; i < 32; i++) {
-        IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, blink_command[i]);
-        // printf("%c", blink_command[i]);
-        // char received = IORD_ALTERA_AVALON_UART_RXDATA(WIFI_MODULE_BASE);
-        // printf("%c", received);
-        usleep(833);
-    }
-}
-
 unsigned int pixelInRange(unsigned int x, unsigned int y, unsigned int lower_x, unsigned int upper_x, int lower_y, int upper_y){
 	return x >= lower_x && x <= upper_x && y >= lower_y && y <= upper_y;
 }
@@ -291,12 +256,19 @@ void displayScreen(enum state s){
 			break;
 		}
 		case END: {
+			ShowRecordingInProgress();
+			usleep(31 * 1000000); //45 seconds in real time
 			ShowRecordingEnd(RECORD_TIMEOUT);
 			break;
 		}
 		case POST: {
 			ShowRecordingEnd(SEND_TIMEOUT);
 			break;
+		}
+		case FIN: {
+			ShowFinish();
+			usleep(2 * 1000000);
+			ShowWelcome();
 		}
 		default: {
 			break;

@@ -13,7 +13,7 @@
 
 #define HEADER_X 5
 #define HEADER_Y 10
-#define QUESTION_X 30
+#define QUESTION_X 25
 #define QUESTION_Y 10
 #define WELCOME_TITLE_X 40
 #define WELCOME_TITLE_Y 50
@@ -47,6 +47,7 @@ void ShowOptionRecord(void);
 void ShowRecordingInProgress(void);
 void ShowRecordingEnd(int wait_time);
 void ShowFinish(void);
+void ShowMessage(char *message_1, char *message_2, char *message_3, char *message_4);
 
 /* Helper Functions */
 void vga_plot(unsigned x, unsigned y, unsigned colour);
