@@ -383,9 +383,9 @@ void Send_Post_From_Touch(void)
     printf("Send post from touch\n");
     IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, 'a');
 
-    usleep(5000000);
+    // usleep(5000000);
 
-    IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, 'b');
+    // IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, 'b');
 }
 
 int main()
@@ -408,6 +408,16 @@ int main()
     if (!init())
         return 0;
 
+    /* Adapted states for project */
+    typedef enum{
+        IDLE,
+        RECORDING,
+        WRITE_TO_MEM,
+        PLAY_RECORDING
+    }A_STATE;
+
+    A_STATE a_state = IDLE;
+
     /* Initialize touchscreen */ 
     // Init_Touch();
 
@@ -424,6 +434,15 @@ int main()
      * 4 - Homeowner notified Screen
     */
     
+    /**
+     * Audio testing state machine
+     * 
+     * 1 - IDLE -> go to start if we touch start button
+     * 2 - START -> go to stop if we touch stop button
+     * 3 - STOP - > go to play if we press play button
+     * 4 - PLAY -> go to idle when you are done playing
+    */
+
 #ifdef USE_SDRAM_FOR_DATA
     pBuf = (alt_u32 *)SDRAM_BASE;
     buf_sample_size = SDRAM_SPAN/sizeof(alt_u32);
@@ -448,112 +467,186 @@ int main()
     
     // infinite loop
     while(1){
-        // 
-        bRecordPressed = (button_mask & RECORD_BUTTON)?TRUE:FALSE;
-        bPlayPressed = (button_mask & PLAY_BUTTON)?TRUE:FALSE;
+
+        // if(a_state == IDLE) {
+        //     /* If button to start recording has been tapped, go to RECORDING */
+        //     a_state = RECORDING;
+        // }
+        // else if (a_state == RECORDING) {
+        //     /* If button to stop has been tapped, go to IDLE to stop recording */
+        //     a_state = IDLE;
+        // }
+        // else if (a_state == WRITE_TO_MEM) {
+
+        // }
+        // else if (a_state == PLAY_RECORDING){
+
+        // }
+
+        bRecordPressed = (button_mask & RECORD_BUTTON)?TRUE:FALSE;  // Want to record audio
+        bPlayPressed = (button_mask & PLAY_BUTTON)?TRUE:FALSE;      // Want to play audio
+
+        // printf(bRecordPressed);
+        // printf(bPlayPressed);
+
         if (bPlayPressed || bRecordPressed) 
             button_mask = 0;
-        if (state == ST_STANDY){
-            if (bRecordPressed){
-                bool bMicRecord;
-                record_sample_rate = ui_get_sample_rate();
-                bMicRecord = ui_is_mic_record();
-                AUDIO_FifoClear();
-                init_audio(bMicRecord?MIC_RECORD:LINEIN_RECORD);
-                AUDIO_FifoClear();
-                state = ST_RECODING;
-                if (bMicRecord){
-                    bool bMicBoost = ui_is_mic_boost();
-                    printf("MIC %srecording (sample rate = %d)...\r\n", bMicBoost?"Boost ":"", record_sample_rate);
 
-                }else{
-                    printf("LINE-IN recording (sample rate = %d)...\r\n", record_sample_rate);
+        if(bRecordPressed) {
+            char test_audio[24] = "Read or Write Audio Test";
 
+            pRecording = pBuf;
+            RecordLen = 0;
 
-                }                    
-                pRecording = pBuf;
-                RecordLen = 0;
-            }else if (bPlayPressed){
-                if (RecordLen == 0){
-                    printf("Please record before play audio\r\n");
-
-                }else{
-                    bool bZeroCross = ui_is_dac_zero_cross();
-                    AUDIO_FifoClear();
-                    init_audio(LINEOUT_PLAY);
-                    state = ST_PLAYING;
-                    printf("playing (sample rate = %d)...\r\n", record_sample_rate);
-
-
-                    pPlaying = pBuf;
-                    PlayLen = 0;
-                }  
+            for(int i = 0; i < sizeof(test_audio) / 4; i++) {
+                alt_u32 segment = (test_audio[i*4] << 24) +  (test_audio[i*4 + 1] << 16) + (test_audio[i*4 + 2] << 8) + test_audio[i*4 + 3];
+                // printf("Iteration %d: %c%c%c%c\n", i, test_audio[i*4], test_audio[i*4 + 1], test_audio[i*4 + 2], test_audio[i*4 + 3]);
+                *pRecording++ = segment;
+                RecordLen++;
             }
-            bError = FALSE;
-        }else if (state == ST_RECODING){
-            if (bRecordPressed || (RecordLen >= buf_sample_size) || bError){
-                // stop record
-                printf("record %d samples\n", (int)RecordLen);
 
+            printf("\n");
 
-                state = ST_STANDY;
-                LED_AllOff();
-                dump_record_data(pBuf, RecordLen);
+        }
+        if(bPlayPressed) {
+            printf("Send post from touch\n");
+            pPlaying = pBuf;
+            
+            /* Sending audio data byte*/
+            IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, 'z');
+
+            /* Sending size of data bytes*/
+
+            int total_chars = RecordLen * 4;
+            char upper_num = (total_chars & 0xFF00) >> 8;
+            char lower_num = total_chars & 0xFF;
+
+            IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, upper_num);
+            usleep(100);
+            IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, lower_num);
+            usleep(100);
+
+            /* Send message bytes */
+            for(int i = 0; i < RecordLen; i++) {
+                alt_u32 segment = *pPlaying++;
+                char one = (segment & (alt_u32)0xFF000000) >> 24;
+                char two = (segment & (alt_u32)0xFF0000) >> 16;
+                char three = (segment & (alt_u32)0xFF00) >> 8;
+                char four = (segment & (alt_u32)0xFF);
+
+                IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, one);
+                usleep(100);
+                IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, two);
+                usleep(100);
+                IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, three);
+                usleep(100);
+                IOWR_ALTERA_AVALON_UART_TXDATA(WIFI_MODULE_BASE, four);
+                usleep(100);
+                printf("%c%c%c%c", one, two, three, four);
+            }
+            printf("\n");
+        }
+
+        // if (state == ST_STANDY){
+        //     if (bRecordPressed){
+        //         bool bMicRecord;
+        //         record_sample_rate = ui_get_sample_rate();
+        //         bMicRecord = ui_is_mic_record();
+        //         AUDIO_FifoClear();
+        //         init_audio(bMicRecord?MIC_RECORD:LINEIN_RECORD);
+        //         AUDIO_FifoClear();
+        //         state = ST_RECODING;
+
+        //         // Decide if we are using MIC or LINE-IN
+        //         if (bMicRecord){
+        //             bool bMicBoost = ui_is_mic_boost();
+        //             printf("MIC %srecording (sample rate = %d)...\r\n", bMicBoost?"Boost ":"", record_sample_rate);
+
+        //         }else{
+        //             printf("LINE-IN recording (sample rate = %d)...\r\n", record_sample_rate);
+        //         }
+            
+        //         pRecording = pBuf;  // Start at the beginning of memory region  
+        //         RecordLen = 0;      // We have not recorded anything yet 
+        //     }else if (bPlayPressed){
+        //         if (RecordLen == 0){
+        //             printf("Please record before play audio\r\n");
+
+        //         }else{
+        //             bool bZeroCross = ui_is_dac_zero_cross();
+        //             AUDIO_FifoClear();
+        //             init_audio(LINEOUT_PLAY);
+        //             state = ST_PLAYING;
+        //             printf("playing (sample rate = %d)...\r\n", record_sample_rate);
+
+        //             pPlaying = pBuf;    // Start at the beginning of memory region
+        //             PlayLen = 0;        // We have not played anything yet
+        //         }  
+        //     }
+        //     bError = FALSE;
+        // } else if (state == ST_RECODING){
+        //     if (bRecordPressed || (RecordLen >= buf_sample_size) || bError){
+        //         // stop record
+        //         printf("record %d samples\n", (int)RecordLen);
+
+        //         state = ST_STANDY;
+        //         LED_AllOff();
+        //         dump_record_data(pBuf, RecordLen);
                 
-            }else{
-                // continue recoding
-                int i = 0;
-                while ((i < RECORD_BLOCK_SIZE) && (RecordLen < buf_sample_size)){
-                    try_cnt = 0;
-                    while (!AUDIO_AdcFifoNotEmpty() && try_cnt < MAX_TRY_CNT){ // wait while empty
-                        try_cnt++;    
-                    }    
-                    if (try_cnt >= MAX_TRY_CNT){
-                        bError = TRUE;
-                        break;
-                    }    
-                    AUDIO_AdcFifoGetData(&ch_left, &ch_right);
-                    data = (ch_left << 16) | ch_right;
-                    *pRecording++ = data;
-                    RecordLen++;
-                    i++;
-                    show_power(data & 0xFFFF);
-                }  // while
-                display_time_elapsed(RecordLen);    
-            }     
-        }else if (state == ST_PLAYING){
-            if (bPlayPressed || (PlayLen >= RecordLen) || bError){
-                // stop playing
-                printf("Play Stop %s\r\n", bError?"(Error)":"");
+        //     }else{
+        //         // continue recoding
+        //         int i = 0;
+        //         while ((i < RECORD_BLOCK_SIZE) && (RecordLen < buf_sample_size)){
+        //             try_cnt = 0;
+        //             while (!AUDIO_AdcFifoNotEmpty() && try_cnt < MAX_TRY_CNT){ // wait while empty
+        //                 try_cnt++;    
+        //             }    
+        //             if (try_cnt >= MAX_TRY_CNT){
+        //                 bError = TRUE;
+        //                 break;
+        //             }    
+        //             AUDIO_AdcFifoGetData(&ch_left, &ch_right);
+        //             data = (ch_left << 16) | ch_right;
+        //             *pRecording++ = data;
+        //             RecordLen++;
+        //             i++;
+        //             show_power(data & 0xFFFF);
+        //         }
+        //         display_time_elapsed(RecordLen);    
+        //     }     
+        // }else if (state == ST_PLAYING){
+        //     if (bPlayPressed || (PlayLen >= RecordLen) || bError){
+        //         // stop playing
+        //         printf("Play Stop %s\r\n", bError?"(Error)":"");
 
-                state = ST_STANDY;
-                LED_AllOff();
-            }else{
-                // continue playing
-                int i = 0;
-                while ((i < PLAY_BLOCK_SIZE) && (PlayLen < RecordLen)){
-                    try_cnt = 0;                
-                    while (!AUDIO_DacFifoNotFull() && try_cnt < MAX_TRY_CNT){  // wait while full
-                        try_cnt++;
-                    }    
-                    if (try_cnt >= MAX_TRY_CNT){
-                        bError = TRUE;
-                        break;
-                    }    
-                    data = *pPlaying++;
+        //         state = ST_STANDY;
+        //         LED_AllOff();
+        //     }else{
+        //         // continue playing
+        //         int i = 0;
+        //         while ((i < PLAY_BLOCK_SIZE) && (PlayLen < RecordLen)){
+        //             try_cnt = 0;                
+        //             while (!AUDIO_DacFifoNotFull() && try_cnt < MAX_TRY_CNT){  // wait while full
+        //                 try_cnt++;
+        //             }    
+        //             if (try_cnt >= MAX_TRY_CNT){
+        //                 bError = TRUE;
+        //                 break;
+        //             }    
+        //             data = *pPlaying++;
                    
-                    //data = 0;
-                    ch_left = data >> 16;
-                    ch_right = data & 0xFFFF;
-                    AUDIO_DacFifoSetData(ch_left, ch_right);  
-                    i++;
-                    PlayLen++;
-                    show_power(data & 0xFFFF);
-                    //printf("[%d] %d/%d\n", PlayLen, (short)((data >> 16) & 0xFFFF), (short)(data & 0xFFFF));
-                }
-                display_time_elapsed(PlayLen);     
-            }
-        }        
+        //             //data = 0;
+        //             ch_left = data >> 16;
+        //             ch_right = data & 0xFFFF;
+        //             AUDIO_DacFifoSetData(ch_left, ch_right);  
+        //             i++;
+        //             PlayLen++;
+        //             show_power(data & 0xFFFF);
+        //             //printf("[%d] %d/%d\n", PlayLen, (short)((data >> 16) & 0xFFFF), (short)(data & 0xFFFF));
+        //         }
+        //         display_time_elapsed(PlayLen);     
+        //     }
+        // }        
     }
     
 }
