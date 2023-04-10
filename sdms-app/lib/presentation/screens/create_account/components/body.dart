@@ -1,0 +1,55 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
+import 'package:sdms_app/business/cubit/create_account_cubit.dart';
+import 'package:sdms_app/business/cubit/session_cubit.dart';
+import 'package:sdms_app/data/repositories/session_repository.dart';
+import 'package:sdms_app/data/repositories/user_repository.dart';
+import 'package:sdms_app/presentation/constants.dart';
+import 'package:sdms_app/presentation/routes/unauthenticated_locations.dart';
+import 'package:sdms_app/presentation/screens/create_account/components/create_account_view.dart';
+import 'package:sdms_app/presentation/size_config.dart';
+
+class Body extends StatelessWidget {
+  const Body({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      bottom: false,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: getProportionateScreenWidth(defaultPadding),
+        ),
+        child: BlocProvider(
+          create: (context) => CreateAccountCubit(
+            sessionRepository: context.read<SessionRepository>(),
+            userRepository: context.read<UserRepository>(),
+          ),
+          child: BlocListener<SessionCubit, SessionState>(
+            listenWhen: (previous, current) =>
+                previous.session.runtimeType != current.session.runtimeType,
+            listener: (context, state) {
+              if (state.session.isAuthenticated) {
+                Future.delayed(const Duration(seconds: 5));
+
+                Beamer.of(context)
+                    .beamToNamed(UnauthenticatedLocations.signInRoute);
+              }
+
+              if (!context.read<CreateAccountCubit>().isClosed) {
+                context.read<CreateAccountCubit>().resetStatus();
+              }
+            },
+            child: const CreateAccountView(),
+          ),
+        ),
+      ),
+    );
+  }
+}
