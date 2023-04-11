@@ -24,6 +24,9 @@ enum ReplyStatus {
   failure,
 }
 
+/// The status of the [MessageBloc] fetching messages from the server
+enum LoadingStatus { loading, success, failure }
+
 @freezed
 class MessageState with _$MessageState {
   const factory MessageState({
@@ -53,6 +56,9 @@ class MessageState with _$MessageState {
 
     /// The state of the user sending a message
     @Default(ReplyStatus.initial) ReplyStatus replyStatus,
+
+    /// The state of the bloc fetching messages
+    @Default(LoadingStatus.loading) LoadingStatus messageStatus,
 
     /// The reply written by the user so far as a response to [currentMessage].
     ///

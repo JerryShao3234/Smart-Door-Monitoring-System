@@ -25,7 +25,7 @@ class MessageProvider extends MessageDataProvider {
           "token": token,
         },
       ).timeout(
-        const Duration(seconds: 3),
+        const Duration(seconds: 10),
         onTimeout: () => throw FailureCode.connectionFailed.message,
       );
 
@@ -89,7 +89,7 @@ class MessageProvider extends MessageDataProvider {
         ),
         body: {
           "token": token,
-          "messageID": messageInfo,
+          "messageInfo": messageInfo,
         },
       ).timeout(
         const Duration(seconds: 5),

@@ -16,14 +16,10 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var maxCharacters = 200;
+    var maxCharacters = 75;
     var options = [
       "Is anybody home?",
       "Your delivery has arrived!",
-      "Are you available for a moment to praise our lord and saviour chatGPT?",
-      "a",
-      "a",
-      "a",
     ];
 
     return SafeArea(
@@ -31,7 +27,7 @@ class Body extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(top: getProportionateScreenHeight(10)),
         decoration: const ShapeDecoration(
-          color: Colors.white,
+          color: ConstColors.lightBlue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15)),
@@ -82,11 +78,7 @@ class Body extends StatelessWidget {
                     FormBuilderValidators.max(maxCharacters),
                   ]),
                   onChanged: (replyText) {
-                    // TODO: update state
-                    // context.read<MessageBloc>().add(
-                    //       MessageUpdateReply(
-                    //           replyText: replyText),
-                    //     );
+                    // TODO
                   }),
               SizedBox(height: getProportionateScreenHeight(defaultPadding)),
               Row(
@@ -127,7 +119,7 @@ class Body extends StatelessWidget {
                 ),
               ),
               Container(
-                height: getProportionateScreenHeight(350),
+                height: getProportionateScreenHeight(120),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),

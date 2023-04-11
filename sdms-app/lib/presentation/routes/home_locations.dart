@@ -6,8 +6,9 @@ import 'package:beamer/beamer.dart';
 
 // Project imports:
 import 'package:sdms_app/presentation/routes/sdms_beam_page.dart';
-import 'package:sdms_app/presentation/screens/camera/camera.dart';
 import 'package:sdms_app/presentation/screens/customize/customize.dart';
+import 'package:sdms_app/presentation/screens/hardware/audio.dart';
+import 'package:sdms_app/presentation/screens/hardware/camera.dart';
 import 'package:sdms_app/presentation/screens/home/home.dart';
 import 'package:sdms_app/presentation/screens/messages/messages.dart';
 import 'package:sdms_app/presentation/screens/settings/settings.dart';
@@ -32,6 +33,9 @@ class HomeLocations extends BeamLocation<BeamState> {
   /// beamToNamed location for the [CameraScreen]
   static const String cameraRoute = '/camera';
 
+  /// beamToNamed location for the [AudioScreen]
+  static const String audioRoute = '/audio';
+
   @override
   List<Pattern> get pathPatterns => _pathPatterns;
 
@@ -43,6 +47,7 @@ class HomeLocations extends BeamLocation<BeamState> {
     customizeRoute,
     settingsRoute,
     cameraRoute,
+    audioRoute,
   ];
 
   @override
@@ -87,6 +92,13 @@ class HomeLocations extends BeamLocation<BeamState> {
           path: cameraRoute,
           popToNamed: settingsRoute,
           child: CameraScreen(),
+        )
+      ],
+      if (state.uri.path == audioRoute) ...[
+        SdmsBeamPage(
+          path: audioRoute,
+          popToNamed: settingsRoute,
+          child: const AudioScreen(),
         )
       ]
     ];

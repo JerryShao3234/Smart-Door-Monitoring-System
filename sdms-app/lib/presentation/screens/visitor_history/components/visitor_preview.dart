@@ -54,10 +54,18 @@ class VisitorPreview extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                   ),
                   margin: EdgeInsets.all(getProportionateScreenWidth(15)),
-                  height: getProportionateScreenHeight(280),
+                  height: getProportionateScreenHeight(500),
                   width: getProportionateScreenWidth(300),
-                  child: Image(
-                    image: image,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Image(
+                      image: image,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),

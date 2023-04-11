@@ -39,7 +39,7 @@ mixin _$Message {
 
   /// The sender of this message.
   @JsonKey(name: 'sender')
-  String get sender => throw _privateConstructorUsedError;
+  String? get sender => throw _privateConstructorUsedError;
 
   /// Whether this message has been marked as read by the user
   @JsonKey(name: 'read')
@@ -64,7 +64,7 @@ abstract class $MessageCopyWith<$Res> {
       @JsonKey(name: 'userID') String userId,
       @JsonKey(name: 'messageInfo') String? body,
       @JsonKey(name: 'date') int receivedAt,
-      @JsonKey(name: 'sender') String sender,
+      @JsonKey(name: 'sender') String? sender,
       @JsonKey(name: 'read') bool markedAsRead,
       @JsonKey(name: 'visitID') String visitId});
 }
@@ -86,7 +86,7 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? userId = null,
     Object? body = freezed,
     Object? receivedAt = null,
-    Object? sender = null,
+    Object? sender = freezed,
     Object? markedAsRead = null,
     Object? visitId = null,
   }) {
@@ -107,10 +107,10 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.receivedAt
           : receivedAt // ignore: cast_nullable_to_non_nullable
               as int,
-      sender: null == sender
+      sender: freezed == sender
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       markedAsRead: null == markedAsRead
           ? _value.markedAsRead
           : markedAsRead // ignore: cast_nullable_to_non_nullable
@@ -135,7 +135,7 @@ abstract class _$$_MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
       @JsonKey(name: 'userID') String userId,
       @JsonKey(name: 'messageInfo') String? body,
       @JsonKey(name: 'date') int receivedAt,
-      @JsonKey(name: 'sender') String sender,
+      @JsonKey(name: 'sender') String? sender,
       @JsonKey(name: 'read') bool markedAsRead,
       @JsonKey(name: 'visitID') String visitId});
 }
@@ -154,7 +154,7 @@ class __$$_MessageCopyWithImpl<$Res>
     Object? userId = null,
     Object? body = freezed,
     Object? receivedAt = null,
-    Object? sender = null,
+    Object? sender = freezed,
     Object? markedAsRead = null,
     Object? visitId = null,
   }) {
@@ -175,10 +175,10 @@ class __$$_MessageCopyWithImpl<$Res>
           ? _value.receivedAt
           : receivedAt // ignore: cast_nullable_to_non_nullable
               as int,
-      sender: null == sender
+      sender: freezed == sender
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       markedAsRead: null == markedAsRead
           ? _value.markedAsRead
           : markedAsRead // ignore: cast_nullable_to_non_nullable
@@ -199,7 +199,7 @@ class _$_Message extends _Message {
       @JsonKey(name: 'userID') required this.userId,
       @JsonKey(name: 'messageInfo') this.body,
       @JsonKey(name: 'date') required this.receivedAt,
-      @JsonKey(name: 'sender') required this.sender,
+      @JsonKey(name: 'sender') this.sender,
       @JsonKey(name: 'read') required this.markedAsRead,
       @JsonKey(name: 'visitID') required this.visitId})
       : super._();
@@ -231,7 +231,7 @@ class _$_Message extends _Message {
   /// The sender of this message.
   @override
   @JsonKey(name: 'sender')
-  final String sender;
+  final String? sender;
 
   /// Whether this message has been marked as read by the user
   @override
@@ -289,7 +289,7 @@ abstract class _Message extends Message {
       @JsonKey(name: 'userID') required final String userId,
       @JsonKey(name: 'messageInfo') final String? body,
       @JsonKey(name: 'date') required final int receivedAt,
-      @JsonKey(name: 'sender') required final String sender,
+      @JsonKey(name: 'sender') final String? sender,
       @JsonKey(name: 'read') required final bool markedAsRead,
       @JsonKey(name: 'visitID') required final String visitId}) = _$_Message;
   const _Message._() : super._();
@@ -321,7 +321,7 @@ abstract class _Message extends Message {
 
   /// The sender of this message.
   @JsonKey(name: 'sender')
-  String get sender;
+  String? get sender;
   @override
 
   /// Whether this message has been marked as read by the user

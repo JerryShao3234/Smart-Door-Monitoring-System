@@ -45,6 +45,7 @@ dependencies:
   # A batch of common form validators such as required, numeric, mail, URL, min, max, minLength,
   # maxLength, IP, credit card, etc., with default errorText messages in multiple languages.
   form_builder_validators: ^8.4.0
+  flutter_local_notifications: ^13.0.0
   freezed_annotation: ^2.1.0
   # For making http requests to the server
   http: ^0.13.5
@@ -57,12 +58,15 @@ dependencies:
   uuid: ^3.0.7
 
 dev_dependencies:
+  audioplayers: ^3.0.1
   bloc_test: ^9.0.3
   build_runner: ^2.1.5
   # Flutter (test --coverage) doesn't include files that weren't referenced in tests, which can
   # give a false impression of greater code coverage than it actually is. The dlcov command can be
   # used to check all files.
   dlcov: ^4.2.1
+  # For customizing app logo
+  flutter_launcher_icons: ^0.13.0
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -77,6 +81,7 @@ dev_dependencies:
   import_sorter: 4.6.0
   json_serializable: ^6.0.1
   mockito: ^5.2.0
+  record: ^4.4.4
   # A command to manually remove files from the LCOV report. See README for the syntax used.
   remove_from_coverage: ^2.0.0
   test: ^1.19.5
@@ -138,3 +143,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_icons:
+  android: "launcher_icon"
+  image_path: "assets/images/app-logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21

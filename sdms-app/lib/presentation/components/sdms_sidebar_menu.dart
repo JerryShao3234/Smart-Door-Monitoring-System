@@ -30,7 +30,7 @@ class SidebarMenu extends StatelessWidget {
             height: getProportionateScreenHeight(250),
             child: DrawerHeader(
               decoration: const BoxDecoration(
-                color: ConstColors.drawerHeader,
+                color: ConstColors.mediumBlue,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -54,14 +54,17 @@ class SidebarMenu extends StatelessWidget {
           ),
           ListTile(
             title: const Text("Home"),
+            leading: const Icon(Icons.home),
             onTap: () {
               Beamer.of(context, root: true)
                   .beamToNamed(HomeLocations.homeRoute);
               Navigator.pop(context);
             },
+            tileColor: ConstColors.darkBlue.withOpacity(0.1),
           ),
           ListTile(
             title: const Text("All messages"),
+            leading: const Icon(Icons.message_rounded),
             onTap: () {
               Beamer.of(context, root: true)
                   .beamToNamed(HomeLocations.messagesRoute);
@@ -70,14 +73,17 @@ class SidebarMenu extends StatelessWidget {
           ),
           ListTile(
             title: const Text("View recent visitors"),
+            leading: const Icon(Icons.history),
             onTap: () {
               Beamer.of(context, root: true)
                   .beamToNamed(HomeLocations.visitorHistoryRoute);
               Navigator.pop(context);
             },
+            tileColor: ConstColors.darkBlue.withOpacity(0.1),
           ),
           ListTile(
             title: const Text("Customize my SDMS"),
+            leading: const Icon(Icons.edit),
             onTap: () {
               Beamer.of(context, root: true)
                   .beamToNamed(HomeLocations.customizeRoute);
@@ -86,29 +92,56 @@ class SidebarMenu extends StatelessWidget {
           ),
           ListTile(
             title: const Text("Settings"),
+            leading: const Icon(Icons.settings),
             onTap: () {
               Beamer.of(context, root: true)
                   .beamToNamed(HomeLocations.settingsRoute);
               Navigator.pop(context);
             },
+            tileColor: ConstColors.darkBlue.withOpacity(0.1),
           ),
-          SizedBox(height: getProportionateScreenHeight(defaultPadding)),
-          TextButton(
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.symmetric(
-                vertical: getProportionateScreenHeight(15),
-                horizontal: getProportionateScreenWidth(70),
-              ),
-              backgroundColor: ConstColors.buttonBackground,
-            ),
-            onPressed: () {
-              context.read<SessionRepository>().logout();
-              Beamer.of(context)
-                  .beamToNamed(UnauthenticatedLocations.signInRoute);
-            },
-            child: Text(
-              'Logout',
-              style: const SdmsText().primarySemiBold,
+          SizedBox(height: getProportionateScreenHeight(70)),
+          SizedBox(
+            width: getProportionateScreenWidth(10),
+            height: getProportionateScreenHeight(100),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: getProportionateScreenWidth(defaultPadding),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: ConstColors.darkBlue,
+                      width: 1.5,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        vertical: getProportionateScreenHeight(15),
+                        horizontal: getProportionateScreenWidth(70),
+                      ),
+                      backgroundColor: ConstColors.yellow,
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    onPressed: () {
+                      context.read<SessionRepository>().logout();
+                      Beamer.of(context)
+                          .beamToNamed(UnauthenticatedLocations.signInRoute);
+                    },
+                    child: Text(
+                      'Logout',
+                      style: const SdmsText().primarySemiBold,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: getProportionateScreenWidth(defaultPadding),
+                ),
+              ],
             ),
           ),
         ],

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Project imports:
 import 'package:sdms_app/business/bloc/message_bloc.dart';
+import 'package:sdms_app/presentation/components/loading.dart';
 import 'package:sdms_app/presentation/components/message_card.dart';
 import 'package:sdms_app/presentation/components/message_modal.dart';
 import 'package:sdms_app/presentation/constants.dart';
@@ -21,9 +22,14 @@ class Body extends StatefulWidget {
   @override
   State<Body> createState() => _BodyState();
 }
-// TODO: init notification provider here?
 
 class _BodyState extends State<Body> {
+  @override
+  void initState() {
+    context.read<MessageBloc>().add(const MessageGetAll());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,7 +37,13 @@ class _BodyState extends State<Body> {
       child: Container(
         margin: EdgeInsets.only(top: getProportionateScreenHeight(10)),
         decoration: const ShapeDecoration(
-          color: ConstColors.lightBlue,
+          gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                ConstColors.lightBlue,
+                ConstColors.mediumBlue,
+              ]),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15)),
@@ -44,7 +56,9 @@ class _BodyState extends State<Body> {
           child: BlocBuilder<MessageBloc, MessageState>(
             buildWhen: (previous, current) =>
                 previous.unreadMessages != current.unreadMessages ||
-                previous.visits != current.visits,
+                previous.visits != current.visits ||
+                previous.messages != current.messages ||
+                previous.messageStatus != current.messageStatus,
             builder: (context, state) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -81,80 +95,87 @@ class _BodyState extends State<Body> {
                         ),
                         SizedBox(
                           height: getProportionateScreenHeight(200),
-                          child: state.unreadMessages.isEmpty
-                              ? Image.asset(
-                                  "assets/images/holding-list-shrug.png",
-                                  fit: BoxFit.cover,
-                                )
-                              : SingleChildScrollView(
-                                  physics: const ScrollPhysics(),
-                                  child: Column(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        height:
-                                            getProportionateScreenHeight(200),
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          padding: EdgeInsets.all(
-                                              getProportionateScreenHeight(2)),
-                                          itemCount:
-                                              state.unreadMessages.length,
-                                          itemBuilder:
-                                              (BuildContext context, index) {
-                                            return Column(
-                                              children: [
-                                                Material(
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                50)),
-                                                  ),
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      context
-                                                          .read<MessageBloc>()
-                                                          .add(MessageViewMessage(
-                                                              id: state
-                                                                  .unreadMessages[
-                                                                      index]
-                                                                  .id));
+                          child: state.messageStatus == LoadingStatus.loading
+                              ? const Loading()
+                              : state.unreadMessages.isEmpty
+                                  ? Image.asset(
+                                      "assets/images/holding-list-shrug.png",
+                                      fit: BoxFit.cover,
+                                    )
+                                  : SingleChildScrollView(
+                                      physics: const ScrollPhysics(),
+                                      child: Column(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height:
+                                                getProportionateScreenHeight(
+                                                    200),
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              padding: EdgeInsets.all(
+                                                  getProportionateScreenHeight(
+                                                      2)),
+                                              itemCount:
+                                                  state.unreadMessages.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      index) {
+                                                return Column(
+                                                  children: [
+                                                    Material(
+                                                      shape:
+                                                          const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    30)),
+                                                      ),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          context
+                                                              .read<
+                                                                  MessageBloc>()
+                                                              .add(MessageViewMessage(
+                                                                  id: state
+                                                                      .unreadMessages[
+                                                                          index]
+                                                                      .id));
 
-                                                      MessageModal(
-                                                        context: context,
-                                                        message: state
-                                                                .unreadMessages[
-                                                                    index]
-                                                                .body ??
-                                                            "Empty message",
-                                                      ).show();
-                                                    },
-                                                    child: MessageCard(
-                                                      receivedAt: state
-                                                          .unreadMessages[index]
-                                                          .receivedAt,
-                                                      message: state
+                                                          MessageModal(
+                                                            context: context,
+                                                            message: state
+                                                                    .unreadMessages[
+                                                                        index]
+                                                                    .body ??
+                                                                "Empty message",
+                                                          ).show();
+                                                        },
+                                                        child: MessageCard(
+                                                          receivedAt: state
                                                               .unreadMessages[
                                                                   index]
-                                                              .body ??
-                                                          "Empty Message",
+                                                              .receivedAt,
+                                                          message: state
+                                                                  .unreadMessages[
+                                                                      index]
+                                                                  .body ??
+                                                              "Empty Message",
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height:
-                                                      getProportionateScreenHeight(
-                                                          5),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        ),
+                                                    SizedBox(
+                                                      height:
+                                                          getProportionateScreenHeight(
+                                                              5),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
+                                    ),
                         ),
                         state.unreadMessages.isEmpty
                             ? const Spacer()
@@ -212,7 +233,7 @@ class _BodyState extends State<Body> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   const NavigateButton(
-                                    icon: Icons.person,
+                                    icon: Icons.edit,
                                     tooltip: "Customize SDMS",
                                     destination: HomeLocations.customizeRoute,
                                   ),

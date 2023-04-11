@@ -42,7 +42,6 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     Emitter<CameraState> emit,
   ) {
     _notificationRepository.initConnection();
-    _notificationRepository.initCameraConnection();
 
     emit(state.copyWith(
       cameraStatus: CameraStatus.ready,

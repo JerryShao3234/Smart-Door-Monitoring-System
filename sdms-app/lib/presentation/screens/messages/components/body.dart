@@ -75,7 +75,7 @@ class Body extends StatelessWidget {
                                 ),
                         ),
                         SizedBox(
-                          height: getProportionateScreenHeight(250),
+                          height: getProportionateScreenHeight(600),
                           child: state.unreadMessages.isEmpty
                               ? SizedBox(
                                   width: getProportionateScreenWidth(200),
