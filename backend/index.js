@@ -221,14 +221,71 @@ app.post("/visit", async (req, res) => {
                 {"_id": user_id},
                 {$set: {"lastVisit": insert_id.toString()}}
         )
-        io.sockets.emit('visitNotification', "You have a visitor!")
+        //io.sockets.emit('newMessage', "You have a visitor!")
         obj = {
                 "de1socID": "123",
                 "visitor": "mockvisitorID"
         }
+
+        if(req.body.intent === "Record") {
+                obj = {
+                        "de1socID": "123",
+                        "visitor": req.body.visitor
+                }
+                io.sockets.emit('image', obj)
+                io.sockets.emit('audio', obj)
+                res.status(200).send("Visit logged")
+                return
+        }
+
+        messageInfo = ""
+
+        switch (req.body.intent) {
+                case "Family or friend":
+                        messageInfo = "A family member or friend is looking for you!";
+                        break;
+                case "Package Delivery":
+                        messageInfo = "A package delivery has arrived at your door!";
+                        break;
+                case "Advertisement":
+                        messageInfo = "A door-to-door sales representative wants to speak with you.";
+                        break;
+                // case "Record":
+                //         messageInfo = "A visitor wants to record a message for you.";
+                //         obj = {
+                //                 "de1socID": "123",
+                //                 "visitor": req.body.visitor
+                //         }
+                //         io.sockets.emit('audio', obj)
+                //         break;
+                default:
+                        console.log("Invalid intent")
+                        res.status(404).send("Invalid intent")
+                        return
+        }
+
+        //create a message for the visit
+        await client.db("sdmsDB").collection("messages").insertOne(
+                {
+                        "visitID": insert_id.toString(),
+                        "userID": user_id,
+                        "sender": "visitor",
+                        "messageInfo": messageInfo,
+                        "date": date,
+                        "read": false,
+                        "img": req.body.img
+                }
+        )
+
+        await client.db("sdmsDB").collection("messages").updateMany({
+                "userID": user_id,
+                "sender": "user",
+                "read": false
+        }, { $set: { "read": true } } //assume hardware will read all messages
+        )
+
         io.sockets.emit('image', obj)
         res.status(200).send("Visit logged")
-        
 })
 
 app.post("/testaudio", async (req, res) => {
