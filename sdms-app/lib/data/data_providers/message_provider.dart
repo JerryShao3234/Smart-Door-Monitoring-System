@@ -25,7 +25,7 @@ class MessageProvider extends MessageDataProvider {
           "token": token,
         },
       ).timeout(
-        const Duration(seconds: 10),
+        const Duration(seconds: 15),
         onTimeout: () => throw FailureCode.connectionFailed.message,
       );
 

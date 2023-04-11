@@ -232,7 +232,9 @@ class _AudioRecorderState extends State<AudioRecorder> {
                                   height: getProportionateScreenHeight(50),
                                 ),
                                 Text(
-                                  "Time left: $speakingSeconds",
+                                  speakingSeconds == 0
+                                      ? "Sending message..."
+                                      : "Time left: $speakingSeconds",
                                   style: const SdmsText().title,
                                   textAlign: TextAlign.center,
                                 ),

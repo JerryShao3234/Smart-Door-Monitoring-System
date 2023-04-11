@@ -20,6 +20,9 @@ abstract class NotificationDataProvider {
   /// Broadcast stream for new audio requests from the SDMS server
   Stream<AudioRequest> get incomingAudioRequests;
 
+  /// Broadcast stream for when to update UI after audio event
+  Stream<String> get incomingAudioTwoRequests;
+
   /// Emits an event named [eventName] to the server, with parameters
   /// [eventParams].
   void emitEvent(eventName, eventParams);
@@ -38,6 +41,8 @@ class NotificationRepository {
       _notificationProvider.incomingImageRequests;
   Stream<AudioRequest> get incomingAudioRequests =>
       _notificationProvider.incomingAudioRequests;
+  Stream<String> get incomingAudioTwoRequests =>
+      _notificationProvider.incomingAudioTwoRequests;
 
   void emitEvent(eventName, eventParams) {
     _notificationProvider.emitEvent(eventName, eventParams);

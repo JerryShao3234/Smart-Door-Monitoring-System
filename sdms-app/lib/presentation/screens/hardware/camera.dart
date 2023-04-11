@@ -47,7 +47,7 @@ class CameraScreenState extends State<CameraScreen> {
 
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
-  CameraType cameraType = CameraType.back;
+  CameraType cameraType = CameraType.front;
 
   @override
   void initState() {

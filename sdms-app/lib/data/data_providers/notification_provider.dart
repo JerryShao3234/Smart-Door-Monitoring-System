@@ -22,6 +22,9 @@ class NotificationProvider extends NotificationDataProvider {
   /// Broadcast stream for new audio requests from the SDMS server
   final _incomingAudioRequests = StreamController<AudioRequest>.broadcast();
 
+  /// Broadcast stream for when to update messages after audio recording
+  final _incomingAudioTwoRequests = StreamController<String>.broadcast();
+
   /// The SDMS server URI
   final _sdmsUri = "http://${Globals.cloudUrl}";
 
@@ -69,7 +72,9 @@ class NotificationProvider extends NotificationDataProvider {
       final imageRequest = ImageRequest.fromJson(data);
       _incomingImageRequests.add(imageRequest);
 
-      if (!Globals.isHardwareHelperDevice) {
+      if (Globals.isHardwareHelperDevice == false) {
+        Globals.readyToShowNotifications = true;
+
         // Show push notifications on a new visit
         await Future.delayed(const Duration(seconds: 2), () async {
           if (Globals.readyToShowNotifications) {
@@ -77,6 +82,8 @@ class NotificationProvider extends NotificationDataProvider {
                 'Knock knock!',
                 "A visitor arrived at your door. "
                     "Tap to check your SDMS messages.");
+
+            Globals.readyToShowNotifications = false;
           }
         });
       }
@@ -87,6 +94,12 @@ class NotificationProvider extends NotificationDataProvider {
 
       final audioRequest = AudioRequest.fromJson(data);
       _incomingAudioRequests.add(audioRequest);
+    });
+
+    _socket.on('audiotwo', (data) async {
+      print("Update audio messages received");
+
+      _incomingAudioTwoRequests.add(data);
     });
 
     print("Hardware connections successfully initialized!");
@@ -119,4 +132,8 @@ class NotificationProvider extends NotificationDataProvider {
       payload: 'item x',
     );
   }
+
+  @override
+  Stream<String> get incomingAudioTwoRequests =>
+      _incomingAudioTwoRequests.stream;
 }

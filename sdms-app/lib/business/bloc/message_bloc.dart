@@ -50,11 +50,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
     // Set up the stream subscriptions
     _notificationRepository.incomingImageRequests.listen((message) async {
-      await Future.delayed(
-          const Duration(seconds: 2), () => add(const MessageEvent.getAll()));
+      await Future.delayed(const Duration(milliseconds: 500),
+          () => add(const MessageEvent.getAll()));
     });
 
-    _notificationRepository.incomingAudioRequests.listen((message) async {
+    _notificationRepository.incomingAudioTwoRequests.listen((message) async {
       await Future.delayed(
           const Duration(seconds: 2), () => add(const MessageEvent.getAll()));
     });
