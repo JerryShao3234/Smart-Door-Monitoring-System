@@ -1,6 +1,8 @@
-// https://github.com/esp8266/Arduino/ - used this repo to get esp8266 drivers
-// https://techtutorialsx.com/2016/07/21/esp8266-post-requests/ 
-// https://randomnerdtutorials.com/decoding-and-encoding-json-with-arduino-or-esp8266/
+// Sources and Resources used:
+// https://github.com/esp8266/Arduino/ -- used this repo to get esp8266 drivers
+// https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/readme.html -- used this to connect to Wi-Fi 
+// https://techtutorialsx.com/2016/07/21/esp8266-post-requests/ -- used this to see how to make post requests
+// https://randomnerdtutorials.com/decoding-and-encoding-json-with-arduino-or-esp8266/ -- used this to decode and encode JSON
 
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
@@ -59,11 +61,9 @@ void loop() {
           // statements
           break;
       }
-//  
+  
       http.begin(client, "http://155.248.237.255:3000/visit");
-//      http.begin(client, "http://192.168.1.71:8000/test");
-////      http.begin(client, "http://172.20.10.2:8000/test");
-//
+
       http.addHeader("Content-Type", "application/json");
 
       String visit = "{\"de1socID\": \"" + de1_soc_id + "\", \"visitor\": \"nothing\", \"intent\": \"" + message + "\", \"img\": \"nothing\"}";
@@ -78,16 +78,6 @@ void loop() {
         delay(45000);
       }
       
-//      String test_message = "<<<<My name is Simran and I am here to test>>>>";
-//
-//      for(int i = 0; i < test_message.length(); i++) {
-//        char c = test_message.charAt(i);
-//        Serial.print(c);
-//        delay(50);
-//        //delay(500);
-//      }
-
-    
 //      Polling Attempt
       payload = "";
       
@@ -116,14 +106,11 @@ void loop() {
             delay(50);
           }
 
-//          count_stop = 0;
           count_stop = 20;
           got_message = true;
           
         }
         
-//        Serial.println(httpCode);
-//        Serial.println(payload);
         delay(3000);
         
       }
@@ -138,7 +125,6 @@ void loop() {
         }   
       }
       
-//      Serial.println("DONE");
       http.end();
     }
   }
