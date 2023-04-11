@@ -11,7 +11,7 @@ _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
       userId: json['userID'] as String,
       body: json['messageInfo'] as String?,
       receivedAt: json['date'] as int,
-      sender: json['sender'] as String,
+      sender: json['sender'] as String?,
       markedAsRead: json['read'] as bool,
       visitId: json['visitID'] as String,
     );

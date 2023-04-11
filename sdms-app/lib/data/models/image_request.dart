@@ -6,9 +6,9 @@ part 'image_request.g.dart';
 
 @freezed
 class ImageRequest with _$ImageRequest {
-  const ImageRequest._();
+  ImageRequest._();
 
-  const factory ImageRequest({
+  factory ImageRequest({
     /// The ID of the SDMS that the image request is associated with.
     @JsonKey(name: 'de1socID') required String sdmsId,
 

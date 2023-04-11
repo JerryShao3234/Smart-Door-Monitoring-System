@@ -48,9 +48,8 @@ class SignInForm extends StatelessWidget {
             autovalidateMode:
                 autoValidate ? AutovalidateMode.onUserInteraction : null,
             validator: FormBuilderValidators.compose([
-              // TODO: undo after
-              // FormBuilderValidators.required(),
-              // FormBuilderValidators.email(),
+              FormBuilderValidators.required(),
+              FormBuilderValidators.email(),
             ]),
             onChanged: (email) =>
                 context.read<LoginCubit>().emailChanged(email),
@@ -70,9 +69,8 @@ class SignInForm extends StatelessWidget {
                 autoValidate ? AutovalidateMode.onUserInteraction : null,
             validator: FormBuilderValidators.compose(
               [
-                // TODO: undo after
-                // FormBuilderValidators.required(),
-                // FormBuilderValidators.minLength(User.minimumPasswordLength),
+                FormBuilderValidators.required(),
+                FormBuilderValidators.minLength(User.minimumPasswordLength),
               ],
             ),
             onChanged: (password) =>

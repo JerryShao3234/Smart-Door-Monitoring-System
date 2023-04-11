@@ -6,11 +6,6 @@ class MessageEvent with _$MessageEvent {
   /// home screen, or every 5 seconds after that.
   const factory MessageEvent.getAll() = MessageGetAll;
 
-  /// For when a new message is received from the socket
-  const factory MessageEvent.receivedNew({
-    required Message message,
-  }) = MessageReceivedNew;
-
   /// For when the current message being viewed by the user changes
   const factory MessageEvent.viewMessage({
     /// The id of the current message displayed

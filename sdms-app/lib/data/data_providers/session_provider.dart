@@ -32,14 +32,10 @@ class SessionProvider extends SessionDataProvider {
       var url = Uri.http(Globals.cloudUrl, '/login');
 
       var response = await http.post(url, body: {
-        "email": "test@test.com",
-        "password": "asdfjkl;",
-        // TODO: undo after
-
-        // "email": email,
-        // "password": password,
+        "email": email,
+        "password": password,
       }).timeout(
-        const Duration(seconds: 3),
+        const Duration(seconds: 10),
         onTimeout: () {
           throw AuthenticationFailure.fromEnum(
               AuthenticationFailureCode.unknown);
@@ -57,6 +53,8 @@ class SessionProvider extends SessionDataProvider {
             token: responseBody["token"],
           ),
         );
+
+        print("User token: ${responseBody["token"]}");
       } else if (response.statusCode == 404) {
         _session = EmptySession(
           errorMessage: AuthenticationFailure.fromEnum(

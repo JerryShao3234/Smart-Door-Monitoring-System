@@ -25,7 +25,7 @@ class Message with _$Message {
     @JsonKey(name: 'date') required int receivedAt,
 
     /// The sender of this message.
-    @JsonKey(name: 'sender') required String sender,
+    @JsonKey(name: 'sender') String? sender,
 
     /// Whether this message has been marked as read by the user
     @JsonKey(name: 'read') required bool markedAsRead,

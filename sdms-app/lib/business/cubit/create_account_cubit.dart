@@ -159,9 +159,4 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
     }
     emit(state.copyWith(status: CreateAccountFormStatus.initial));
   }
-
-  @override
-  Future<void> close() {
-    return super.close();
-  }
 }

@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:sdms_app/globals.dart';
+import 'package:sdms_app/presentation/constants.dart';
 import 'package:sdms_app/presentation/size_config.dart';
 import 'package:sdms_app/presentation/theme/sdms_text.dart';
 
 class MessageCard extends StatelessWidget {
   /// The maximum number of characters in the message preview that
   /// will be displayed on the home screen.
-  final int maxChar = 67;
+  final int maxChar = 70;
 
   /// The message's full body text, a portion of which
   /// will be displayed if it exceeds [maxChar] characters.
@@ -27,34 +28,43 @@ class MessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(getProportionateScreenHeight(10)),
-      child: SizedBox(
-        width: getProportionateScreenWidth(300),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: getProportionateScreenWidth(280),
-              child: RichText(
-                text: TextSpan(
-                  style: const SdmsText().primaryRegular,
-                  children: [
-                    TextSpan(
-                      text: '${Globals.formatDateTime(receivedAt)} ',
-                      style: const SdmsText().primaryItalicBold,
-                    ),
-                    TextSpan(
-                      text: message,
-                    ),
-                  ],
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(
+          color: ConstColors.mediumBlue,
+          width: 1.5,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(getProportionateScreenHeight(10)),
+        child: SizedBox(
+          width: getProportionateScreenWidth(300),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: getProportionateScreenWidth(280),
+                child: RichText(
+                  text: TextSpan(
+                    style: const SdmsText().primaryRegular,
+                    children: [
+                      TextSpan(
+                        text: '${Globals.formatDateTime(receivedAt)} ',
+                        style: const SdmsText().primaryItalicBold,
+                      ),
+                      TextSpan(
+                        text: getPreview(message),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-                width: getProportionateScreenWidth(20),
-                child: const Icon(Icons.chevron_right)),
-          ],
+              SizedBox(
+                  width: getProportionateScreenWidth(20),
+                  child: const Icon(Icons.chevron_right)),
+            ],
+          ),
         ),
       ),
     );
@@ -65,8 +75,11 @@ class MessageCard extends StatelessWidget {
   ///
   /// Otherwise, returns the original [message].
   String getPreview(String message) {
-    return message.length > maxChar
-        ? '${message.substring(0, maxChar)}...'
-        : message;
+    String trimmedMessage = message.trim();
+    trimmedMessage = trimmedMessage.replaceAll("\n", ".");
+
+    return trimmedMessage.length > maxChar
+        ? '${trimmedMessage.substring(0, maxChar)}...'
+        : trimmedMessage;
   }
 }

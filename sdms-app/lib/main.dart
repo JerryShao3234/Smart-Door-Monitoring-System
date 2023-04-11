@@ -10,7 +10,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Project imports:
-import 'package:sdms_app/business/bloc/camera_bloc.dart';
+import 'package:sdms_app/business/bloc/hardware_bloc.dart';
 import 'package:sdms_app/business/bloc/message_bloc.dart';
 import 'package:sdms_app/business/cubit/session_cubit.dart';
 import 'package:sdms_app/data/binding.dart';
@@ -27,6 +27,8 @@ import 'package:sdms_app/presentation/theme/sdms_text.dart';
 part 'presentation/routes/routes.dart';
 part 'presentation/theme/theme.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   // Make sure Flutter is initialized before calling native code
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +43,9 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  // Initialize the push notifications
+  Globals.initPushNotifs(navigatorKey);
 
   // All initialized, start the app
   runApp(App(
@@ -113,7 +118,7 @@ class App extends StatelessWidget {
             ),
           ),
           BlocProvider(
-            create: (_) => CameraBloc(
+            create: (_) => HardwareBloc(
               notificationRepository: notificationRepository,
             ),
           ),
@@ -136,6 +141,7 @@ class AppView extends StatelessWidget {
         }
       },
       child: MaterialApp.router(
+        key: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: '',
         theme: _theme,

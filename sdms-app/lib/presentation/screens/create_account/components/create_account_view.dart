@@ -116,11 +116,13 @@ class _CreateAccountViewState extends State<CreateAccountView> {
                   ),
                 ),
                 onTap: () {
-                  // TODO: instructions for finding SDMS id
                   Modal(
                     context: context,
                     title: "Where do I find my SDMS id?",
-                    message: "message",
+                    message: "When your SDMS connects to the Internet for the "
+                        "first time, it will display your unique ID on the "
+                        "touchscreen.\n"
+                        "That is the ID you should enter here.",
                     buttonText: "Got it",
                   ).show();
                 },

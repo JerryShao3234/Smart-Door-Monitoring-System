@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sdms_app/business/bloc/message_bloc.dart';
 import 'package:sdms_app/business/cubit/login_cubit.dart';
 import 'package:sdms_app/business/cubit/session_cubit.dart';
+import 'package:sdms_app/data/repositories/notification_repository.dart';
 import 'package:sdms_app/data/repositories/session_repository.dart';
 import 'package:sdms_app/presentation/components/loading.dart';
 import 'package:sdms_app/presentation/constants.dart';
@@ -52,6 +53,8 @@ class Body extends StatelessWidget {
               listener: (context, state) {
                 if (state.session.isAuthenticated) {
                   context.read<MessageBloc>().add(const MessageGetAll());
+                  context.read<NotificationRepository>().initConnection();
+
                   Beamer.of(context, root: true)
                       .beamToNamed(HomeLocations.homeRoute);
                 }

@@ -85,11 +85,11 @@ class MessageModal {
                                   height: getProportionateScreenHeight(
                                       defaultPadding)),
                               Container(
-                                height: getProportionateScreenHeight(120),
+                                height: getProportionateScreenHeight(450),
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: visitorImage,
-                                    fit: BoxFit.contain,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
@@ -120,7 +120,7 @@ class MessageModal {
                                               current.replyStatus ||
                                           previous.error != current.error,
                                       builder: (context, state) {
-                                        var maxCharacters = 200;
+                                        var maxCharacters = 75;
                                         return Column(
                                           children: [
                                             state.replyStatus ==

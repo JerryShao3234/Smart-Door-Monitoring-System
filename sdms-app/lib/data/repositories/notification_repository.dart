@@ -2,6 +2,7 @@
 import 'dart:async';
 
 // Project imports:
+import 'package:sdms_app/data/models/audio_request.dart';
 import 'package:sdms_app/data/models/image_request.dart';
 import 'package:sdms_app/data/models/message.dart';
 
@@ -10,14 +11,14 @@ abstract class NotificationDataProvider {
   /// incoming SDMS messages.
   void initConnection();
 
-  /// Initializes event handlers for image requests from the app camera.
-  void initCameraConnection();
-
   /// The broadcast stream for new incoming messages in raw JSON format.
   Stream<Message> get incomingMessages;
 
   /// Broadcast stream for new image requests from the SDMS server
   Stream<ImageRequest> get incomingImageRequests;
+
+  /// Broadcast stream for new audio requests from the SDMS server
+  Stream<AudioRequest> get incomingAudioRequests;
 
   /// Emits an event named [eventName] to the server, with parameters
   /// [eventParams].
@@ -35,6 +36,8 @@ class NotificationRepository {
       _notificationProvider.incomingMessages;
   Stream<ImageRequest> get incomingImageRequests =>
       _notificationProvider.incomingImageRequests;
+  Stream<AudioRequest> get incomingAudioRequests =>
+      _notificationProvider.incomingAudioRequests;
 
   void emitEvent(eventName, eventParams) {
     _notificationProvider.emitEvent(eventName, eventParams);
@@ -42,9 +45,5 @@ class NotificationRepository {
 
   void initConnection() {
     _notificationProvider.initConnection();
-  }
-
-  void initCameraConnection() {
-    _notificationProvider.initCameraConnection();
   }
 }

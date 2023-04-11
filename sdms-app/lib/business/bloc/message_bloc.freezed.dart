@@ -19,7 +19,6 @@ mixin _$MessageEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getAll,
-    required TResult Function(Message message) receivedNew,
     required TResult Function(String id) viewMessage,
     required TResult Function(String messageId) markReadUnread,
     required TResult Function(String? replyText) updateReply,
@@ -29,7 +28,6 @@ mixin _$MessageEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getAll,
-    TResult? Function(Message message)? receivedNew,
     TResult? Function(String id)? viewMessage,
     TResult? Function(String messageId)? markReadUnread,
     TResult? Function(String? replyText)? updateReply,
@@ -39,7 +37,6 @@ mixin _$MessageEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getAll,
-    TResult Function(Message message)? receivedNew,
     TResult Function(String id)? viewMessage,
     TResult Function(String messageId)? markReadUnread,
     TResult Function(String? replyText)? updateReply,
@@ -50,7 +47,6 @@ mixin _$MessageEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MessageGetAll value) getAll,
-    required TResult Function(MessageReceivedNew value) receivedNew,
     required TResult Function(MessageViewMessage value) viewMessage,
     required TResult Function(MessageMarkReadUnread value) markReadUnread,
     required TResult Function(MessageUpdateReply value) updateReply,
@@ -60,7 +56,6 @@ mixin _$MessageEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MessageGetAll value)? getAll,
-    TResult? Function(MessageReceivedNew value)? receivedNew,
     TResult? Function(MessageViewMessage value)? viewMessage,
     TResult? Function(MessageMarkReadUnread value)? markReadUnread,
     TResult? Function(MessageUpdateReply value)? updateReply,
@@ -70,7 +65,6 @@ mixin _$MessageEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MessageGetAll value)? getAll,
-    TResult Function(MessageReceivedNew value)? receivedNew,
     TResult Function(MessageViewMessage value)? viewMessage,
     TResult Function(MessageMarkReadUnread value)? markReadUnread,
     TResult Function(MessageUpdateReply value)? updateReply,
@@ -143,7 +137,6 @@ class _$MessageGetAll with DiagnosticableTreeMixin implements MessageGetAll {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getAll,
-    required TResult Function(Message message) receivedNew,
     required TResult Function(String id) viewMessage,
     required TResult Function(String messageId) markReadUnread,
     required TResult Function(String? replyText) updateReply,
@@ -156,7 +149,6 @@ class _$MessageGetAll with DiagnosticableTreeMixin implements MessageGetAll {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getAll,
-    TResult? Function(Message message)? receivedNew,
     TResult? Function(String id)? viewMessage,
     TResult? Function(String messageId)? markReadUnread,
     TResult? Function(String? replyText)? updateReply,
@@ -169,7 +161,6 @@ class _$MessageGetAll with DiagnosticableTreeMixin implements MessageGetAll {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getAll,
-    TResult Function(Message message)? receivedNew,
     TResult Function(String id)? viewMessage,
     TResult Function(String messageId)? markReadUnread,
     TResult Function(String? replyText)? updateReply,
@@ -186,7 +177,6 @@ class _$MessageGetAll with DiagnosticableTreeMixin implements MessageGetAll {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MessageGetAll value) getAll,
-    required TResult Function(MessageReceivedNew value) receivedNew,
     required TResult Function(MessageViewMessage value) viewMessage,
     required TResult Function(MessageMarkReadUnread value) markReadUnread,
     required TResult Function(MessageUpdateReply value) updateReply,
@@ -199,7 +189,6 @@ class _$MessageGetAll with DiagnosticableTreeMixin implements MessageGetAll {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MessageGetAll value)? getAll,
-    TResult? Function(MessageReceivedNew value)? receivedNew,
     TResult? Function(MessageViewMessage value)? viewMessage,
     TResult? Function(MessageMarkReadUnread value)? markReadUnread,
     TResult? Function(MessageUpdateReply value)? updateReply,
@@ -212,7 +201,6 @@ class _$MessageGetAll with DiagnosticableTreeMixin implements MessageGetAll {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MessageGetAll value)? getAll,
-    TResult Function(MessageReceivedNew value)? receivedNew,
     TResult Function(MessageViewMessage value)? viewMessage,
     TResult Function(MessageMarkReadUnread value)? markReadUnread,
     TResult Function(MessageUpdateReply value)? updateReply,
@@ -228,185 +216,6 @@ class _$MessageGetAll with DiagnosticableTreeMixin implements MessageGetAll {
 
 abstract class MessageGetAll implements MessageEvent {
   const factory MessageGetAll() = _$MessageGetAll;
-}
-
-/// @nodoc
-abstract class _$$MessageReceivedNewCopyWith<$Res> {
-  factory _$$MessageReceivedNewCopyWith(_$MessageReceivedNew value,
-          $Res Function(_$MessageReceivedNew) then) =
-      __$$MessageReceivedNewCopyWithImpl<$Res>;
-  @useResult
-  $Res call({Message message});
-
-  $MessageCopyWith<$Res> get message;
-}
-
-/// @nodoc
-class __$$MessageReceivedNewCopyWithImpl<$Res>
-    extends _$MessageEventCopyWithImpl<$Res, _$MessageReceivedNew>
-    implements _$$MessageReceivedNewCopyWith<$Res> {
-  __$$MessageReceivedNewCopyWithImpl(
-      _$MessageReceivedNew _value, $Res Function(_$MessageReceivedNew) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_$MessageReceivedNew(
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as Message,
-    ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $MessageCopyWith<$Res> get message {
-    return $MessageCopyWith<$Res>(_value.message, (value) {
-      return _then(_value.copyWith(message: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$MessageReceivedNew
-    with DiagnosticableTreeMixin
-    implements MessageReceivedNew {
-  const _$MessageReceivedNew({required this.message});
-
-  @override
-  final Message message;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MessageEvent.receivedNew(message: $message)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'MessageEvent.receivedNew'))
-      ..add(DiagnosticsProperty('message', message));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$MessageReceivedNew &&
-            (identical(other.message, message) || other.message == message));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, message);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$MessageReceivedNewCopyWith<_$MessageReceivedNew> get copyWith =>
-      __$$MessageReceivedNewCopyWithImpl<_$MessageReceivedNew>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() getAll,
-    required TResult Function(Message message) receivedNew,
-    required TResult Function(String id) viewMessage,
-    required TResult Function(String messageId) markReadUnread,
-    required TResult Function(String? replyText) updateReply,
-    required TResult Function(String? messageInfo) sendReply,
-  }) {
-    return receivedNew(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? getAll,
-    TResult? Function(Message message)? receivedNew,
-    TResult? Function(String id)? viewMessage,
-    TResult? Function(String messageId)? markReadUnread,
-    TResult? Function(String? replyText)? updateReply,
-    TResult? Function(String? messageInfo)? sendReply,
-  }) {
-    return receivedNew?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? getAll,
-    TResult Function(Message message)? receivedNew,
-    TResult Function(String id)? viewMessage,
-    TResult Function(String messageId)? markReadUnread,
-    TResult Function(String? replyText)? updateReply,
-    TResult Function(String? messageInfo)? sendReply,
-    required TResult orElse(),
-  }) {
-    if (receivedNew != null) {
-      return receivedNew(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(MessageGetAll value) getAll,
-    required TResult Function(MessageReceivedNew value) receivedNew,
-    required TResult Function(MessageViewMessage value) viewMessage,
-    required TResult Function(MessageMarkReadUnread value) markReadUnread,
-    required TResult Function(MessageUpdateReply value) updateReply,
-    required TResult Function(MessageSendReply value) sendReply,
-  }) {
-    return receivedNew(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MessageGetAll value)? getAll,
-    TResult? Function(MessageReceivedNew value)? receivedNew,
-    TResult? Function(MessageViewMessage value)? viewMessage,
-    TResult? Function(MessageMarkReadUnread value)? markReadUnread,
-    TResult? Function(MessageUpdateReply value)? updateReply,
-    TResult? Function(MessageSendReply value)? sendReply,
-  }) {
-    return receivedNew?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(MessageGetAll value)? getAll,
-    TResult Function(MessageReceivedNew value)? receivedNew,
-    TResult Function(MessageViewMessage value)? viewMessage,
-    TResult Function(MessageMarkReadUnread value)? markReadUnread,
-    TResult Function(MessageUpdateReply value)? updateReply,
-    TResult Function(MessageSendReply value)? sendReply,
-    required TResult orElse(),
-  }) {
-    if (receivedNew != null) {
-      return receivedNew(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class MessageReceivedNew implements MessageEvent {
-  const factory MessageReceivedNew({required final Message message}) =
-      _$MessageReceivedNew;
-
-  Message get message;
-  @JsonKey(ignore: true)
-  _$$MessageReceivedNewCopyWith<_$MessageReceivedNew> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -486,7 +295,6 @@ class _$MessageViewMessage
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getAll,
-    required TResult Function(Message message) receivedNew,
     required TResult Function(String id) viewMessage,
     required TResult Function(String messageId) markReadUnread,
     required TResult Function(String? replyText) updateReply,
@@ -499,7 +307,6 @@ class _$MessageViewMessage
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getAll,
-    TResult? Function(Message message)? receivedNew,
     TResult? Function(String id)? viewMessage,
     TResult? Function(String messageId)? markReadUnread,
     TResult? Function(String? replyText)? updateReply,
@@ -512,7 +319,6 @@ class _$MessageViewMessage
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getAll,
-    TResult Function(Message message)? receivedNew,
     TResult Function(String id)? viewMessage,
     TResult Function(String messageId)? markReadUnread,
     TResult Function(String? replyText)? updateReply,
@@ -529,7 +335,6 @@ class _$MessageViewMessage
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MessageGetAll value) getAll,
-    required TResult Function(MessageReceivedNew value) receivedNew,
     required TResult Function(MessageViewMessage value) viewMessage,
     required TResult Function(MessageMarkReadUnread value) markReadUnread,
     required TResult Function(MessageUpdateReply value) updateReply,
@@ -542,7 +347,6 @@ class _$MessageViewMessage
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MessageGetAll value)? getAll,
-    TResult? Function(MessageReceivedNew value)? receivedNew,
     TResult? Function(MessageViewMessage value)? viewMessage,
     TResult? Function(MessageMarkReadUnread value)? markReadUnread,
     TResult? Function(MessageUpdateReply value)? updateReply,
@@ -555,7 +359,6 @@ class _$MessageViewMessage
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MessageGetAll value)? getAll,
-    TResult Function(MessageReceivedNew value)? receivedNew,
     TResult Function(MessageViewMessage value)? viewMessage,
     TResult Function(MessageMarkReadUnread value)? markReadUnread,
     TResult Function(MessageUpdateReply value)? updateReply,
@@ -658,7 +461,6 @@ class _$MessageMarkReadUnread
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getAll,
-    required TResult Function(Message message) receivedNew,
     required TResult Function(String id) viewMessage,
     required TResult Function(String messageId) markReadUnread,
     required TResult Function(String? replyText) updateReply,
@@ -671,7 +473,6 @@ class _$MessageMarkReadUnread
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getAll,
-    TResult? Function(Message message)? receivedNew,
     TResult? Function(String id)? viewMessage,
     TResult? Function(String messageId)? markReadUnread,
     TResult? Function(String? replyText)? updateReply,
@@ -684,7 +485,6 @@ class _$MessageMarkReadUnread
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getAll,
-    TResult Function(Message message)? receivedNew,
     TResult Function(String id)? viewMessage,
     TResult Function(String messageId)? markReadUnread,
     TResult Function(String? replyText)? updateReply,
@@ -701,7 +501,6 @@ class _$MessageMarkReadUnread
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MessageGetAll value) getAll,
-    required TResult Function(MessageReceivedNew value) receivedNew,
     required TResult Function(MessageViewMessage value) viewMessage,
     required TResult Function(MessageMarkReadUnread value) markReadUnread,
     required TResult Function(MessageUpdateReply value) updateReply,
@@ -714,7 +513,6 @@ class _$MessageMarkReadUnread
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MessageGetAll value)? getAll,
-    TResult? Function(MessageReceivedNew value)? receivedNew,
     TResult? Function(MessageViewMessage value)? viewMessage,
     TResult? Function(MessageMarkReadUnread value)? markReadUnread,
     TResult? Function(MessageUpdateReply value)? updateReply,
@@ -727,7 +525,6 @@ class _$MessageMarkReadUnread
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MessageGetAll value)? getAll,
-    TResult Function(MessageReceivedNew value)? receivedNew,
     TResult Function(MessageViewMessage value)? viewMessage,
     TResult Function(MessageMarkReadUnread value)? markReadUnread,
     TResult Function(MessageUpdateReply value)? updateReply,
@@ -830,7 +627,6 @@ class _$MessageUpdateReply
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getAll,
-    required TResult Function(Message message) receivedNew,
     required TResult Function(String id) viewMessage,
     required TResult Function(String messageId) markReadUnread,
     required TResult Function(String? replyText) updateReply,
@@ -843,7 +639,6 @@ class _$MessageUpdateReply
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getAll,
-    TResult? Function(Message message)? receivedNew,
     TResult? Function(String id)? viewMessage,
     TResult? Function(String messageId)? markReadUnread,
     TResult? Function(String? replyText)? updateReply,
@@ -856,7 +651,6 @@ class _$MessageUpdateReply
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getAll,
-    TResult Function(Message message)? receivedNew,
     TResult Function(String id)? viewMessage,
     TResult Function(String messageId)? markReadUnread,
     TResult Function(String? replyText)? updateReply,
@@ -873,7 +667,6 @@ class _$MessageUpdateReply
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MessageGetAll value) getAll,
-    required TResult Function(MessageReceivedNew value) receivedNew,
     required TResult Function(MessageViewMessage value) viewMessage,
     required TResult Function(MessageMarkReadUnread value) markReadUnread,
     required TResult Function(MessageUpdateReply value) updateReply,
@@ -886,7 +679,6 @@ class _$MessageUpdateReply
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MessageGetAll value)? getAll,
-    TResult? Function(MessageReceivedNew value)? receivedNew,
     TResult? Function(MessageViewMessage value)? viewMessage,
     TResult? Function(MessageMarkReadUnread value)? markReadUnread,
     TResult? Function(MessageUpdateReply value)? updateReply,
@@ -899,7 +691,6 @@ class _$MessageUpdateReply
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MessageGetAll value)? getAll,
-    TResult Function(MessageReceivedNew value)? receivedNew,
     TResult Function(MessageViewMessage value)? viewMessage,
     TResult Function(MessageMarkReadUnread value)? markReadUnread,
     TResult Function(MessageUpdateReply value)? updateReply,
@@ -1001,7 +792,6 @@ class _$MessageSendReply
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getAll,
-    required TResult Function(Message message) receivedNew,
     required TResult Function(String id) viewMessage,
     required TResult Function(String messageId) markReadUnread,
     required TResult Function(String? replyText) updateReply,
@@ -1014,7 +804,6 @@ class _$MessageSendReply
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getAll,
-    TResult? Function(Message message)? receivedNew,
     TResult? Function(String id)? viewMessage,
     TResult? Function(String messageId)? markReadUnread,
     TResult? Function(String? replyText)? updateReply,
@@ -1027,7 +816,6 @@ class _$MessageSendReply
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getAll,
-    TResult Function(Message message)? receivedNew,
     TResult Function(String id)? viewMessage,
     TResult Function(String messageId)? markReadUnread,
     TResult Function(String? replyText)? updateReply,
@@ -1044,7 +832,6 @@ class _$MessageSendReply
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MessageGetAll value) getAll,
-    required TResult Function(MessageReceivedNew value) receivedNew,
     required TResult Function(MessageViewMessage value) viewMessage,
     required TResult Function(MessageMarkReadUnread value) markReadUnread,
     required TResult Function(MessageUpdateReply value) updateReply,
@@ -1057,7 +844,6 @@ class _$MessageSendReply
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MessageGetAll value)? getAll,
-    TResult? Function(MessageReceivedNew value)? receivedNew,
     TResult? Function(MessageViewMessage value)? viewMessage,
     TResult? Function(MessageMarkReadUnread value)? markReadUnread,
     TResult? Function(MessageUpdateReply value)? updateReply,
@@ -1070,7 +856,6 @@ class _$MessageSendReply
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MessageGetAll value)? getAll,
-    TResult Function(MessageReceivedNew value)? receivedNew,
     TResult Function(MessageViewMessage value)? viewMessage,
     TResult Function(MessageMarkReadUnread value)? markReadUnread,
     TResult Function(MessageUpdateReply value)? updateReply,
@@ -1124,6 +909,9 @@ mixin _$MessageState {
   /// The state of the user sending a message
   ReplyStatus get replyStatus => throw _privateConstructorUsedError;
 
+  /// The state of the bloc fetching messages
+  LoadingStatus get messageStatus => throw _privateConstructorUsedError;
+
   /// The reply written by the user so far as a response to [currentMessage].
   ///
   /// Will have a length less than or equal to 200 characters.
@@ -1150,6 +938,7 @@ abstract class $MessageStateCopyWith<$Res> {
       Visit? currentVisit,
       int currentIndex,
       ReplyStatus replyStatus,
+      LoadingStatus messageStatus,
       String? reply});
 
   $UserCopyWith<$Res> get user;
@@ -1179,6 +968,7 @@ class _$MessageStateCopyWithImpl<$Res, $Val extends MessageState>
     Object? currentVisit = freezed,
     Object? currentIndex = null,
     Object? replyStatus = null,
+    Object? messageStatus = null,
     Object? reply = freezed,
   }) {
     return _then(_value.copyWith(
@@ -1218,6 +1008,10 @@ class _$MessageStateCopyWithImpl<$Res, $Val extends MessageState>
           ? _value.replyStatus
           : replyStatus // ignore: cast_nullable_to_non_nullable
               as ReplyStatus,
+      messageStatus: null == messageStatus
+          ? _value.messageStatus
+          : messageStatus // ignore: cast_nullable_to_non_nullable
+              as LoadingStatus,
       reply: freezed == reply
           ? _value.reply
           : reply // ignore: cast_nullable_to_non_nullable
@@ -1276,6 +1070,7 @@ abstract class _$$_MessageStateCopyWith<$Res>
       Visit? currentVisit,
       int currentIndex,
       ReplyStatus replyStatus,
+      LoadingStatus messageStatus,
       String? reply});
 
   @override
@@ -1306,6 +1101,7 @@ class __$$_MessageStateCopyWithImpl<$Res>
     Object? currentVisit = freezed,
     Object? currentIndex = null,
     Object? replyStatus = null,
+    Object? messageStatus = null,
     Object? reply = freezed,
   }) {
     return _then(_$_MessageState(
@@ -1345,6 +1141,10 @@ class __$$_MessageStateCopyWithImpl<$Res>
           ? _value.replyStatus
           : replyStatus // ignore: cast_nullable_to_non_nullable
               as ReplyStatus,
+      messageStatus: null == messageStatus
+          ? _value.messageStatus
+          : messageStatus // ignore: cast_nullable_to_non_nullable
+              as LoadingStatus,
       reply: freezed == reply
           ? _value.reply
           : reply // ignore: cast_nullable_to_non_nullable
@@ -1366,6 +1166,7 @@ class _$_MessageState with DiagnosticableTreeMixin implements _MessageState {
       this.currentVisit,
       this.currentIndex = 0,
       this.replyStatus = ReplyStatus.initial,
+      this.messageStatus = LoadingStatus.loading,
       this.reply})
       : _visits = visits,
         _messages = messages,
@@ -1433,6 +1234,11 @@ class _$_MessageState with DiagnosticableTreeMixin implements _MessageState {
   @JsonKey()
   final ReplyStatus replyStatus;
 
+  /// The state of the bloc fetching messages
+  @override
+  @JsonKey()
+  final LoadingStatus messageStatus;
+
   /// The reply written by the user so far as a response to [currentMessage].
   ///
   /// Will have a length less than or equal to 200 characters.
@@ -1441,7 +1247,7 @@ class _$_MessageState with DiagnosticableTreeMixin implements _MessageState {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MessageState(user: $user, visits: $visits, messages: $messages, unreadMessages: $unreadMessages, error: $error, currentMessage: $currentMessage, currentVisit: $currentVisit, currentIndex: $currentIndex, replyStatus: $replyStatus, reply: $reply)';
+    return 'MessageState(user: $user, visits: $visits, messages: $messages, unreadMessages: $unreadMessages, error: $error, currentMessage: $currentMessage, currentVisit: $currentVisit, currentIndex: $currentIndex, replyStatus: $replyStatus, messageStatus: $messageStatus, reply: $reply)';
   }
 
   @override
@@ -1458,6 +1264,7 @@ class _$_MessageState with DiagnosticableTreeMixin implements _MessageState {
       ..add(DiagnosticsProperty('currentVisit', currentVisit))
       ..add(DiagnosticsProperty('currentIndex', currentIndex))
       ..add(DiagnosticsProperty('replyStatus', replyStatus))
+      ..add(DiagnosticsProperty('messageStatus', messageStatus))
       ..add(DiagnosticsProperty('reply', reply));
   }
 
@@ -1480,6 +1287,8 @@ class _$_MessageState with DiagnosticableTreeMixin implements _MessageState {
                 other.currentIndex == currentIndex) &&
             (identical(other.replyStatus, replyStatus) ||
                 other.replyStatus == replyStatus) &&
+            (identical(other.messageStatus, messageStatus) ||
+                other.messageStatus == messageStatus) &&
             (identical(other.reply, reply) || other.reply == reply));
   }
 
@@ -1495,6 +1304,7 @@ class _$_MessageState with DiagnosticableTreeMixin implements _MessageState {
       currentVisit,
       currentIndex,
       replyStatus,
+      messageStatus,
       reply);
 
   @JsonKey(ignore: true)
@@ -1515,6 +1325,7 @@ abstract class _MessageState implements MessageState {
       final Visit? currentVisit,
       final int currentIndex,
       final ReplyStatus replyStatus,
+      final LoadingStatus messageStatus,
       final String? reply}) = _$_MessageState;
 
   @override
@@ -1553,6 +1364,10 @@ abstract class _MessageState implements MessageState {
 
   /// The state of the user sending a message
   ReplyStatus get replyStatus;
+  @override
+
+  /// The state of the bloc fetching messages
+  LoadingStatus get messageStatus;
   @override
 
   /// The reply written by the user so far as a response to [currentMessage].

@@ -117,7 +117,7 @@ class __$$_ImageRequestCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ImageRequest extends _ImageRequest {
-  const _$_ImageRequest(
+  _$_ImageRequest(
       {@JsonKey(name: 'de1socID') required this.sdmsId,
       @JsonKey(name: 'visitor') required this.visitor})
       : super._();
@@ -168,11 +168,11 @@ class _$_ImageRequest extends _ImageRequest {
 }
 
 abstract class _ImageRequest extends ImageRequest {
-  const factory _ImageRequest(
+  factory _ImageRequest(
           {@JsonKey(name: 'de1socID') required final String sdmsId,
           @JsonKey(name: 'visitor') required final String visitor}) =
       _$_ImageRequest;
-  const _ImageRequest._() : super._();
+  _ImageRequest._() : super._();
 
   factory _ImageRequest.fromJson(Map<String, dynamic> json) =
       _$_ImageRequest.fromJson;

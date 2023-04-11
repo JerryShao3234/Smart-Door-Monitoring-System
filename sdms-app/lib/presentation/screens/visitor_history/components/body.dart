@@ -10,6 +10,7 @@ import 'package:sdms_app/globals.dart';
 import 'package:sdms_app/presentation/constants.dart';
 import 'package:sdms_app/presentation/screens/visitor_history/components/visitor_preview.dart';
 import 'package:sdms_app/presentation/size_config.dart';
+import 'package:sdms_app/presentation/theme/sdms_text.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -19,6 +20,12 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  @override
+  void initState() {
+    context.read<MessageBloc>().add(const MessageGetAll());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,28 +52,44 @@ class _BodyState extends State<Body> {
                       previous.visits != current.visits,
                   builder: (context, state) {
                     return Expanded(
-                      child: ListView.builder(
-                        itemCount: state.visits.length,
-                        itemBuilder: ((context, index) {
-                          var visit = state.visits[index];
-                          final List<Map<String, String>> visitMessages = [];
+                      child: state.visits.isEmpty
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  "assets/images/car-trip.png",
+                                  fit: BoxFit.cover,
+                                ),
+                                Text(
+                                  "No visitor history to display!",
+                                  style: const SdmsText().primarySemiBold,
+                                ),
+                              ],
+                            )
+                          : ListView.builder(
+                              itemCount: state.visits.length,
+                              itemBuilder: ((context, index) {
+                                var visit = state.visits[index];
+                                final List<Map<String, String>> visitMessages =
+                                    [];
 
-                          for (var m in visit.messages) {
-                            if (m.body != null) {
-                              visitMessages.add({
-                                "from": m.sender,
-                                "text": m.body!,
-                              });
-                            }
-                          }
+                                for (var m in visit.messages) {
+                                  if (m.body != null) {
+                                    visitMessages.add({
+                                      "from": m.sender ?? "visitor",
+                                      "text": m.body!,
+                                    });
+                                  }
+                                }
 
-                          return VisitorPreview(
-                            dateAndTime: Globals.formatDateTime(visit.date),
-                            messages: visitMessages,
-                            imageData: visit.image,
-                          );
-                        }),
-                      ),
+                                return VisitorPreview(
+                                  dateAndTime:
+                                      Globals.formatDateTime(visit.date),
+                                  messages: visitMessages,
+                                  imageData: visit.image,
+                                );
+                              }),
+                            ),
                     );
                   },
                 ),

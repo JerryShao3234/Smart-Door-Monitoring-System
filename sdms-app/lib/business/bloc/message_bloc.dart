@@ -43,15 +43,20 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         ) {
     // Set up listeners for each event:
     on<MessageGetAll>(onMessageGetAll);
-    on<MessageReceivedNew>(onMessageReceivedNew);
     on<MessageViewMessage>(onMessageViewMessage);
     on<MessageMarkReadUnread>(onMessageMarkReadUnread);
     on<MessageUpdateReply>(onMessageUpdateReply);
     on<MessageSendReply>(onMessageSendReply);
 
     // Set up the stream subscriptions
-    _notificationRepository.incomingMessages.listen((message) {
-      add(MessageEvent.receivedNew(message: message));
+    _notificationRepository.incomingImageRequests.listen((message) async {
+      await Future.delayed(
+          const Duration(seconds: 2), () => add(const MessageEvent.getAll()));
+    });
+
+    _notificationRepository.incomingAudioRequests.listen((message) async {
+      await Future.delayed(
+          const Duration(seconds: 2), () => add(const MessageEvent.getAll()));
     });
   }
 
@@ -62,6 +67,13 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     Emitter<MessageState> emit,
   ) async {
     try {
+      emit(
+        state.copyWith(
+          error: null,
+          messageStatus: LoadingStatus.loading,
+        ),
+      );
+
       final visits = await _messageRepository.getAllVisits(state.user.token!);
 
       final messages = _messageRepository.getAllMessages(visits);
@@ -75,33 +87,18 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             messages: messages,
             unreadMessages: unreadMessages,
             error: null,
+            messageStatus: LoadingStatus.success,
           ),
         );
       }
     } catch (e) {
       if (!isClosed) {
-        emit(state.copyWith(error: e.toString()));
+        emit(state.copyWith(
+          error: e.toString(),
+          messageStatus: LoadingStatus.failure,
+        ));
       }
     }
-  }
-
-  /// Adds the new received message to the state
-  void onMessageReceivedNew(
-    MessageReceivedNew event,
-    Emitter<MessageState> emit,
-  ) {
-    final messages = List<Message>.from(state.messages);
-    final unreadMessages = List<Message>.from(state.unreadMessages);
-
-    messages.add(event.message);
-    unreadMessages.add(event.message);
-
-    emit(
-      state.copyWith(
-        messages: messages,
-        unreadMessages: unreadMessages,
-      ),
-    );
   }
 
   void onMessageViewMessage(
@@ -190,6 +187,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       return;
     } else {
       try {
+        assert(state.user.token != null);
+        assert(state.currentMessage != null);
+
         emit(state.copyWith(
           replyStatus: ReplyStatus.sending,
         ));
@@ -200,6 +200,12 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
           event.messageInfo!,
         );
 
+        /// Automatically mark message as read
+        await _messageRepository.markAsRead(
+          state.user.token!,
+          state.currentMessage!.id,
+        );
+
         if (!isClosed) {
           // Reset [replyStatus] and [reply] (and error if applicable)
           emit(state.copyWith(
@@ -208,6 +214,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             error: null,
           ));
         }
+
+        add(const MessageGetAll());
       } catch (e) {
         print(e);
 
