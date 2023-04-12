@@ -6,6 +6,7 @@ import 'package:beamer/beamer.dart';
 
 // Project imports:
 import 'package:sdms_app/presentation/routes/sdms_beam_page.dart';
+import 'package:sdms_app/presentation/routes/unauthenticated_locations.dart';
 import 'package:sdms_app/presentation/screens/customize/customize.dart';
 import 'package:sdms_app/presentation/screens/hardware/audio.dart';
 import 'package:sdms_app/presentation/screens/hardware/camera.dart';
@@ -90,7 +91,7 @@ class HomeLocations extends BeamLocation<BeamState> {
       if (state.uri.path == cameraRoute) ...[
         SdmsBeamPage(
           path: cameraRoute,
-          popToNamed: settingsRoute,
+          popToNamed: UnauthenticatedLocations.signInRoute,
           child: CameraScreen(),
         )
       ],

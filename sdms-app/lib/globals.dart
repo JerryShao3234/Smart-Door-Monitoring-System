@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 
 // Flutter imports:
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 // Package imports:
@@ -46,7 +47,12 @@ class Globals {
 
   /// Converts a base64 String to an image and returns that image.
   static MemoryImage imageFromBase64String(String base64String) {
-    return MemoryImage(base64Decode(base64String));
+    try {
+      return MemoryImage(base64Decode(base64String));
+    } catch (e) {
+      return MemoryImage(base64Decode(
+          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="));
+    }
   }
 
   static Future<String> get localPath async {
