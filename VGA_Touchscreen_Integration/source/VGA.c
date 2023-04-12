@@ -210,6 +210,9 @@ void vga_plot(unsigned x, unsigned y, unsigned colour)
 ** no scroll, scale x,y= 1,1
 **
 ******************************************************************************************************************************/
+
+/* Draw character functions modelled after OutGraphicsCharFont2() from OutGraphicsCharFont2.c from VGA reference */
+
 void DrawMediumCharacter(int x, int y, int colour, int backgroundcolour, int c, int Erase)
 {
 	register int row,
