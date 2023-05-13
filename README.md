@@ -1,6 +1,4 @@
-# CPEN 391 Group 2
-
-## SDMS: Smart Door Monitoring System
+## SDMS: Smart Door Monitoring System (Jerry's local copy)
 
 ### Project Description
 
